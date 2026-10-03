@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "genesis-api",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-03",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "genesis-db",
+      "database_id": "604e77fb-af68-4a3b-923d-b5818c29036b"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "IMAGES",
+      "bucket_name": "genesis-images"
+    }
+  ]
+}

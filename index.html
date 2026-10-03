@@ -1297,42 +1297,24 @@
   </div>
 
 
-  <!-- ORARI -->
-  <div class="cta-final-hours">
+<!-- ORARI -->
+<div class="cta-final-hours">
 
-    <div class="cta-final-hours-inner">
+  <div class="cta-final-hours-inner">
 
-      <div class="section-kicker">
-        ORARI
-      </div>
+    <div class="section-kicker">
+      ORARI
+    </div>
 
-      <div class="hours-row">
+    <div id="opening-hours-list">
 
-        <span>
-          Lunedì — Venerdì
-        </span>
-
-        <strong>
-          09:30 — 15:00
-        </strong>
-
-      </div>
-
-      <div class="hours-row">
-
-        <span>
-          Sabato — Domenica
-        </span>
-
-        <strong>
-          10:00 — 15:00
-        </strong>
-
-      </div>
+      <!-- Gli orari vengono caricati da D1 -->
 
     </div>
 
   </div>
+
+</div>
 
 </section>
 
@@ -1474,6 +1456,16 @@
   </div>
 
 </footer>
+
+  <div id="site-popup" class="site-popup" aria-hidden="true">
+    <div class="site-popup__backdrop" data-popup-close></div>
+    <section class="site-popup__content" role="dialog" aria-modal="true" aria-labelledby="site-popup-title">
+      <button class="site-popup__close" type="button" data-popup-close aria-label="Chiudi">×</button>
+      <h2 id="site-popup-title"></h2>
+      <p id="site-popup-text"></p>
+      <a id="site-popup-link" class="site-popup__link hidden"></a>
+    </section>
+  </div>
 
   <!-- ======================================================
        JAVASCRIPT

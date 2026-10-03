@@ -1779,3 +1779,69 @@ body.menu-open {
   }
 
 }
+/* =========================================================
+   POP-UP
+   ========================================================= */
+
+.hidden {
+  display: none !important;
+}
+
+.site-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+}
+
+.site-popup.is-open {
+  display: flex;
+}
+
+.site-popup__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 10, 8, .62);
+}
+
+.site-popup__content {
+  position: relative;
+  width: min(100%, 490px);
+  padding: 42px 30px 30px;
+  background: #f7f2e9;
+  color: #161714;
+  text-align: center;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .28);
+}
+
+.site-popup__content h2 {
+  margin: 0 0 14px;
+}
+
+.site-popup__content p {
+  margin: 0;
+  white-space: pre-line;
+}
+
+.site-popup__close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.site-popup__link {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 12px 18px;
+  background: #161714;
+  color: #fff;
+  text-decoration: none;
+}

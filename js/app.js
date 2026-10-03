@@ -1319,6 +1319,71 @@ setText(
 
   };
 
+  /* =======================================================
+   OPENING HOURS — CLOUDFLARE D1
+   ======================================================= */
+
+const openingHoursList =
+  document.getElementById("opening-hours-list");
+
+const loadOpeningHours = async () => {
+
+  if (!openingHoursList) {
+    return;
+  }
+
+  try {
+
+    const response = await fetch(
+      "https://genesis-api.cimiteroditarsia.workers.dev/api/opening-hours",
+      {
+        headers: {
+          Accept: "application/json"
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Opening hours request failed");
+    }
+
+    const hours = await response.json();
+
+    openingHoursList.innerHTML = "";
+
+    hours.forEach((item) => {
+
+      const row = document.createElement("div");
+      row.className = "hours-row";
+
+      const day = document.createElement("span");
+      day.textContent = item.day_label;
+
+      const time = document.createElement("strong");
+
+      if (item.is_closed) {
+        time.textContent = "Chiuso";
+      } else {
+        time.textContent =
+          `${item.open_time} — ${item.close_time}`;
+      }
+
+      row.appendChild(day);
+      row.appendChild(time);
+
+      openingHoursList.appendChild(row);
+
+    });
+
+  } catch (error) {
+
+    /* Mantiene il blocco vuoto se l'API non risponde */
+
+  }
+
+};
+
+loadOpeningHours();
 
   const loadInstagram = async () => {
 
@@ -1420,6 +1485,89 @@ setText(
       });
 
     });
+
+
+  /* =======================================================
+     POP-UP — CLOUDFLARE D1
+     ======================================================= */
+
+  const sitePopup =
+    document.getElementById("site-popup");
+
+  const loadPopup = async () => {
+
+    if (!sitePopup) {
+      return;
+    }
+
+    try {
+
+      const response = await fetch(
+        "https://genesis-api.cimiteroditarsia.workers.dev/api/popup"
+      );
+
+      if (!response.ok) {
+        throw new Error("Popup request failed");
+      }
+
+      const popup = await response.json();
+
+      if (!popup) {
+        return;
+      }
+
+      const storageKey =
+        `genesis-popup-dismissed-${popup.id}`;
+
+      if (localStorage.getItem(storageKey) === "1") {
+        return;
+      }
+
+      const language =
+        document.documentElement.lang || "it";
+
+      document.getElementById("site-popup-title").textContent =
+        popup[`title_${language}`] || popup.title_it;
+
+      document.getElementById("site-popup-text").textContent =
+        popup[`text_${language}`] || "";
+
+      const link =
+        document.getElementById("site-popup-link");
+
+      const buttonText =
+        popup[`button_text_${language}`];
+
+      if (popup.button_url && buttonText) {
+        link.href = popup.button_url;
+        link.textContent = buttonText;
+        link.classList.remove("hidden");
+      }
+
+      const close = () => {
+        sitePopup.classList.remove("is-open");
+        sitePopup.setAttribute("aria-hidden", "true");
+        localStorage.setItem(storageKey, "1");
+      };
+
+      sitePopup
+        .querySelectorAll("[data-popup-close]")
+        .forEach((button) => {
+          button.addEventListener("click", close);
+        });
+
+      sitePopup.classList.add("is-open");
+      sitePopup.setAttribute("aria-hidden", "false");
+
+    } catch (error) {
+
+      /* Il sito resta utilizzabile se il pop-up non risponde. */
+
+    }
+
+  };
+
+  loadPopup();
 
 
   /* =======================================================
