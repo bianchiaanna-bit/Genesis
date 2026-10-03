@@ -1,0 +1,530 @@
+/* =========================================================
+   GÉNESIS RESTAURANTE
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 769px) {
+
+  /* =======================================================
+     HEADER
+     ======================================================= */
+
+  .site-header {
+    padding: 24px 5vw;
+  }
+
+  .brand img {
+    width: 175px;
+  }
+
+
+  /* =======================================================
+     HERO
+     ======================================================= */
+
+  .hero {
+    display: flex;
+    align-items: center;
+    padding: 145px 6vw 95px;
+  }
+
+  .hero-tiles {
+    top: 105px;
+    right: 5vw;
+    bottom: 70px;
+    left: 30vw;
+
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+
+    gap: 7px;
+  }
+
+  .hero-copy {
+    width: 52%;
+    max-width: 650px;
+  }
+
+  .hero h1 {
+    max-width: 730px;
+    margin-bottom: 24px;
+    font-size: clamp(76px, 8vw, 145px);
+    line-height: 0.84;
+  }
+
+  .hero-text {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .hero-note {
+    position: absolute;
+    right: -10px;
+    bottom: -50px;
+    transform: rotate(-7deg);
+  }
+
+
+  /* =======================================================
+     INTRO
+     ======================================================= */
+
+  .intro-section {
+    padding: 145px 10vw 155px;
+  }
+
+  .intro-section .section-kicker {
+    margin-bottom: 28px;
+  }
+
+  .intro-section h2 {
+    margin-bottom: 50px;
+    font-size: clamp(55px, 6vw, 94px);
+    line-height: 0.92;
+  }
+
+  .intro-section p {
+    margin-left: 16vw;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .intro-section p + p {
+    margin-top: 24px;
+  }
+
+
+  /* =======================================================
+     ATMOSFERA
+     ======================================================= */
+
+  .atmosfera-section {
+    grid-template-columns: minmax(0, 1.35fr) minmax(400px, 0.65fr);
+    min-height: 780px;
+  }
+
+  .atmosfera-image {
+    min-height: 780px;
+  }
+
+  .atmosfera-copy {
+    padding: 100px 7vw;
+  }
+
+  .atmosfera-copy .section-kicker {
+    margin-bottom: 30px;
+  }
+
+  .atmosfera-copy h2 {
+    margin-bottom: 38px;
+    font-size: clamp(50px, 5vw, 78px);
+    line-height: 0.9;
+  }
+
+  .atmosfera-copy p {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+
+  /* =======================================================
+     CUCINA
+     ======================================================= */
+
+  .cucina-section {
+    grid-template-columns: 1fr 1fr;
+    gap: 9vw;
+    padding: 145px 10vw 160px;
+  }
+
+  .cucina-heading {
+    padding-top: 8px;
+  }
+
+  .cucina-heading .section-kicker {
+    margin-bottom: 30px;
+  }
+
+  .cucina-heading h2 {
+    font-size: clamp(62px, 6.5vw, 105px);
+    line-height: 0.83;
+  }
+
+  .cucina-content {
+    padding-top: 70px;
+  }
+
+  .cucina-content p {
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .cucina-content p:first-child {
+    margin-bottom: 35px;
+  }
+
+
+  /* =======================================================
+     BRUNCH
+     ======================================================= */
+
+  .brunch-section {
+    grid-template-columns: 1fr 1fr;
+    min-height: 720px;
+  }
+
+  .brunch-image {
+    min-height: 720px;
+  }
+
+  .brunch-copy {
+    padding: 100px 9vw;
+  }
+
+  .brunch-copy .section-kicker {
+    margin-bottom: 30px;
+  }
+
+  .brunch-copy h2 {
+    margin-bottom: 38px;
+    font-size: clamp(54px, 5vw, 82px);
+    line-height: 0.88;
+  }
+
+  .brunch-copy p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+
+  /* =======================================================
+     MENU
+     ======================================================= */
+
+  .menu-section {
+    padding: 145px 7vw 155px;
+  }
+
+  .menu-heading {
+    margin-bottom: 85px;
+  }
+
+  .menu-heading h2 {
+    font-size: clamp(58px, 6vw, 100px);
+    line-height: 0.88;
+  }
+
+  .dish-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 4.5vw;
+    row-gap: 90px;
+    align-items: start;
+  }
+
+  .dish-card.large {
+    grid-column: span 2;
+    width: 66%;
+    margin-bottom: 20px;
+  }
+
+  .dish-card.large .dish-image {
+    aspect-ratio: 1.55 / 1;
+  }
+
+  .dish-card:not(.large) .dish-image {
+    aspect-ratio: 1 / 1;
+  }
+
+  .dish-card:nth-child(2) {
+    margin-left: 0;
+  }
+
+  .dish-card:nth-child(3) {
+    margin-top: 130px;
+  }
+
+  .dish-card:nth-child(4) {
+    margin-top: 10px;
+  }
+
+  .dish-card:nth-child(5) {
+    margin-top: 125px;
+  }
+
+  .dish-card h3 {
+    font-size: 36px;
+  }
+
+  .menu-section .center {
+    margin-top: 100px;
+  }
+
+
+  /* =======================================================
+     DETTAGLI
+     ======================================================= */
+
+  .dettagli-section {
+    grid-template-columns: 1fr 1fr;
+    min-height: 720px;
+  }
+
+  .dettagli-image {
+    min-height: 720px;
+  }
+
+  .dettagli-copy {
+    padding: 100px 8vw;
+  }
+
+  .dettagli-copy .section-kicker {
+    margin-bottom: 30px;
+  }
+
+  .dettagli-copy h2 {
+    margin-bottom: 40px;
+    font-size: clamp(52px, 5vw, 80px);
+    line-height: 0.88;
+  }
+
+  .dettagli-copy p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+
+  /* =======================================================
+   LA LAGUNA
+   ======================================================= */
+
+.laguna-section {
+  grid-template-columns: 1fr 0.9fr;
+  gap: 7vw;
+  padding: 120px 10vw;
+  min-height: 680px;
+}
+
+.laguna-copy {
+  align-self: center;
+
+  width: 100%;
+  max-width: none;
+
+  padding: 0;
+}
+
+.laguna-copy .section-kicker {
+  margin-bottom: 28px;
+}
+
+.laguna-copy h2 {
+  width: 100%;
+  max-width: none;
+
+  font-size: clamp(64px, 6.5vw, 100px);
+  line-height: 0.84;
+}
+
+.laguna-copy p {
+  width: 100%;
+  max-width: 620px;
+
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* FOTO */
+
+.laguna-image {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+
+  min-height: 0;
+
+  align-self: center;
+
+  overflow: hidden;
+}
+
+.laguna-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+.laguna-copy .button {
+  width: fit-content;
+  align-self: flex-start;
+}
+
+  /* =======================================================
+     ESPERIENZA
+     ======================================================= */
+
+  .esperienza-section {
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 9vw;
+    padding: 145px 10vw 160px;
+  }
+
+  .esperienza-heading {
+    align-self: start;
+  }
+
+  .esperienza-heading .section-kicker {
+    margin-bottom: 28px;
+  }
+
+  .esperienza-heading h2 {
+    font-size: clamp(72px, 7vw, 115px);
+    line-height: 0.82;
+  }
+
+  .esperienza-content {
+    padding-top: 75px;
+  }
+
+  .esperienza-content p {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+
+  /* =======================================================
+     INSTAGRAM
+     ======================================================= */
+
+  .social {
+    padding: 125px 6vw 135px;
+  }
+
+  .social-head {
+    margin-bottom: 60px;
+  }
+
+  .social-head h2 {
+    font-size: clamp(52px, 5vw, 78px);
+    line-height: 0.9;
+  }
+
+  .instagram-feed {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .instagram-feed img {
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+  }
+
+  .instagram-bottom {
+    margin-top: 24px;
+  }
+
+
+  /* =======================================================
+     CTA
+     ======================================================= */
+
+  .cta-final-section {
+    padding: 145px 6vw 155px;
+  }
+
+  .cta-final-section .section-kicker {
+    margin-bottom: 28px;
+  }
+
+  .cta-final-section h2 {
+    font-size: clamp(78px, 9vw, 150px);
+    line-height: 0.8;
+  }
+
+  .cta-final-section p {
+    margin-top: 35px;
+    font-size: 16px;
+  }
+
+  .cta-final-actions {
+    margin-top: 35px;
+  }
+
+
+  /* =======================================================
+     VISIT
+     ======================================================= */
+
+  .visit {
+    grid-template-columns: 1fr 0.8fr;
+    gap: 10vw;
+    padding: 135px 10vw 145px;
+  }
+
+  .visit-left h2 {
+    font-size: clamp(65px, 6vw, 100px);
+    line-height: 0.82;
+  }
+
+  .hours {
+    padding-top: 80px;
+  }
+
+
+  /* =======================================================
+     FOOTER
+     ======================================================= */
+
+  .site-footer {
+    padding: 80px 6vw 25px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1.3fr 1fr 0.8fr;
+    gap: 7vw;
+    padding-bottom: 75px;
+  }
+
+  .footer-brand img {
+    width: 280px;
+  }
+
+  .footer-bottom {
+    padding-top: 22px;
+  }
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1400px) {
+
+  .hero-copy {
+    max-width: 720px;
+  }
+
+  .hero h1 {
+    font-size: 148px;
+  }
+
+  .intro-section {
+    padding-right: 14vw;
+    padding-left: 14vw;
+  }
+
+  .cucina-section,
+  .esperienza-section,
+  .laguna-section {
+    padding-right: 14vw;
+    padding-left: 14vw;
+  }
+
+  .menu-section {
+    padding-right: 10vw;
+    padding-left: 10vw;
+  }
+}

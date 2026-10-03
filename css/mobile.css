@@ -1,0 +1,1116 @@
+/* =========================================================
+   GÉNESIS RESTAURANTE
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  /* =======================================================
+     HEADER
+     ======================================================= */
+
+  .site-header {
+    padding: 16px 20px;
+  }
+
+  .brand img {
+    width: 125px;
+  }
+
+  .desktop-nav,
+  .header-cta,
+  .site-header .lang-switcher {
+    display: none;
+  }
+
+  .header-actions {
+    gap: 0;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  z-index: 999;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  min-height: 100svh;
+  padding: 145px 42px 40px;
+
+  overflow: hidden;
+
+  background: var(--black);
+  color: var(--cream);
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-15px);
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.mobile-nav.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.mobile-nav > a {
+  position: relative;
+  z-index: 3;
+
+  padding: 7px 0;
+
+  color: var(--cream);
+
+  font-family: var(--hand);
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1;
+  text-align: left;
+  text-decoration: none;
+}
+
+.mobile-langs {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  gap: 8px;
+
+  margin-top: 28px;
+  margin-left: 0;
+}
+
+.mobile-langs .lang {
+  padding: 8px;
+
+  border: 0;
+
+  background: transparent;
+  color: rgba(244, 238, 227, 0.45);
+
+  font-family: var(--sans);
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+.mobile-langs .lang.active {
+  color: var(--cream);
+}
+/* ======================================================
+   LA LAGUNA
+   ====================================================== */
+
+
+   .laguna-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+
+  background: var(--green);
+  color: var(--cream);
+}
+
+/* TESTO */
+
+.laguna-copy {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 0;
+
+  padding: 35px 24px 40px;
+
+  color: var(--cream);
+}
+
+.laguna-copy .section-kicker {
+  margin-bottom: 10px;
+  color: var(--green-light);
+}
+
+.laguna-copy h2 {
+  margin-bottom: 20px;
+  color: var(--cream);
+}
+
+.laguna-copy h2 em {
+  color: var(--cream);
+}
+
+.laguna-copy p {
+  max-width: 500px;
+
+  color: rgba(244, 238, 227, 0.9);
+
+  text-shadow: none;
+}
+
+.laguna-address {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 6px;
+  margin-bottom: 22px;
+
+  color: var(--cream);
+}
+
+.laguna-address strong {
+  color: var(--cream);
+}
+
+.laguna-address span {
+  color: rgba(244, 238, 227, 0.75);
+}
+
+/* FOTO */
+
+.laguna-image {
+  position: relative;
+
+  width: calc(100% + 48px);
+  height: 300px;
+
+  min-height: 0;
+
+  margin: 0 -24px;
+  padding: 0;
+
+  overflow: hidden;
+
+  order: 2;
+}
+
+.laguna-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+.laguna-image::after {
+  display: none;
+}
+
+/* LA SEZIONE DEVE FINIRE ESATTAMENTE CON LA FOTO */
+
+.laguna-section::after {
+  display: none;
+}
+
+.laguna-section + section {
+  margin-top: 0;
+}
+
+/* ======================================================
+   FOTO PIATTO
+   ====================================================== */
+.mobile-menu-photo {
+  position: absolute;
+  right: -45px;
+  bottom: -30px;
+  z-index: 1;
+  width: 230px;
+  pointer-events: none;
+}
+
+.mobile-menu-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+  /* =======================================================
+     HERO
+     ======================================================= */
+
+  .hero {
+    position: relative;
+
+    min-height: 100svh;
+    height: auto;
+
+    padding: 105px 24px 45px;
+
+    display: block;
+
+    overflow: hidden;
+  }
+
+
+  /* -------------------------------------------------------
+     CONTENUTO HERO
+     ------------------------------------------------------- */
+
+  .hero-copy {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .hero h1 {
+    margin-bottom: 20px;
+    font-size: 52px;
+    line-height: 0.9;
+  }
+
+  .hero h1 .hero-title-main,
+  .hero h1 .hero-title-accent {
+    display: block;
+    width: auto;
+    font-size: 45px;
+    line-height: 0.9;
+  }
+
+  .hero-text {
+    position: relative;
+    z-index: 5;
+
+    max-width: 440px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    position: relative;
+    z-index: 5;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+
+  /* -------------------------------------------------------
+     FOTO HERO
+     
+     Le foto NON fanno più parte del normale flusso.
+     Sono posizionate dentro l'hero e il testo rimane
+     sopra di loro.
+     ------------------------------------------------------- */
+
+  .hero-tiles {
+    position: absolute !important;
+
+    top: 45 !important;
+    right: 24px !important;
+    bottom: 45px !important;
+    left: 24px !important;
+
+    z-index: 2;
+
+    display: grid !important;
+
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 4px !important;
+
+    overflow: visible !important;
+  }
+
+
+  /* -------------------------------------------------------
+     RESET DEI TILE DESKTOP
+     ------------------------------------------------------- */
+
+  .hero-tile {
+    position: relative !important;
+
+    display: block !important;
+
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    aspect-ratio: 1 / 1 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: none !important;
+
+    isolation: isolate;
+  }
+
+
+  /* -------------------------------------------------------
+     PRIME 6 FOTO VISIBILI
+     ------------------------------------------------------- */
+
+  .hero-tile-1,
+  .hero-tile-2,
+  .hero-tile-3,
+  .hero-tile-4,
+  .hero-tile-5,
+  .hero-tile-6 {
+    display: block !important;
+  }
+
+
+  /* -------------------------------------------------------
+     ALTRE FOTO NASCOSTE SUL MOBILE
+     ------------------------------------------------------- */
+
+  .hero-tile-7,
+  .hero-tile-8,
+  .hero-tile-9,
+  .hero-tile-10,
+  .hero-tile-11,
+  .hero-tile-12 {
+    display: none !important;
+  }
+
+
+  /* -------------------------------------------------------
+     IMMAGINI
+     ------------------------------------------------------- */
+
+  .hero-tile img {
+    display: block !important;
+
+    position: absolute !important;
+
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+
+  /* -------------------------------------------------------
+     OVERLAY HERO
+     ------------------------------------------------------- */
+
+  .hero::after {
+    display: none;
+  }
+
+
+  /* -------------------------------------------------------
+     ELEMENTI SECONDARI
+     ------------------------------------------------------- */
+
+  .hero-note {
+    display: none;
+  }
+
+  .hero-bottom {
+    position: relative;
+
+    right: auto;
+    bottom: auto;
+    left: auto;
+
+    z-index: 5;
+
+    width: 100%;
+    margin-top: 24px;
+
+    font-size: 7px;
+  }
+
+  .hero-bottom > span:first-child {
+    display: none;
+  }
+
+  .scroll-cue {
+    margin-right: auto;
+  }
+
+
+  /* =======================================================
+     GENERIC
+     ======================================================= */
+
+  .section {
+    padding: 80px 24px;
+  }
+
+  .section-kicker {
+    margin-bottom: 22px;
+  }
+
+  .section p {
+    width: 100%;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 15px;
+    line-height: 1.72;
+  }
+
+
+  /* =======================================================
+   INTRO
+   ======================================================= */
+
+.intro-section {
+  position: relative;
+  padding-top: 90px;
+  padding-bottom: 95px;
+}
+
+.intro-section h2 {
+  position: relative;
+  z-index: 3;
+  margin-bottom: 32px;
+  font-size: clamp(49px, 14vw, 70px);
+  line-height: 0.88;
+}
+
+.intro-section p {
+  position: relative;
+  z-index: 3;
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.intro-section p + p {
+  margin-top: 22px;
+}
+
+/* =======================================================
+   MONDO GÉNESIS — MOBILE
+   ======================================================= */
+
+.intro-art {
+  position: absolute;
+  top: 5px;
+  right: -15px;
+  z-index: 1;
+  width: 300px;
+  pointer-events: none;
+  opacity: 0.5;
+  transform: rotate(12deg);
+}
+
+.intro-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+
+  /* =======================================================
+     ATMOSFERA
+     ======================================================= */
+
+  .atmosfera-section {
+    display: block;
+    padding: 0;
+  }
+
+  .atmosfera-image {
+    width: 100%;
+    height: 67vw;
+    min-height: 280px;
+    max-height: 470px;
+  }
+
+  .atmosfera-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .interior-caption {
+    right: 16px;
+    bottom: 15px;
+    left: 16px;
+    font-size: 7px;
+  }
+
+  .atmosfera-copy {
+    padding: 75px 24px 90px;
+  }
+
+  .atmosfera-copy h2 {
+    margin-bottom: 30px;
+    font-size: clamp(48px, 13vw, 68px);
+    line-height: 0.88;
+  }
+
+  .atmosfera-copy p {
+    padding: 0 3px;
+  }
+
+  .atmosfera-highlight {
+    margin-top: 8px;
+    font-size: 25px !important;
+  }
+
+
+  /* =======================================================
+     CUCINA
+     ======================================================= */
+
+  .cucina-section {
+    display: block;
+    padding-top: 90px;
+    padding-bottom: 100px;
+  }
+
+  .cucina-heading h2 {
+    font-size: clamp(55px, 15vw, 78px);
+    line-height: 0.82;
+  }
+
+  .cucina-content {
+    margin-top: 50px;
+  }
+
+  .cucina-content p:first-child {
+    font-size: 25px;
+    line-height: 1.18;
+  }
+
+  .cucina-content p {
+    padding: 0 3px;
+  }
+
+  .cucina-highlight {
+    margin-top: 30px;
+    font-size: 27px !important;
+  }
+
+
+  /* =======================================================
+     BRUNCH
+     ======================================================= */
+
+  .brunch-section {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .brunch-image {
+    width: 100%;
+    height: 90vw;
+    min-height: 330px;
+    max-height: 520px;
+  }
+
+  .brunch-image img {
+    display: block;
+    width: min(58vw, 280px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .brunch-copy {
+    padding: 0 24px 90px;
+  }
+
+  .brunch-copy h2 {
+    margin-bottom: 30px;
+    font-size: clamp(48px, 13vw, 70px);
+    line-height: 0.86;
+  }
+
+  .brunch-copy p {
+    padding: 0 3px;
+  }
+
+  .brunch-copy p:first-of-type {
+    font-size: 25px;
+  }
+
+
+  /* =======================================================
+     MENU
+     ======================================================= */
+
+  .menu-section {
+    padding-top: 90px;
+    padding-bottom: 100px;
+  }
+
+  .menu-heading {
+    margin-bottom: 55px;
+  }
+
+  .menu-heading h2 {
+    font-size: clamp(50px, 14vw, 72px);
+    line-height: 0.87;
+  }
+
+  .dish-grid {
+    grid-template-columns: 1fr;
+    gap: 65px;
+  }
+
+  .dish-card.large {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .dish-card.large .dish-image,
+  .dish-card:not(.large) .dish-image {
+    aspect-ratio: 1 / 1;
+  }
+
+  .dish-card:nth-child(2),
+  .dish-card:nth-child(3),
+  .dish-card:nth-child(4),
+  .dish-card:nth-child(5) {
+    margin-top: 0;
+  }
+
+  .dish-meta {
+    margin-top: 13px;
+  }
+
+  .dish-card h3 {
+    font-size: 31px;
+  }
+
+  .dish-card p {
+    font-size: 14px;
+  }
+
+  .menu-section .center {
+    margin-top: 65px;
+  }
+
+
+  /* =======================================================
+   DETTAGLI
+   ======================================================= */
+
+.dettagli-section {
+  display: block;
+  padding: 0;
+  background: var(--cream);
+}
+
+.dettagli-image {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  background: var(--cream);
+}
+
+.dettagli-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.dettagli-copy {
+  padding: 75px 24px 90px;
+}
+
+.dettagli-copy h2 {
+  margin-bottom: 32px;
+  font-size: clamp(49px, 13vw, 69px);
+  line-height: 0.86;
+}
+
+.dettagli-copy p {
+  padding: 0 3px;
+}
+
+
+
+  /* =======================================================
+     LA LAGUNA
+     ======================================================= */
+
+  .laguna-section {
+    display: block;
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
+
+  .laguna-copy h2 {
+    margin-bottom: 30px;
+    font-size: clamp(58px, 16vw, 82px);
+    line-height: 0.83;
+  }
+
+  .laguna-copy p {
+    padding: 0 3px;
+  }
+
+  .laguna-map {
+    min-height: 330px;
+    margin-top: 55px;
+  }
+
+  .laguna-map-inner {
+    width: 155px;
+    height: 155px;
+  }
+
+  .laguna-map-address {
+    font-size: 16px;
+  }
+
+
+  /* =======================================================
+     ESPERIENZA
+     ======================================================= */
+
+  .esperienza-section {
+    display: block;
+    padding-top: 90px;
+    padding-bottom: 100px;
+  }
+
+  .esperienza-heading h2 {
+    font-size: clamp(67px, 18vw, 94px);
+    line-height: 0.8;
+  }
+
+  .esperienza-content {
+    margin-top: 55px;
+  }
+
+  .esperienza-content p {
+    padding: 0 3px;
+  }
+
+  .esperienza-content p:first-child {
+    font-size: 25px;
+  }
+
+  .esperienza-highlight {
+    margin-top: 30px;
+    font-size: 29px !important;
+  }
+
+
+
+  /* =======================================================
+     INSTAGRAM
+     ======================================================= */
+
+  .social {
+    padding-top: 85px;
+    padding-bottom: 90px;
+  }
+
+  .social-head {
+    display: block;
+    margin-bottom: 38px;
+  }
+
+  .social-head h2 {
+    font-size: clamp(43px, 12vw, 62px);
+    line-height: 0.9;
+  }
+
+  .social-head .arrow-link {
+    margin-top: 22px;
+  }
+
+  .instagram-feed {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+  }
+
+  .instagram-feed img {
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+  }
+
+  .instagram-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+
+  /* =======================================================
+     CTA FINALE
+     ======================================================= */
+
+  .cta-final-section {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+  }
+
+
+  /* -------------------------------------------------------
+     CONTENUTO
+     ------------------------------------------------------- */
+
+  .cta-final-content {
+    position: relative;
+    z-index: 3;
+    min-height: auto;
+    padding: 70px 7vw 55px;
+  }
+
+  .cta-final-content h2 {
+    max-width: 520px;
+    margin-bottom: 28px;
+    font-size: clamp(56px, 15vw, 76px);
+    line-height: 0.9;
+  }
+
+  .cta-final-address {
+    margin-bottom: 14px;
+    font-size: 12px;
+  }
+
+  .cta-final-contact {
+    gap: 3px;
+    margin-bottom: 28px;
+  }
+
+  .cta-final-contact a {
+    font-size: 11px;
+  }
+
+  .cta-final-actions {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+
+  /* -------------------------------------------------------
+     ORARI
+     ------------------------------------------------------- */
+
+  .cta-final-hours {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: auto;
+    padding: 20px 7vw 65px;
+  }
+
+  .cta-final-hours::before {
+    display: none;
+  }
+
+  .cta-final-hours-inner {
+    width: 100%;
+    max-width: 430px;
+    padding: 0;
+  }
+
+  .cta-final-hours-inner .section-kicker {
+    margin-bottom: 20px;
+  }
+
+  .cta-final-hours .hours-row {
+    gap: 3px;
+    padding-bottom: 18px;
+  }
+
+  .cta-final-hours .hours-row + .hours-row {
+    padding-top: 18px;
+  }
+
+  .cta-final-hours .hours-row span {
+    font-size: 23px;
+    line-height: 1;
+  }
+
+  .cta-final-hours .hours-row strong {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+
+  /* =======================================================
+     FOOTER
+     ======================================================= */
+
+  .site-footer {
+    padding: 65px 24px 20px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 50px;
+    padding-bottom: 50px;
+  }
+
+  .footer-brand img {
+    width: 220px;
+  }
+
+  .footer-brand span {
+    font-size: 20px;
+  }
+
+  .footer-bottom {
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .esperienza-botanica {
+    display: none;
+  }
+}
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .hero {
+    padding-top: 135px;
+    padding-right: 20px;
+    padding-bottom: 55px;
+    padding-left: 20px;
+  }
+
+  .hero h1 {
+    font-size: 50px;
+  
+  }
+
+  .hero h1 .hero-title-main,
+  .hero h1 .hero-title-accent {
+    font-size: 46px;
+  }
+
+  .hero-tiles {
+    right: 20px !important;
+    bottom: 55px !important;
+    left: 20px !important;
+
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  .button {
+    min-height: 45px;
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .section {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .atmosfera-copy,
+  .brunch-copy,
+  .dettagli-copy {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+
+  .laguna-section.section {
+    margin: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .laguna-image {
+    width: calc(100% + 48px);
+    height: 300px;
+
+    margin-right: -24px;
+    margin-bottom: 0;
+    margin-left: -24px;
+
+    padding: 0;
+
+    overflow: hidden;
+  }
+
+  .laguna-image img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    object-fit: cover;
+    object-position: center;
+  }
+}
