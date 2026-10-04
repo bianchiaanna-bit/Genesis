@@ -1,5 +1,7 @@
 function corsHeaders(request) {
-  const origin = request.headers.get("Origin");
+
+  const origin =
+    request.headers.get("Origin");
 
   const allowedOrigins = [
     "http://127.0.0.1:5500",
@@ -8,6 +10,7 @@ function corsHeaders(request) {
   ];
 
   return {
+
     "Access-Control-Allow-Origin":
       allowedOrigins.includes(origin)
         ? origin
@@ -24,19 +27,28 @@ function corsHeaders(request) {
 
     "Vary":
       "Origin"
+
   };
+// 
 }
 
 
 function json(request, data, status = 200) {
-  return Response.json(data, {
-    status,
-    headers: corsHeaders(request),
-  });
+
+  return Response.json(
+    data,
+    {
+      status,
+      headers:
+        corsHeaders(request)
+    }
+  );
+
 }
 
 
 function unauthorized(request) {
+
   return json(
     request,
     {
@@ -45,6 +57,7 @@ function unauthorized(request) {
     },
     401
   );
+
 }
 
 
@@ -55,7 +68,8 @@ function unauthorized(request) {
 async function createSession(secret) {
 
   const expiresAt =
-    Date.now() + 8 * 60 * 60 * 1000;
+    Date.now() +
+    8 * 60 * 60 * 1000;
 
   const payload =
     `${expiresAt}`;
@@ -84,18 +98,27 @@ async function createSession(secret) {
 
   const signature =
     Array.from(
-      new Uint8Array(signatureBuffer)
+      new Uint8Array(
+        signatureBuffer
+      )
     )
-      .map(byte =>
-        byte.toString(16).padStart(2, "0")
+      .map(
+        byte =>
+          byte
+            .toString(16)
+            .padStart(2, "0")
       )
       .join("");
 
   return `${expiresAt}.${signature}`;
+
 }
 
 
-async function verifySession(token, secret) {
+async function verifySession(
+  token,
+  secret
+) {
 
   if (!token) {
     return false;
@@ -104,7 +127,9 @@ async function verifySession(token, secret) {
   const parts =
     token.split(".");
 
-  if (parts.length !== 2) {
+  if (
+    parts.length !== 2
+  ) {
     return false;
   }
 
@@ -141,53 +166,84 @@ async function verifySession(token, secret) {
     await crypto.subtle.sign(
       "HMAC",
       key,
-      encoder.encode(String(expiresAt))
+      encoder.encode(
+        String(expiresAt)
+      )
     );
 
   const expectedSignature =
     Array.from(
-      new Uint8Array(signatureBuffer)
+      new Uint8Array(
+        signatureBuffer
+      )
     )
-      .map(byte =>
-        byte.toString(16).padStart(2, "0")
+      .map(
+        byte =>
+          byte
+            .toString(16)
+            .padStart(2, "0")
       )
       .join("");
 
-  return signature === expectedSignature;
+  return (
+    signature ===
+    expectedSignature
+  );
+
 }
 
 
 function getSession(request) {
 
   const authorization =
-    request.headers.get("Authorization");
+    request.headers.get(
+      "Authorization"
+    );
 
   if (
     authorization &&
-    authorization.startsWith("Bearer ")
+    authorization.startsWith(
+      "Bearer "
+    )
   ) {
+
     return authorization.slice(7);
+
   }
 
-
   const cookieHeader =
-    request.headers.get("Cookie") || "";
+    request.headers.get(
+      "Cookie"
+    ) || "";
 
   const cookies =
     cookieHeader.split(";");
 
-  for (const cookie of cookies) {
+  for (
+    const cookie of cookies
+  ) {
 
-    const [name, ...rest] =
-      cookie.trim().split("=");
+    const [
+      name,
+      ...rest
+    ] =
+      cookie
+        .trim()
+        .split("=");
 
-    if (name === "genesis_admin") {
+    if (
+      name ===
+      "genesis_admin"
+    ) {
+
       return rest.join("=");
+
     }
 
   }
 
   return null;
+
 }
 
 
@@ -195,7 +251,10 @@ function getSession(request) {
    VERIFICA AUTENTICAZIONE ADMIN
    ========================================================= */
 
-async function requireAdmin(request, env) {
+async function requireAdmin(
+  request,
+  env
+) {
 
   const session =
     getSession(request);
@@ -204,6 +263,7 @@ async function requireAdmin(request, env) {
     session,
     env.SESSION_SECRET
   );
+
 }
 
 
@@ -211,19 +271,27 @@ async function requireAdmin(request, env) {
    FUNZIONI DI SUPPORTO MENU
    ========================================================= */
 
-function normalizeBoolean(value) {
+function normalizeBoolean(
+  value
+) {
+
   return value ? 1 : 0;
+
 }
 
 
-function normalizePriceCents(value) {
+function normalizePriceCents(
+  value
+) {
 
   if (
     value === null ||
     value === undefined ||
     value === ""
   ) {
+
     return null;
+
   }
 
   const number =
@@ -233,32 +301,164 @@ function normalizePriceCents(value) {
     !Number.isFinite(number) ||
     number < 0
   ) {
+
     return null;
+
   }
 
   return Math.round(number);
+
 }
 
 
-function imageExtension(contentType) {
+function imageExtension(
+  contentType
+) {
+
   const extensions = {
-    "image/jpeg": "jpg",
-    "image/png": "png",
-    "image/webp": "webp"
+
+    "image/jpeg":
+      "jpg",
+
+    "image/png":
+      "png",
+
+    "image/webp":
+      "webp"
+
   };
 
-  return extensions[contentType] || null;
+  return (
+    extensions[contentType] ||
+    null
+  );
+
 }
 
 
-function normalizeDateTime(value) {
-  if (typeof value !== "string" || !value.trim()) {
+function normalizeDateTime(
+  value
+) {
+
+  if (
+    typeof value !== "string" ||
+    !value.trim()
+  ) {
+
     return null;
+
   }
 
-  return value.trim().replace("T", " ") + (
-    value.trim().length === 16 ? ":00" : ""
+  const trimmed =
+    value.trim();
+
+  return (
+    trimmed.replace(
+      "T",
+      " "
+    ) +
+    (
+      trimmed.length === 16
+        ? ":00"
+        : ""
+    )
   );
+
+}
+
+
+/* =========================================================
+   CREA SLUG
+   ========================================================= */
+
+function createSlug(value) {
+
+  return String(value || "")
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .toLowerCase()
+    .trim()
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+    .replace(
+      /^-+|-+$/g,
+      ""
+    );
+
+}
+
+
+/* =========================================================
+   CREA SLUG UNIVOCO
+   ========================================================= */
+
+async function createUniqueSlug(
+  env,
+  value,
+  currentId = null
+) {
+
+  const base =
+    createSlug(value) ||
+    "categoria";
+
+  let slug =
+    base;
+
+  let counter =
+    2;
+
+  while (true) {
+
+    const query =
+      currentId
+        ? `
+          SELECT id
+          FROM categories
+          WHERE slug = ?
+          AND id != ?
+          LIMIT 1
+        `
+        : `
+          SELECT id
+          FROM categories
+          WHERE slug = ?
+          LIMIT 1
+        `;
+
+    const statement =
+      env.DB.prepare(query);
+
+    const existing =
+      currentId
+        ? await statement
+            .bind(
+              slug,
+              currentId
+            )
+            .first()
+        : await statement
+            .bind(slug)
+            .first();
+
+    if (!existing) {
+
+      return slug;
+
+    }
+
+    slug =
+      `${base}-${counter}`;
+
+    counter++;
+
+  }
+
 }
 
 
@@ -268,7 +468,10 @@ function normalizeDateTime(value) {
 
 export default {
 
-  async fetch(request, env) {
+  async fetch(
+    request,
+    env
+  ) {
 
     const cors =
       corsHeaders(request);
@@ -278,12 +481,18 @@ export default {
        CORS PREFLIGHT
        ===================================================== */
 
-    if (request.method === "OPTIONS") {
+    if (
+      request.method ===
+      "OPTIONS"
+    ) {
 
-      return new Response(null, {
-        status: 204,
-        headers: cors
-      });
+      return new Response(
+        null,
+        {
+          status: 204,
+          headers: cors
+        }
+      );
 
     }
 
@@ -297,7 +506,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/login" &&
+      url.pathname ===
+        "/api/admin/login" &&
       request.method === "POST"
     ) {
 
@@ -312,7 +522,8 @@ export default {
 
         if (
           !env.ADMIN_PASSWORD ||
-          password !== env.ADMIN_PASSWORD
+          password !==
+            env.ADMIN_PASSWORD
         ) {
 
           return json(
@@ -342,6 +553,7 @@ export default {
             status: 200,
 
             headers: {
+
               ...cors,
 
               "Content-Type":
@@ -349,6 +561,7 @@ export default {
 
               "Set-Cookie":
                 `genesis_admin=${session}; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=28800`
+
             }
           }
         );
@@ -377,7 +590,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/opening-hours" &&
+      url.pathname ===
+        "/api/opening-hours" &&
       request.method === "GET"
     ) {
 
@@ -394,7 +608,9 @@ export default {
                 is_closed,
                 sort_order
               FROM opening_hours
-              ORDER BY sort_order, id
+              ORDER BY
+                sort_order,
+                id
             `)
             .all();
 
@@ -428,7 +644,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/opening-hours" &&
+      url.pathname ===
+        "/api/admin/opening-hours" &&
       request.method === "POST"
     ) {
 
@@ -455,7 +672,8 @@ export default {
 
 
         const dayLabel =
-          typeof body.day_label === "string"
+          typeof body.day_label ===
+          "string"
             ? body.day_label.trim()
             : "";
 
@@ -466,7 +684,9 @@ export default {
           body.close_time || null;
 
         const isClosed =
-          body.is_closed ? 1 : 0;
+          body.is_closed
+            ? 1
+            : 0;
 
 
         const maxOrder =
@@ -484,7 +704,8 @@ export default {
 
         const sortOrder =
           Number(
-            maxOrder?.max_order || 0
+            maxOrder?.max_order ||
+            0
           ) + 1;
 
 
@@ -543,7 +764,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/opening-hours" &&
+      url.pathname ===
+        "/api/admin/opening-hours" &&
       request.method === "PATCH"
     ) {
 
@@ -569,7 +791,9 @@ export default {
           await request.json();
 
 
-        if (!Array.isArray(body)) {
+        if (
+          !Array.isArray(body)
+        ) {
 
           return json(
             request,
@@ -583,7 +807,9 @@ export default {
         }
 
 
-        for (const item of body) {
+        for (
+          const item of body
+        ) {
 
           if (!item.id) {
             continue;
@@ -604,7 +830,9 @@ export default {
               item.day_label || "",
               item.open_time || null,
               item.close_time || null,
-              item.is_closed ? 1 : 0,
+              item.is_closed
+                ? 1
+                : 0,
               item.id
             )
             .run();
@@ -643,7 +871,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/opening-hours" &&
+      url.pathname ===
+        "/api/admin/opening-hours" &&
       request.method === "DELETE"
     ) {
 
@@ -667,7 +896,9 @@ export default {
 
         const id =
           Number(
-            url.searchParams.get("id")
+            url.searchParams.get(
+              "id"
+            )
           );
 
 
@@ -725,41 +956,85 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname.startsWith("/api/images/") &&
+      url.pathname.startsWith(
+        "/api/images/"
+      ) &&
       request.method === "GET"
     ) {
 
       const key =
         decodeURIComponent(
-          url.pathname.slice("/api/images/".length)
+          url.pathname.slice(
+            "/api/images/".length
+          )
         );
 
+
       if (!key) {
-        return new Response("Immagine non trovata", { status: 404 });
+
+        return new Response(
+          "Immagine non trovata",
+          {
+            status: 404
+          }
+        );
+
       }
+
 
       const object =
-        await env.IMAGES.get(key);
+        await env.IMAGES.get(
+          key
+        );
+
 
       if (!object) {
-        return new Response("Immagine non trovata", { status: 404 });
+
+        return new Response(
+          "Immagine non trovata",
+          {
+            status: 404
+          }
+        );
+
       }
 
-      const headers = new Headers(cors);
-      object.writeHttpMetadata(headers);
-      headers.set("ETag", object.httpEtag);
-      headers.set("Cache-Control", "public, max-age=31536000, immutable");
 
-      return new Response(object.body, { headers });
+      const headers =
+        new Headers(cors);
+
+      object.writeHttpMetadata(
+        headers
+      );
+
+      headers.set(
+        "ETag",
+        object.httpEtag
+      );
+
+      headers.set(
+        "Cache-Control",
+        "public, max-age=31536000, immutable"
+      );
+
+
+      return new Response(
+        object.body,
+        {
+          headers
+        }
+      );
+
     }
 
 
     /* =====================================================
-       POP-UP PUBBLICO
+        PUBBLICO
        ===================================================== */
 
     if (
-      url.pathname === "/api/popup" &&
+      url.pathname ===
+        "/api/popup" &&
       request.method === "GET"
     ) {
 
@@ -770,21 +1045,34 @@ export default {
             .prepare(`
               SELECT
                 id,
-                title_es, title_en, title_it,
-                text_es, text_en, text_it,
-                button_text_es, button_text_en, button_text_it,
-                button_url
-              FROM popups
+                title_es,
+                text_es,
+                button_text_es,
+                button_url,
+                tab_text
+                FROM popups
               WHERE
                 published = 1
-                AND (starts_at IS NULL OR starts_at <= CURRENT_TIMESTAMP)
-                AND (ends_at IS NULL OR ends_at >= CURRENT_TIMESTAMP)
-              ORDER BY id DESC
+                AND (
+                  starts_at IS NULL
+                  OR starts_at <= CURRENT_TIMESTAMP
+                )
+                AND (
+                  ends_at IS NULL
+                  OR ends_at >= CURRENT_TIMESTAMP
+                )
+              ORDER BY
+                id DESC
               LIMIT 1
             `)
             .first();
 
-        return json(request, popup || null);
+
+        return json(
+          request,
+          popup || null
+        );
+
 
       } catch (error) {
 
@@ -792,7 +1080,650 @@ export default {
 
         return json(
           request,
-          { error: "Errore durante il caricamento del pop-up" },
+          {
+            error:
+              "Errore durante il caricamento del "
+          },
+          500
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       POP-UP ADMIN — LISTA
+       ===================================================== */
+
+    if (
+      url.pathname ===
+        "/api/admin/popups" &&
+      request.method === "GET"
+    ) {
+
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
+      }
+
+
+      try {
+
+        const { results } =
+          await env.DB
+            .prepare(`
+            SELECT
+            id,
+            title_es,
+            text_es,
+            button_text_es,
+            button_url,
+            tab_text,
+            starts_at,
+            ends_at,
+            published
+            FROM popups
+              ORDER BY
+                id DESC
+            `)
+            .all();
+
+
+        return json(
+          request,
+          results
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Errore caricamento pop-up:",
+          error
+        );
+
+        return json(
+          request,
+          {
+            error:
+              "Errore durante il caricamento dei pop-up"
+          },
+          500
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       POP-UP ADMIN — CREA
+       ===================================================== */
+
+    if (
+      url.pathname ===
+        "/api/admin/popups" &&
+      request.method === "POST"
+    ) {
+
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
+      }
+
+
+      try {
+
+        const body =
+          await request.json();
+
+
+        const titleEs =
+          typeof body.title_es ===
+          "string"
+            ? body.title_es.trim()
+            : "";
+
+
+        const textEs =
+          typeof body.text_es ===
+          "string"
+            ? body.text_es.trim()
+            : "";
+
+
+        const buttonTextEs =
+          typeof body.button_text_es ===
+          "string"
+            ? body.button_text_es.trim()
+            : "";
+
+
+        const buttonUrl =
+          typeof body.button_url ===
+          "string" &&
+          body.button_url.trim()
+            ? body.button_url.trim()
+            : null;
+
+        const tabText =
+          typeof body.tab_text ===
+          "string"
+            ? body.tab_text.trim()
+            : "";
+
+        const startsAt =
+          normalizeDateTime(
+            body.starts_at
+          );
+
+
+        const endsAt =
+          normalizeDateTime(
+            body.ends_at
+          );
+
+
+        const published =
+          body.published
+            ? 1
+            : 0;
+
+
+        if (!titleEs) {
+
+          return json(
+            request,
+            {
+              error:
+                "Il titolo del pop-up è obbligatorio"
+            },
+            400
+          );
+
+        }
+
+
+        if (
+          startsAt &&
+          endsAt &&
+          new Date(
+            startsAt.replace(
+              " ",
+              "T"
+            )
+          ) >
+          new Date(
+            endsAt.replace(
+              " ",
+              "T"
+            )
+          )
+        ) {
+
+          return json(
+            request,
+            {
+              error:
+                "La data di fine non può essere precedente alla data di inizio"
+            },
+            400
+          );
+
+        }
+
+
+        /*
+          La tabella richiede title_en
+          e title_it come NOT NULL.
+
+          I pop-up sono gestiti solo
+          in spagnolo nell'admin, quindi
+          usiamo lo stesso titolo spagnolo
+          anche nei campi obbligatori
+          EN e IT.
+        */
+
+        const result =
+          await env.DB
+            .prepare(`
+              INSERT INTO popups (
+                title_es,
+                title_en,
+                title_it,
+                text_es,
+                button_text_es,
+                button_url,
+                tab_text,
+                starts_at,
+                ends_at,
+                published
+              )
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `)
+            .bind(
+              titleEs,
+              titleEs,
+              titleEs,
+              textEs || null,
+              buttonTextEs || null,
+              buttonUrl,
+              tabText || null,
+              startsAt,
+              endsAt,
+              published
+            )
+            .run();
+
+
+        return json(
+          request,
+          {
+            success: true,
+            id:
+              result.meta.last_row_id
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Errore creazione pop-up:",
+          error
+        );
+
+        return json(
+          request,
+          {
+            error:
+              "Errore durante la creazione del pop-up",
+
+            details:
+              error?.message ||
+              String(error)
+          },
+          500
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       POP-UP ADMIN — MODIFICA
+       ===================================================== */
+
+    if (
+      url.pathname ===
+        "/api/admin/popups" &&
+      request.method === "PATCH"
+    ) {
+
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
+      }
+
+
+      try {
+
+        const body =
+          await request.json();
+
+
+        /*
+          PATCH riceve UN SOLO pop-up,
+          non un array.
+        */
+
+        if (
+          !body ||
+          Array.isArray(body) ||
+          typeof body !== "object"
+        ) {
+
+          return json(
+            request,
+            {
+              error:
+                "Dati non validi"
+            },
+            400
+          );
+
+        }
+
+
+        const id =
+          Number(body.id);
+
+
+        if (
+          !Number.isInteger(id) ||
+          id <= 0
+        ) {
+
+          return json(
+            request,
+            {
+              error:
+                "ID del pop-up non valido"
+            },
+            400
+          );
+
+        }
+
+
+        const titleEs =
+          typeof body.title_es ===
+          "string"
+            ? body.title_es.trim()
+            : "";
+
+
+        const textEs =
+          typeof body.text_es ===
+          "string"
+            ? body.text_es.trim()
+            : "";
+
+
+        const buttonTextEs =
+          typeof body.button_text_es ===
+          "string"
+            ? body.button_text_es.trim()
+            : "";
+
+
+        const buttonUrl =
+        typeof body.button_url ===
+        "string" &&
+        body.button_url.trim()
+            ? body.button_url.trim()
+            : null;
+
+
+        const tabText =
+        typeof body.tab_text ===
+        "string"
+            ? body.tab_text.trim()
+            : "";
+
+
+        const startsAt =
+        normalizeDateTime(
+            body.starts_at
+        );
+
+        const endsAt =
+          normalizeDateTime(
+            body.ends_at
+          );
+
+
+        const published =
+          body.published
+            ? 1
+            : 0;
+
+
+        if (!titleEs) {
+
+          return json(
+            request,
+            {
+              error:
+                "Il titolo del pop-up è obbligatorio"
+            },
+            400
+          );
+
+        }
+
+
+        if (
+          startsAt &&
+          endsAt &&
+          new Date(
+            startsAt.replace(
+              " ",
+              "T"
+            )
+          ) >
+          new Date(
+            endsAt.replace(
+              " ",
+              "T"
+            )
+          )
+        ) {
+
+          return json(
+            request,
+            {
+              error:
+                "La data di fine non può essere precedente alla data di inizio"
+            },
+            400
+          );
+
+        }
+
+
+        const result =
+          await env.DB
+            .prepare(`
+              UPDATE popups
+              SET
+                title_es = ?,
+                title_en = ?,
+                title_it = ?,
+                text_es = ?,
+                button_text_es = ?,
+                button_url = ?,
+                tab_text = ?,
+                starts_at = ?,
+                ends_at = ?,
+                published = ?,
+                updated_at =
+                  CURRENT_TIMESTAMP
+              WHERE id = ?
+            `)
+            .bind(
+              titleEs,
+              titleEs,
+              titleEs,
+              textEs || null,
+              buttonTextEs || null,
+              buttonUrl,
+              tabText || null,
+              startsAt,
+              endsAt,
+              published,
+              id
+            )
+            .run();
+
+
+        if (
+          !result.meta.changes
+        ) {
+
+          return json(
+            request,
+            {
+              error:
+                "Pop-up non trovato"
+            },
+            404
+          );
+
+        }
+
+
+        return json(
+          request,
+          {
+            success: true
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Errore modifica pop-up:",
+          error
+        );
+
+        return json(
+          request,
+          {
+            error:
+              "Errore durante il salvataggio del pop-up",
+
+            details:
+              error?.message ||
+              String(error)
+          },
+          500
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       POP-UP ADMIN — ELIMINA
+       ===================================================== */
+
+    if (
+      url.pathname ===
+        "/api/admin/popups" &&
+      request.method === "DELETE"
+    ) {
+
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
+      }
+
+
+      try {
+
+        const id =
+          Number(
+            url.searchParams.get(
+              "id"
+            )
+          );
+
+
+        if (
+          !Number.isInteger(id) ||
+          id <= 0
+        ) {
+
+          return json(
+            request,
+            {
+              error:
+                "ID del pop-up non valido"
+            },
+            400
+          );
+
+        }
+
+
+        const result =
+          await env.DB
+            .prepare(`
+              DELETE FROM popups
+              WHERE id = ?
+            `)
+            .bind(id)
+            .run();
+
+
+        if (
+          !result.meta.changes
+        ) {
+
+          return json(
+            request,
+            {
+              error:
+                "Pop-up non trovato"
+            },
+            404
+          );
+
+        }
+
+
+        return json(
+          request,
+          {
+            success: true
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Errore eliminazione pop-up:",
+          error
+        );
+
+        return json(
+          request,
+          {
+            error:
+              "Errore durante l'eliminazione del pop-up",
+
+            details:
+              error?.message ||
+              String(error)
+          },
           500
         );
 
@@ -806,29 +1737,36 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/menu" &&
+      url.pathname ===
+        "/api/menu" &&
       request.method === "GET"
     ) {
 
       try {
 
-        const { results } =
+        const {
+          results: dishes
+        } =
           await env.DB
             .prepare(`
               SELECT
                 dishes.id,
                 dishes.category_id,
-                categories.slug AS category_slug,
+
+                categories.name_es
+                  AS category_name_es,
+
+                categories.slug
+                  AS category_slug,
 
                 dishes.name_es,
-                dishes.name_en,
-                dishes.name_it,
-
                 dishes.description_es,
-                dishes.description_en,
-                dishes.description_it,
 
                 dishes.price_cents,
+                dishes.price_max_cents,
+
+                dishes.allergens,
+
                 dishes.image_key,
 
                 dishes.vegetarian,
@@ -843,7 +1781,8 @@ export default {
                 ON categories.id =
                    dishes.category_id
 
-              WHERE dishes.available = 1
+              WHERE
+                dishes.available = 1
 
               ORDER BY
                 categories.sort_order,
@@ -854,9 +1793,35 @@ export default {
             .all();
 
 
+        const {
+          results: notes
+        } =
+          await env.DB
+            .prepare(`
+              SELECT
+                category_notes.id,
+                category_notes.category_id,
+
+                category_notes.text_es,
+
+                category_notes.sort_order
+
+              FROM category_notes
+
+              ORDER BY
+                category_notes.category_id,
+                category_notes.sort_order,
+                category_notes.id
+            `)
+            .all();
+
+
         return json(
           request,
-          results
+          {
+            dishes,
+            notes
+          }
         );
 
 
@@ -883,7 +1848,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/categories" &&
+      url.pathname ===
+        "/api/admin/categories" &&
       request.method === "GET"
     ) {
 
@@ -910,6 +1876,7 @@ export default {
             .prepare(`
               SELECT
                 id,
+                name_es,
                 slug,
                 sort_order
               FROM categories
@@ -949,7 +1916,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/categories" &&
+      url.pathname ===
+        "/api/admin/categories" &&
       request.method === "POST"
     ) {
 
@@ -975,13 +1943,14 @@ export default {
           await request.json();
 
 
-        const slug =
-          typeof body.slug === "string"
-            ? body.slug.trim()
+        const nameEs =
+          typeof body.name_es ===
+          "string"
+            ? body.name_es.trim()
             : "";
 
 
-        if (!slug) {
+        if (!nameEs) {
 
           return json(
             request,
@@ -995,29 +1964,12 @@ export default {
         }
 
 
-        const existing =
-          await env.DB
-            .prepare(`
-              SELECT id
-              FROM categories
-              WHERE slug = ?
-            `)
-            .bind(slug)
-            .first();
-
-
-        if (existing) {
-
-          return json(
-            request,
-            {
-              error:
-                "Categoria già esistente"
-            },
-            409
+        const slug =
+          await createUniqueSlug(
+            env,
+            body.slug ||
+              nameEs
           );
-
-        }
 
 
         const maxOrder =
@@ -1035,7 +1987,8 @@ export default {
 
         const sortOrder =
           Number(
-            maxOrder?.max_order || 0
+            maxOrder?.max_order ||
+            0
           ) + 1;
 
 
@@ -1043,12 +1996,14 @@ export default {
           await env.DB
             .prepare(`
               INSERT INTO categories (
+                name_es,
                 slug,
                 sort_order
               )
-              VALUES (?, ?)
+              VALUES (?, ?, ?)
             `)
             .bind(
+              nameEs,
               slug,
               sortOrder
             )
@@ -1060,7 +2015,8 @@ export default {
           {
             success: true,
             id:
-              result.meta.last_row_id
+              result.meta.last_row_id,
+            slug
           }
         );
 
@@ -1088,7 +2044,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/categories" &&
+      url.pathname ===
+        "/api/admin/categories" &&
       request.method === "PATCH"
     ) {
 
@@ -1114,7 +2071,9 @@ export default {
           await request.json();
 
 
-        if (!Array.isArray(body)) {
+        if (
+          !Array.isArray(body)
+        ) {
 
           return json(
             request,
@@ -1128,36 +2087,51 @@ export default {
         }
 
 
-        for (const item of body) {
+        for (
+          const item of body
+        ) {
 
           if (!item.id) {
             continue;
           }
 
 
-          const slug =
-            typeof item.slug === "string"
-              ? item.slug.trim()
+          const nameEs =
+            typeof item.name_es ===
+            "string"
+              ? item.name_es.trim()
               : "";
 
 
-          if (!slug) {
+          if (!nameEs) {
             continue;
           }
+
+
+          const slug =
+            await createUniqueSlug(
+              env,
+              item.slug ||
+                nameEs,
+              item.id
+            );
 
 
           await env.DB
             .prepare(`
               UPDATE categories
               SET
+                name_es = ?,
                 slug = ?,
                 sort_order = ?
               WHERE id = ?
             `)
             .bind(
+              nameEs,
               slug,
               Number(
-                item.sort_order || 0
+                item.sort_order ||
+                0
               ),
               item.id
             )
@@ -1197,7 +2171,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/categories" &&
+      url.pathname ===
+        "/api/admin/categories" &&
       request.method === "DELETE"
     ) {
 
@@ -1221,7 +2196,9 @@ export default {
 
         const id =
           Number(
-            url.searchParams.get("id")
+            url.searchParams.get(
+              "id"
+            )
           );
 
 
@@ -1271,6 +2248,15 @@ export default {
 
         await env.DB
           .prepare(`
+            DELETE FROM category_notes
+            WHERE category_id = ?
+          `)
+          .bind(id)
+          .run();
+
+
+        await env.DB
+          .prepare(`
             DELETE FROM categories
             WHERE id = ?
           `)
@@ -1305,11 +2291,417 @@ export default {
 
 
     /* =====================================================
+       NOTE CATEGORIE ADMIN — LISTA
+       ===================================================== */
+
+    if (
+      url.pathname ===
+        "/api/admin/category-notes" &&
+      request.method === "GET"
+    ) {
+
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
+      }
+
+
+      try {
+
+        const { results } =
+          await env.DB
+            .prepare(`
+              SELECT
+                id,
+                category_id,
+                text_es,
+                sort_order
+              FROM category_notes
+              ORDER BY
+                category_id,
+                sort_order,
+                id
+            `)
+            .all();
+
+
+        return json(
+          request,
+          results
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        return json(
+          request,
+          {
+            error:
+              "Errore durante il caricamento delle note"
+          },
+          500
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       NOTE CATEGORIE ADMIN — CREA
+       ===================================================== */
+
+    if (
+      url.pathname ===
+        "/api/admin/category-notes" &&
+      request.method === "POST"
+    ) {
+
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
+      }
+
+
+      try {
+
+        const body =
+          await request.json();
+
+
+        const categoryId =
+          Number(
+            body.category_id
+          );
+
+
+        const textEs =
+          typeof body.text_es ===
+          "string"
+            ? body.text_es.trim()
+            : "";
+
+
+        if (
+          !categoryId ||
+          !textEs
+        ) {
+
+          return json(
+            request,
+            {
+              error:
+                "Categoria e testo sono obbligatori"
+            },
+            400
+          );
+
+        }
+
+
+        const maxOrder =
+          await env.DB
+            .prepare(`
+              SELECT
+                COALESCE(
+                  MAX(sort_order),
+                  0
+                ) AS max_order
+              FROM category_notes
+              WHERE category_id = ?
+            `)
+            .bind(categoryId)
+            .first();
+
+
+        const sortOrder =
+          Number(
+            maxOrder?.max_order ||
+            0
+          ) + 1;
+
+
+        const result =
+          await env.DB
+            .prepare(`
+              INSERT INTO category_notes (
+                category_id,
+                text_es,
+                sort_order
+              )
+              VALUES (?, ?, ?)
+            `)
+            .bind(
+              categoryId,
+              textEs,
+              sortOrder
+            )
+            .run();
+
+
+        return json(
+          request,
+          {
+            success: true,
+            id:
+              result.meta.last_row_id
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        return json(
+          request,
+          {
+            error:
+              "Errore durante la creazione della nota"
+          },
+          500
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       NOTE CATEGORIE ADMIN — MODIFICA
+       ===================================================== */
+
+    if (
+      url.pathname ===
+        "/api/admin/category-notes" &&
+      request.method === "PATCH"
+    ) {
+
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
+      }
+
+
+      try {
+
+        const body =
+          await request.json();
+
+
+        if (
+          !Array.isArray(body)
+        ) {
+
+          return json(
+            request,
+            {
+              error:
+                "Dati non validi"
+            },
+            400
+          );
+
+        }
+
+
+        for (
+          const item of body
+        ) {
+
+          if (!item.id) {
+            continue;
+          }
+
+
+          const categoryId =
+            Number(
+              item.category_id
+            );
+
+
+          const textEs =
+            typeof item.text_es ===
+            "string"
+              ? item.text_es.trim()
+              : "";
+
+
+          if (
+            !categoryId ||
+            !textEs
+          ) {
+
+            continue;
+
+          }
+
+
+          await env.DB
+            .prepare(`
+              UPDATE category_notes
+              SET
+                category_id = ?,
+                text_es = ?,
+                sort_order = ?
+              WHERE id = ?
+            `)
+            .bind(
+              categoryId,
+              textEs,
+              Number(
+                item.sort_order ||
+                0
+              ),
+              item.id
+            )
+            .run();
+
+        }
+
+
+        return json(
+          request,
+          {
+            success: true
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        return json(
+          request,
+          {
+            error:
+              "Errore durante la modifica delle note"
+          },
+          500
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       NOTE CATEGORIE ADMIN — ELIMINA
+       ===================================================== */
+
+    if (
+      url.pathname ===
+        "/api/admin/category-notes" &&
+      request.method === "DELETE"
+    ) {
+
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
+      }
+
+
+      try {
+
+        const id =
+          Number(
+            url.searchParams.get(
+              "id"
+            )
+          );
+
+
+        if (!id) {
+
+          return json(
+            request,
+            {
+              error:
+                "ID non valido"
+            },
+            400
+          );
+
+        }
+
+
+        await env.DB
+          .prepare(`
+            DELETE FROM category_notes
+            WHERE id = ?
+          `)
+          .bind(id)
+          .run();
+
+
+        return json(
+          request,
+          {
+            success: true
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        return json(
+          request,
+          {
+            error:
+              "Errore durante l'eliminazione della nota"
+          },
+          500
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
        PIATTI ADMIN — LISTA
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/dishes" &&
+      url.pathname ===
+        "/api/admin/dishes" &&
       request.method === "GET"
     ) {
 
@@ -1339,17 +2731,20 @@ export default {
                 dishes.id,
                 dishes.category_id,
 
-                categories.slug AS category_slug,
+                categories.name_es
+                  AS category_name_es,
+
+                categories.slug
+                  AS category_slug,
 
                 dishes.name_es,
-                dishes.name_en,
-                dishes.name_it,
-
                 dishes.description_es,
-                dishes.description_en,
-                dishes.description_it,
 
                 dishes.price_cents,
+                dishes.price_max_cents,
+
+                dishes.allergens,
+
                 dishes.image_key,
 
                 dishes.vegetarian,
@@ -1405,7 +2800,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/dishes" &&
+      url.pathname ===
+        "/api/admin/dishes" &&
       request.method === "POST"
     ) {
 
@@ -1432,32 +2828,19 @@ export default {
 
 
         const nameEs =
-          typeof body.name_es === "string"
+          typeof body.name_es ===
+          "string"
             ? body.name_es.trim()
             : "";
 
-        const nameEn =
-          typeof body.name_en === "string"
-            ? body.name_en.trim()
-            : "";
 
-        const nameIt =
-          typeof body.name_it === "string"
-            ? body.name_it.trim()
-            : "";
-
-
-        if (
-          !nameEs ||
-          !nameEn ||
-          !nameIt
-        ) {
+        if (!nameEs) {
 
           return json(
             request,
             {
               error:
-                "Il nome del piatto è obbligatorio in tutte le lingue."
+                "Il nome del piatto è obbligatorio."
             },
             400
           );
@@ -1467,18 +2850,18 @@ export default {
 
         const categoryId =
           body.category_id
-            ? Number(body.category_id)
+            ? Number(
+                body.category_id
+              )
             : null;
 
 
         const descriptionEs =
-          body.description_es || null;
-
-        const descriptionEn =
-          body.description_en || null;
-
-        const descriptionIt =
-          body.description_it || null;
+          body.description_es
+            ? String(
+                body.description_es
+              ).trim()
+            : null;
 
 
         const priceCents =
@@ -1487,8 +2870,23 @@ export default {
           );
 
 
+        const priceMaxCents =
+          normalizePriceCents(
+            body.price_max_cents
+          );
+
+
+        const allergens =
+          body.allergens
+            ? String(
+                body.allergens
+              ).trim()
+            : null;
+
+
         const imageKey =
-          body.image_key || null;
+          body.image_key ||
+          null;
 
 
         const vegetarian =
@@ -1496,13 +2894,16 @@ export default {
             body.vegetarian
           );
 
+
         const vegan =
           normalizeBoolean(
             body.vegan
           );
 
+
         const available =
-          body.available === undefined
+          body.available ===
+          undefined
             ? 1
             : normalizeBoolean(
                 body.available
@@ -1518,8 +2919,7 @@ export default {
                   0
                 ) AS max_order
               FROM dishes
-              WHERE
-                category_id = ?
+              WHERE category_id = ?
             `)
             .bind(categoryId)
             .first();
@@ -1527,7 +2927,8 @@ export default {
 
         const sortOrder =
           Number(
-            maxOrder?.max_order || 0
+            maxOrder?.max_order ||
+            0
           ) + 1;
 
 
@@ -1535,17 +2936,17 @@ export default {
           await env.DB
             .prepare(`
               INSERT INTO dishes (
+
                 category_id,
 
                 name_es,
-                name_en,
-                name_it,
-
                 description_es,
-                description_en,
-                description_it,
 
                 price_cents,
+                price_max_cents,
+
+                allergens,
+
                 image_key,
 
                 vegetarian,
@@ -1553,26 +2954,20 @@ export default {
                 available,
 
                 sort_order
+
               )
 
               VALUES (
                 ?,
-
                 ?,
                 ?,
                 ?,
-
                 ?,
                 ?,
                 ?,
-
-                ?,
-                ?,
-
                 ?,
                 ?,
                 ?,
-
                 ?
               )
             `)
@@ -1581,14 +2976,13 @@ export default {
               categoryId,
 
               nameEs,
-              nameEn,
-              nameIt,
-
               descriptionEs,
-              descriptionEn,
-              descriptionIt,
 
               priceCents,
+              priceMaxCents,
+
+              allergens,
+
               imageKey,
 
               vegetarian,
@@ -1634,7 +3028,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/dishes" &&
+      url.pathname ===
+        "/api/admin/dishes" &&
       request.method === "PATCH"
     ) {
 
@@ -1660,7 +3055,9 @@ export default {
           await request.json();
 
 
-        if (!Array.isArray(body)) {
+        if (
+          !Array.isArray(body)
+        ) {
 
           return json(
             request,
@@ -1674,7 +3071,9 @@ export default {
         }
 
 
-        for (const item of body) {
+        for (
+          const item of body
+        ) {
 
           if (!item.id) {
             continue;
@@ -1682,44 +3081,31 @@ export default {
 
 
           const nameEs =
-            typeof item.name_es === "string"
+            typeof item.name_es ===
+            "string"
               ? item.name_es.trim()
               : "";
 
-          const nameEn =
-            typeof item.name_en === "string"
-              ? item.name_en.trim()
-              : "";
 
-          const nameIt =
-            typeof item.name_it === "string"
-              ? item.name_it.trim()
-              : "";
-
-
-          if (
-            !nameEs ||
-            !nameEn ||
-            !nameIt
-          ) {
+          if (!nameEs) {
             continue;
           }
 
 
           const categoryId =
             item.category_id
-              ? Number(item.category_id)
+              ? Number(
+                  item.category_id
+                )
               : null;
 
 
           const descriptionEs =
-            item.description_es || null;
-
-          const descriptionEn =
-            item.description_en || null;
-
-          const descriptionIt =
-            item.description_it || null;
+            item.description_es
+              ? String(
+                  item.description_es
+                ).trim()
+              : null;
 
 
           const priceCents =
@@ -1728,8 +3114,23 @@ export default {
             );
 
 
+          const priceMaxCents =
+            normalizePriceCents(
+              item.price_max_cents
+            );
+
+
+          const allergens =
+            item.allergens
+              ? String(
+                  item.allergens
+                ).trim()
+              : null;
+
+
           const imageKey =
-            item.image_key || null;
+            item.image_key ||
+            null;
 
 
           const vegetarian =
@@ -1737,10 +3138,12 @@ export default {
               item.vegetarian
             );
 
+
           const vegan =
             normalizeBoolean(
               item.vegan
             );
+
 
           const available =
             normalizeBoolean(
@@ -1756,14 +3159,13 @@ export default {
                 category_id = ?,
 
                 name_es = ?,
-                name_en = ?,
-                name_it = ?,
-
                 description_es = ?,
-                description_en = ?,
-                description_it = ?,
 
                 price_cents = ?,
+                price_max_cents = ?,
+
+                allergens = ?,
+
                 image_key = ?,
 
                 vegetarian = ?,
@@ -1772,7 +3174,8 @@ export default {
 
                 sort_order = ?,
 
-                updated_at = CURRENT_TIMESTAMP
+                updated_at =
+                  CURRENT_TIMESTAMP
 
               WHERE id = ?
             `)
@@ -1781,14 +3184,13 @@ export default {
               categoryId,
 
               nameEs,
-              nameEn,
-              nameIt,
-
               descriptionEs,
-              descriptionEn,
-              descriptionIt,
 
               priceCents,
+              priceMaxCents,
+
+              allergens,
+
               imageKey,
 
               vegetarian,
@@ -1796,7 +3198,8 @@ export default {
               available,
 
               Number(
-                item.sort_order || 0
+                item.sort_order ||
+                0
               ),
 
               item.id
@@ -1838,7 +3241,8 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/dishes" &&
+      url.pathname ===
+        "/api/admin/dishes" &&
       request.method === "DELETE"
     ) {
 
@@ -1862,7 +3266,9 @@ export default {
 
         const id =
           Number(
-            url.searchParams.get("id")
+            url.searchParams.get(
+              "id"
+            )
           );
 
 
@@ -1920,13 +3326,24 @@ export default {
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/images" &&
+      url.pathname ===
+        "/api/admin/images" &&
       request.method === "POST"
     ) {
 
-      if (!await requireAdmin(request, env)) {
-        return unauthorized(request);
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
       }
+
 
       const contentType =
         request.headers
@@ -1935,32 +3352,57 @@ export default {
           .trim()
           .toLowerCase();
 
+
       const extension =
-        imageExtension(contentType);
+        imageExtension(
+          contentType
+        );
+
 
       const size =
-        Number(request.headers.get("Content-Length") || 0);
+        Number(
+          request.headers.get(
+            "Content-Length"
+          ) || 0
+        );
+
 
       if (!extension) {
+
         return json(
           request,
-          { error: "Usa un'immagine JPG, PNG o WebP." },
+          {
+            error:
+              "Usa un'immagine JPG, PNG o WebP."
+          },
           400
         );
+
       }
 
-      if (size > 8 * 1024 * 1024) {
+
+      if (
+        size >
+        8 * 1024 * 1024
+      ) {
+
         return json(
           request,
-          { error: "L'immagine non può superare 8 MB." },
+          {
+            error:
+              "L'immagine non può superare 8 MB."
+          },
           400
         );
+
       }
+
 
       try {
 
         const key =
           `dishes/${crypto.randomUUID()}.${extension}`;
+
 
         await env.IMAGES.put(
           key,
@@ -1972,14 +3414,19 @@ export default {
           }
         );
 
+
         return json(
           request,
           {
             success: true,
+
             key,
-            url: `${url.origin}/api/images/${encodeURIComponent(key)}`
+
+            url:
+              `${url.origin}/api/images/${encodeURIComponent(key)}`
           }
         );
+
 
       } catch (error) {
 
@@ -1987,7 +3434,10 @@ export default {
 
         return json(
           request,
-          { error: "Errore durante il caricamento dell'immagine" },
+          {
+            error:
+              "Errore durante il caricamento dell'immagine"
+          },
           500
         );
 
@@ -1996,188 +3446,67 @@ export default {
     }
 
 
-    if (
-      url.pathname === "/api/admin/images" &&
-      request.method === "DELETE"
-    ) {
-
-      if (!await requireAdmin(request, env)) {
-        return unauthorized(request);
-      }
-
-      const key =
-        url.searchParams.get("key");
-
-      if (!key || !key.startsWith("dishes/")) {
-        return json(request, { error: "Immagine non valida" }, 400);
-      }
-
-      await env.IMAGES.delete(key);
-
-      return json(request, { success: true });
-    }
-
-
     /* =====================================================
-       POP-UP ADMIN
+       ELIMINA IMMAGINE ADMIN
        ===================================================== */
 
     if (
-      url.pathname === "/api/admin/popups" &&
-      request.method === "GET"
-    ) {
-
-      if (!await requireAdmin(request, env)) {
-        return unauthorized(request);
-      }
-
-      const { results } =
-        await env.DB
-          .prepare(`
-            SELECT *
-            FROM popups
-            ORDER BY id DESC
-          `)
-          .all();
-
-      return json(request, results);
-    }
-
-
-    if (
-      url.pathname === "/api/admin/popups" &&
-      request.method === "POST"
-    ) {
-
-      if (!await requireAdmin(request, env)) {
-        return unauthorized(request);
-      }
-
-      const body = await request.json();
-      const titles = ["es", "en", "it"].map(
-        language =>
-          typeof body[`title_${language}`] === "string"
-            ? body[`title_${language}`].trim()
-            : ""
-      );
-
-      if (titles.some(title => !title)) {
-        return json(
-          request,
-          { error: "Il titolo è obbligatorio in tutte le lingue." },
-          400
-        );
-      }
-
-      const result =
-        await env.DB
-          .prepare(`
-            INSERT INTO popups (
-              title_es, title_en, title_it,
-              text_es, text_en, text_it,
-              button_text_es, button_text_en, button_text_it,
-              button_url, starts_at, ends_at, published
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-          `)
-          .bind(
-            titles[0], titles[1], titles[2],
-            body.text_es || null, body.text_en || null, body.text_it || null,
-            body.button_text_es || null, body.button_text_en || null, body.button_text_it || null,
-            body.button_url || null,
-            normalizeDateTime(body.starts_at),
-            normalizeDateTime(body.ends_at),
-            normalizeBoolean(body.published)
-          )
-          .run();
-
-      return json(
-        request,
-        { success: true, id: result.meta.last_row_id }
-      );
-    }
-
-
-    if (
-      url.pathname === "/api/admin/popups" &&
-      request.method === "PATCH"
-    ) {
-
-      if (!await requireAdmin(request, env)) {
-        return unauthorized(request);
-      }
-
-      const body = await request.json();
-
-      if (!Array.isArray(body)) {
-        return json(request, { error: "Dati non validi" }, 400);
-      }
-
-      for (const item of body) {
-
-        if (!item.id) {
-          continue;
-        }
-
-        const titles = ["es", "en", "it"].map(
-          language =>
-            typeof item[`title_${language}`] === "string"
-              ? item[`title_${language}`].trim()
-              : ""
-        );
-
-        if (titles.some(title => !title)) {
-          continue;
-        }
-
-        await env.DB
-          .prepare(`
-            UPDATE popups
-            SET
-              title_es = ?, title_en = ?, title_it = ?,
-              text_es = ?, text_en = ?, text_it = ?,
-              button_text_es = ?, button_text_en = ?, button_text_it = ?,
-              button_url = ?, starts_at = ?, ends_at = ?, published = ?,
-              updated_at = CURRENT_TIMESTAMP
-            WHERE id = ?
-          `)
-          .bind(
-            titles[0], titles[1], titles[2],
-            item.text_es || null, item.text_en || null, item.text_it || null,
-            item.button_text_es || null, item.button_text_en || null, item.button_text_it || null,
-            item.button_url || null,
-            normalizeDateTime(item.starts_at),
-            normalizeDateTime(item.ends_at),
-            normalizeBoolean(item.published), item.id
-          )
-          .run();
-      }
-
-      return json(request, { success: true });
-    }
-
-
-    if (
-      url.pathname === "/api/admin/popups" &&
+      url.pathname ===
+        "/api/admin/images" &&
       request.method === "DELETE"
     ) {
 
-      if (!await requireAdmin(request, env)) {
-        return unauthorized(request);
+      if (
+        !await requireAdmin(
+          request,
+          env
+        )
+      ) {
+
+        return unauthorized(
+          request
+        );
+
       }
 
-      const id = Number(url.searchParams.get("id"));
 
-      if (!id) {
-        return json(request, { error: "ID non valido" }, 400);
+      const key =
+        url.searchParams.get(
+          "key"
+        );
+
+
+      if (
+        !key ||
+        !key.startsWith(
+          "dishes/"
+        )
+      ) {
+
+        return json(
+          request,
+          {
+            error:
+              "Immagine non valida"
+          },
+          400
+        );
+
       }
 
-      await env.DB
-        .prepare("DELETE FROM popups WHERE id = ?")
-        .bind(id)
-        .run();
 
-      return json(request, { success: true });
+      await env.IMAGES.delete(
+        key
+      );
+
+
+      return json(
+        request,
+        {
+          success: true
+        }
+      );
+
     }
 
 

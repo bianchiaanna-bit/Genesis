@@ -1457,15 +1457,49 @@
 
 </footer>
 
-  <div id="site-popup" class="site-popup" aria-hidden="true">
-    <div class="site-popup__backdrop" data-popup-close></div>
-    <section class="site-popup__content" role="dialog" aria-modal="true" aria-labelledby="site-popup-title">
-      <button class="site-popup__close" type="button" data-popup-close aria-label="Chiudi">×</button>
-      <h2 id="site-popup-title"></h2>
-      <p id="site-popup-text"></p>
-      <a id="site-popup-link" class="site-popup__link hidden"></a>
-    </section>
-  </div>
+<div id="site-popup" class="site-popup" aria-hidden="true">
+
+  <div
+    class="site-popup__backdrop"
+    data-popup-close
+  ></div>
+
+  <section
+    class="site-popup__content"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="site-popup-title"
+  >
+
+    <button
+      class="site-popup__close"
+      type="button"
+      data-popup-close
+      aria-label="Chiudi"
+    >
+      ×
+    </button>
+
+    <h2 id="site-popup-title"></h2>
+
+    <p id="site-popup-text"></p>
+
+    <a
+      id="site-popup-link"
+      class="site-popup__link hidden"
+    ></a>
+
+  </section>
+
+</div>
+
+<button
+  id="site-popup-tab"
+  class="site-popup-tab"
+  type="button"
+  aria-label="Riapri comunicazione"
+  hidden
+></button>
 
   <!-- ======================================================
        JAVASCRIPT

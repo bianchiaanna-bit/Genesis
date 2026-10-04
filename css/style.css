@@ -1845,3 +1845,49 @@ body.menu-open {
   color: #fff;
   text-decoration: none;
 }
+
+/* =======================================================
+   POP-UP — LINGUETTA RIAPERTURA
+   ======================================================= */
+
+.site-popup-tab {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  z-index: 1001;
+
+  transform: translateY(-50%);
+
+  padding: 12px 10px;
+
+  border: 0;
+  border-radius: 8px 0 0 8px;
+
+  background: var(--green);
+  color: var(--cream);
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  writing-mode: vertical-rl;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.site-popup-tab:hover {
+  transform: translateY(-50%) translateX(-4px);
+  background: var(--green-light);
+}
+
+.site-popup-tab[hidden] {
+  display: none;
+}

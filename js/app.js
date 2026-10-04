@@ -1486,89 +1486,256 @@ loadOpeningHours();
 
     });
 
+/* =======================================================
+   POP-UP — CLOUDFLARE D1
+   ======================================================= */
 
-  /* =======================================================
-     POP-UP — CLOUDFLARE D1
-     ======================================================= */
+const sitePopup =
+  document.getElementById("site-popup");
 
-  const sitePopup =
-    document.getElementById("site-popup");
+const sitePopupTab =
+  document.getElementById("site-popup-tab");
 
-  const loadPopup = async () => {
 
-    if (!sitePopup) {
+const loadPopup = async () => {
+
+  if (!sitePopup) {
+    return;
+  }
+
+  try {
+
+    const response = await fetch(
+      "https://genesis-api.cimiteroditarsia.workers.dev/api/popup"
+    );
+
+    if (!response.ok) {
+      throw new Error("Popup request failed");
+    }
+
+    const popup = await response.json();
+
+    if (!popup) {
       return;
     }
 
-    try {
 
-      const response = await fetch(
-        "https://genesis-api.cimiteroditarsia.workers.dev/api/popup"
+    const storageKey =
+      `genesis-popup-dismissed-${popup.id}`;
+
+
+    /* ---------------------------------------------------
+       ELEMENTI
+       --------------------------------------------------- */
+
+    const title =
+      document.getElementById(
+        "site-popup-title"
       );
 
-      if (!response.ok) {
-        throw new Error("Popup request failed");
-      }
+    const text =
+      document.getElementById(
+        "site-popup-text"
+      );
 
-      const popup = await response.json();
+    const link =
+      document.getElementById(
+        "site-popup-link"
+      );
 
-      if (!popup) {
-        return;
-      }
 
-      const storageKey =
-        `genesis-popup-dismissed-${popup.id}`;
+    /* ---------------------------------------------------
+       CONTENUTI — SOLO SPAGNOLO
+       --------------------------------------------------- */
 
-      if (localStorage.getItem(storageKey) === "1") {
-        return;
-      }
+    if (title) {
 
-      const language =
-        document.documentElement.lang || "it";
-
-      document.getElementById("site-popup-title").textContent =
-        popup[`title_${language}`] || popup.title_it;
-
-      document.getElementById("site-popup-text").textContent =
-        popup[`text_${language}`] || "";
-
-      const link =
-        document.getElementById("site-popup-link");
-
-      const buttonText =
-        popup[`button_text_${language}`];
-
-      if (popup.button_url && buttonText) {
-        link.href = popup.button_url;
-        link.textContent = buttonText;
-        link.classList.remove("hidden");
-      }
-
-      const close = () => {
-        sitePopup.classList.remove("is-open");
-        sitePopup.setAttribute("aria-hidden", "true");
-        localStorage.setItem(storageKey, "1");
-      };
-
-      sitePopup
-        .querySelectorAll("[data-popup-close]")
-        .forEach((button) => {
-          button.addEventListener("click", close);
-        });
-
-      sitePopup.classList.add("is-open");
-      sitePopup.setAttribute("aria-hidden", "false");
-
-    } catch (error) {
-
-      /* Il sito resta utilizzabile se il pop-up non risponde. */
+      title.textContent =
+        popup.title_es || "";
 
     }
 
-  };
 
-  loadPopup();
+    if (text) {
 
+      text.textContent =
+        popup.text_es || "";
+
+    }
+
+
+    if (link) {
+
+      if (
+        popup.button_url &&
+        popup.button_text_es
+      ) {
+
+        link.href =
+          popup.button_url;
+
+        link.textContent =
+          popup.button_text_es;
+
+        link.classList.remove(
+          "hidden"
+        );
+
+      } else {
+
+        link.classList.add(
+          "hidden"
+        );
+
+      }
+
+    }
+
+
+    /* ---------------------------------------------------
+       LINGUETTA
+       --------------------------------------------------- */
+
+    const tabText =
+      typeof popup.tab_text === "string"
+        ? popup.tab_text.trim()
+        : "";
+
+
+    const showTab = () => {
+
+      if (!sitePopupTab || !tabText) {
+        return;
+      }
+
+      sitePopupTab.textContent =
+        tabText;
+
+      sitePopupTab.hidden =
+        false;
+
+    };
+
+
+    const hideTab = () => {
+
+      if (!sitePopupTab) {
+        return;
+      }
+
+      sitePopupTab.hidden =
+        true;
+
+    };
+
+
+    /* ---------------------------------------------------
+       APERTURA
+       --------------------------------------------------- */
+
+    const open = () => {
+
+      hideTab();
+
+      sitePopup.classList.add(
+        "is-open"
+      );
+
+      sitePopup.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+    };
+
+
+    /* ---------------------------------------------------
+       CHIUSURA
+       --------------------------------------------------- */
+
+    const close = () => {
+
+      sitePopup.classList.remove(
+        "is-open"
+      );
+
+      sitePopup.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      localStorage.setItem(
+        storageKey,
+        "1"
+      );
+
+      showTab();
+
+    };
+
+
+    /* ---------------------------------------------------
+       EVENTI CHIUSURA
+       --------------------------------------------------- */
+
+    sitePopup
+      .querySelectorAll(
+        "[data-popup-close]"
+      )
+      .forEach((button) => {
+
+        button.addEventListener(
+          "click",
+          close
+        );
+
+      });
+
+
+    /* ---------------------------------------------------
+       EVENTO RIAPERTURA
+       --------------------------------------------------- */
+
+    if (sitePopupTab) {
+
+      sitePopupTab.addEventListener(
+        "click",
+        open
+      );
+
+    }
+
+
+    /* ---------------------------------------------------
+       STATO INIZIALE
+       --------------------------------------------------- */
+
+    if (
+      localStorage.getItem(
+        storageKey
+      ) === "1"
+    ) {
+
+      showTab();
+
+      return;
+
+    }
+
+
+    open();
+
+  } catch (error) {
+
+    /* Il sito resta utilizzabile
+       se il pop-up non risponde. */
+
+  }
+
+};
+
+
+loadPopup();
 
   /* =======================================================
      HEADER ON SCROLL
