@@ -1,0 +1,113 @@
+(() => {
+  const button = document.getElementById("generate-menu-document");
+  const status = document.getElementById("export-status");
+  if (!button || button.dataset.ready) return;
+  button.dataset.ready = "1";
+
+  const esc = v => String(v ?? "").replace(/[&<>"']/g, c =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+
+  const list = d => Array.isArray(d) ? d : d?.categories || d?.dishes || [];
+  const money = n => (Number(n) / 100).toLocaleString("es-ES",
+    {minimumFractionDigits:2,maximumFractionDigits:2}) + " €";
+
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    status.textContent = "Preparazione della carta…";
+    try {
+      const lang = document.getElementById("export-language").value;
+      const [cd, dd, info] = await Promise.all([
+        api("/api/admin/categories"),
+        api("/api/admin/dishes"),
+        api("/api/admin/menu-info")
+      ]);
+      const categories = list(cd).sort((a,b) =>
+        Number(a.sort_order || 0) - Number(b.sort_order || 0));
+      const dishes = list(dd);
+      const sections = categories.map(c => {
+        const items = dishes.filter(d =>
+          String(d.category_id) === String(c.id));
+        if (!items.length) return "";
+        const category = lang === "en"
+          ? (c.name_en || c.name_es || "") : (c.name_es || "");
+        return `<section><h2>${esc(category)}</h2>${items.map(d => {
+          const name = d["name_" + lang] || d.name_es || "";
+          const desc = d["description_" + lang] ||
+            (lang === "es" ? d.description_es : "") || "";
+          const p1 = d.price_cents == null ? "" : money(d.price_cents);
+          const p2 = Number(d.price_max_cents) > Number(d.price_cents)
+            ? " – " + money(d.price_max_cents) : "";
+          return `<article><div class="dish"><h3>${esc(name)}</h3>
+            <b>${esc(p1 + p2)}</b></div>
+            ${desc ? `<p>${esc(desc)}</p>` : ""}
+            ${d.allergens ? `<small>${lang === "en" ? "Allergens" : "Alérgenos"}: ${esc(d.allergens)}</small>` : ""}
+          </article>`;
+        }).join("")}</section>`;
+      }).join("");
+      const extras = (info?.extras || []).map(x =>
+        `<li>${esc(x["name_" + lang] || x.name_es || x.name || "")}
+        <span>${x.price ? esc(Number(x.price).toFixed(2) + " €") : ""}</span></li>`
+      ).join("");
+
+      const allergens = (info?.allergens || []).map(x =>
+        `<li>${esc(x.code || x.number || "")} ${esc(x["name_" + lang] || x.name_es || x.name || "")}</li>`
+      ).join("");
+      const title = lang === "en" ? "MENU" : "CARTA";
+      const logoUrl = new URL("../assets/images/logo_black.png", window.location.href).href;
+      const html = `<!doctype html><html lang="${lang}"><head>
+      <meta charset="utf-8"><title>Génesis — ${title}</title><style>
+      @page{size:A4;margin:9mm 11mm}
+      *{box-sizing:border-box}
+      html{background:#fff}
+      body{margin:0;color:#242820;background:#fff;font:8pt Arial,sans-serif;line-height:1.32}
+      
+      .logo{display:block;width:48mm;height:auto;max-height:14mm;object-fit:contain;margin:0 auto 3mm}header{text-align:center;position:relative;border-bottom:1px solid #d7d9d0;padding:3mm 0 4mm;margin-bottom:5mm}header:before,header:after{content:"";position:absolute;bottom:-1.1mm;width:2mm;height:2mm;background:#879078;transform:rotate(45deg)}header:before{left:calc(50% - 14mm)}header:after{right:calc(50% - 14mm)}
+      
+      .brand{letter-spacing:.34em;color:#68765b;font-size:7pt;text-transform:uppercase}h1{font:normal 27pt Georgia,"Times New Roman",serif;letter-spacing:.18em;color:#20251e;margin:2.5mm 0 1mm;text-shadow:0 .2px #20251e}.ornament{display:flex;align-items:center;justify-content:center;gap:2.5mm;color:#7c896d;margin:2.5mm auto 0}.ornament:before,.ornament:after{content:"";display:block;width:20mm;border-top:1px solid #aeb8a3}.ornament span{display:inline-block;width:6mm;height:6mm;border:1px solid #7c896d;transform:rotate(45deg);position:relative}.ornament span:before{content:"";position:absolute;inset:1mm;border:1px solid #c4cdbb}.ornament span:after{content:"";position:absolute;width:1.2mm;height:1.2mm;background:#7c896d;left:1.8mm;top:1.8mm}
+      h2{font:normal 13pt Georgia,"Times New Roman",serif;color:#3f4d35;border-bottom:1px solid #c5cebb;padding:0 0 1.5mm 3mm;margin:4mm 0 2.5mm;break-after:avoid;page-break-after:avoid;position:relative}section h2:before{content:"";position:absolute;left:0;top:.5mm;bottom:2mm;width:1.2mm;background:#7c896d}section h2:after{content:"";position:absolute;left:0;bottom:-1px;width:12mm;border-bottom:1.5px solid #7c896d}
+      
+      article{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.2mm;padding:0 0 1.5mm;border-bottom:1px solid #efeee9}
+      .dish{display:flex;justify-content:space-between;gap:2mm;align-items:baseline;break-inside:avoid;page-break-inside:avoid}
+      h3{font:normal 9pt Georgia,serif;color:#252820;margin:0;flex:1;min-width:0}
+      .dish b{white-space:nowrap;font-size:8pt;font-weight:600;color:#46563b;padding-left:2mm;font-variant-numeric:tabular-nums}p{margin:1mm 0 0;color:#5e6059;font-size:7.5pt;line-height:1.3;break-inside:avoid;page-break-inside:avoid}
+      small{display:block;margin-top:.7mm;font-size:6.3pt;line-height:1.25;color:#77786f;break-inside:avoid;page-break-inside:avoid}
+      .extras{border-top:1px solid #cdd2c5;margin-top:4mm;padding-top:1mm;break-inside:avoid}
+      .extras h2{font-size:10pt;margin:2mm 0}
+      ul{padding:0;list-style:none;columns:2;column-gap:5mm;margin:1mm 0;font-size:7pt}li{break-inside:avoid;margin:.7mm 0;line-height:1.25}
+      li span{float:right}footer{display:flex;align-items:center;justify-content:center;gap:2mm;text-align:center;border-top:1px solid #cdd2c5;margin-top:4mm;padding-top:2mm;font-size:6.5pt;letter-spacing:.18em;color:#626b59}.footer-dot{color:#879078;font-size:5pt;padding:0 1.5mm}
+      .tools{text-align:center;background:#f2efe7;padding:10px}
+      .tools button{padding:10px 16px;margin:3px;background:#343b30;color:white;border:0}
+      @media print{.tools{display:none}}
+      main.menu-columns{column-count:2;column-gap:8mm;column-fill:balance}
+      section{break-inside:auto;orphans:2;widows:2}
+      section h2{break-after:avoid-column;page-break-after:avoid}
+      article{break-inside:avoid;break-inside:avoid-column;page-break-inside:avoid;orphans:2;widows:2}
+      .dish,p,small{break-inside:avoid;page-break-inside:avoid}
+      @media print{
+        .tools{display:none}
+        body{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+        header, h2, article{color-adjust:exact}
+      }
+</style></head><body>
+      <div class="tools"><button onclick="window.print()">PDF / Imprimir</button></div>
+      <header><img class="logo" src="${logoUrl}" alt="Génesis"><div class="brand">LA LAGUNA</div>
+      <h1>${title}</h1><div class="ornament" aria-hidden="true"><span></span></div></header>
+      <main class="menu-columns">${sections}</main>
+      <div class="extras"><h2>${lang === "en" ? "Extras" : "Extras"}</h2><ul>${extras}</ul>
+      <h2>${lang === "en" ? "Allergens" : "Alérgenos"}</h2><ul>${allergens}</ul></div>
+      <footer><span>GÉNESIS</span><span class="footer-dot"> ◆ </span><span>LA LAGUNA</span></footer></body></html>`;
+      const blob = new Blob([html], {type:"text/html;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = `genesis-menu-${lang}.html`;
+      document.body.appendChild(a); a.click(); a.remove();
+      window.open(url, "_blank");
+      status.textContent = "Carta generata. Nel documento scegli PDF / Imprimir.";
+    } catch (e) {
+      console.error(e);
+      status.textContent = "Errore: " + (e.message || "generazione non riuscita");
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();

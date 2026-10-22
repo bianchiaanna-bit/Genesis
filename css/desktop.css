@@ -196,9 +196,8 @@
     line-height: 1.7;
   }
 
-
   /* =======================================================
-     MENU
+     MENU — CAROSELLO DESKTOP
      ======================================================= */
 
   .menu-section {
@@ -214,51 +213,122 @@
     line-height: 0.88;
   }
 
+  /* Carosello orizzontale: tre card allineate */
+
   .dish-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 4.5vw;
-    row-gap: 90px;
-    align-items: start;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 8px;
+    column-gap: 8px;
+
+    width: 100%;
+    min-width: 0;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
-  .dish-card.large {
-    grid-column: span 2;
-    width: 66%;
-    margin-bottom: 20px;
+  .dish-grid::-webkit-scrollbar {
+    display: none;
   }
 
-  .dish-card.large .dish-image {
-    aspect-ratio: 1.55 / 1;
+  /* Tutte le card hanno la stessa larghezza e partono
+     dalla stessa linea, senza spostamenti individuali */
+
+  .dish-grid > .dish-card,
+  .dish-grid > .dish-card.large {
+    display: flex !important;
+    flex-direction: column;
+    align-self: stretch !important;
+
+    flex: 0 0 calc((100% - 16px) / 3) !important;
+    width: calc((100% - 16px) / 3) !important;
+    min-width: 0;
+    max-width: none;
+
+    height: auto;
+    margin: 0 !important;
+
+    box-sizing: border-box;
   }
 
-  .dish-card:not(.large) .dish-image {
-    aspect-ratio: 1 / 1;
+  /* Foto uniformi su tutte le card */
+
+  .dish-grid > .dish-card .dish-image,
+  .dish-grid > .dish-card.large .dish-image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    height: auto;
   }
 
-  .dish-card:nth-child(2) {
-    margin-left: 0;
+  /* Titoli */
+
+  .dish-grid > .dish-card h3 {
+    font-size: 30px;
   }
 
-  .dish-card:nth-child(3) {
-    margin-top: 130px;
-  }
-
-  .dish-card:nth-child(4) {
-    margin-top: 10px;
-  }
-
-  .dish-card:nth-child(5) {
-    margin-top: 125px;
-  }
-
-  .dish-card h3 {
-    font-size: 36px;
-  }
+  /* Spazio dopo il carosello */
 
   .menu-section .center {
-    margin-top: 100px;
+    margin-top: 60px;
+  }
+  /* =======================================================
+   FRECCE CAROSELLO PIATTI — DESKTOP
+   ======================================================= */
+
+@media (min-width: 769px) {
+  .dish-carousel-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: -55px 0 20px;
+    position: relative;
+    z-index: 5;
   }
 
+  .dish-carousel-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+    padding: 0;
+
+    border: 1px solid rgba(25, 23, 22, 0.22);
+    border-radius: 50%;
+    background: transparent;
+    color: #191716;
+
+    font-family: inherit;
+    font-size: 21px;
+    line-height: 1;
+
+    cursor: pointer;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .dish-carousel-arrow:hover:not(:disabled) {
+    background: #354536;
+    color: #fff;
+    border-color: #354536;
+  }
+
+  .dish-carousel-arrow:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
 
   /* =======================================================
      DETTAGLI
@@ -411,16 +481,18 @@
     line-height: 0.9;
   }
 
-  .instagram-feed {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
+.instagram-feed {
+  grid-template-columns: repeat(6, minmax(0, 190px));
+  justify-content: center;
+  gap: 12px;
+}
 
-  .instagram-feed img {
-    aspect-ratio: 1 / 1;
-    min-height: 0;
-  }
-
+.instagram-feed img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  min-height: 0;
+  object-fit: cover;
+}
   .instagram-bottom {
     margin-top: 24px;
   }
@@ -526,5 +598,36 @@
   .menu-section {
     padding-right: 10vw;
     padding-left: 10vw;
+  }
+}
+
+/* HEADER DESKTOP — RIMOSSO CTA DUPLICATO */
+@media (min-width: 769px) {
+  .site-header .header-cta {
+    display: none;
+  }
+}
+
+
+/* MENU DESKTOP — RIQUADRO ELEGANTE */
+@media (min-width: 769px) {
+  .desktop-nav a[data-i18n="nav.menu"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 15px;
+    border: 1px solid var(--green-light);
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  .desktop-nav a[data-i18n="nav.menu"]::after {
+    content: none;
+  }
+
+  .desktop-nav a[data-i18n="nav.menu"]:hover {
+    background: var(--green-light);
+    color: var(--black);
   }
 }

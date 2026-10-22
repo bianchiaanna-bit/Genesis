@@ -1,0 +1,1926 @@
+/* =========================================================
+   MENU PAGE
+   ========================================================= */
+
+.menu-page {
+  background: var(--cream);
+  color: var(--black);
+}
+
+/* =========================================================
+   HEADER — MENU PAGE
+   ========================================================= */
+
+.menu-page .site-header {
+  color: var(--cream);
+  background: var(--black);
+  isolation: isolate;
+}
+
+/* Elimina la sfumatura trasparente dell'header sulla carta */
+.menu-page .site-header::after {
+  display: none;
+}
+
+.menu-page .site-header.is-scrolled {
+  background: var(--black);
+  backdrop-filter: none;
+}
+
+.menu-page .site-header .desktop-nav a {
+  color: rgba(245, 241, 234, 0.72);
+}
+
+.menu-page .site-header .desktop-nav a:hover,
+.menu-page .site-header .desktop-nav a.active {
+  color: var(--cream);
+}
+
+.menu-page .site-header .header-cta {
+  color: var(--black);
+  background: var(--cream);
+}
+
+.menu-page .site-header .brand {
+  color: var(--cream);
+}
+
+.menu-page .site-header .lang {
+  color: rgba(245, 241, 234, 0.55);
+}
+
+.menu-page .site-header .lang.active {
+  color: var(--cream);
+}
+
+.menu-page .site-header .menu-toggle {
+  color: var(--cream);
+}
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.menu-hero {
+  position: relative;
+
+  min-height: 650px;
+
+  display: flex;
+  align-items: stretch;
+
+  background: var(--cream);
+
+  overflow: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   Atmosfera
+   --------------------------------------------------------- */
+
+.menu-hero::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 72% 45%,
+      rgba(75, 97, 73, 0.08),
+      transparent 32%
+    );
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* ---------------------------------------------------------
+   FOTO
+   --------------------------------------------------------- */
+
+.menu-hero::after {
+  content: "";
+
+  position: absolute;
+
+  top: 58px;
+  right: max(24px, calc((100vw - 1180px) / 2));
+
+  width: min(430px, 35vw);
+  height: 535px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(17, 21, 28, 0.02),
+      rgba(17, 21, 28, 0.12)
+    ),
+    url("../assets/images/food-15.jpeg")
+    center / cover
+    no-repeat;
+
+  z-index: 1;
+
+  box-shadow:
+    0 28px 70px rgba(17, 21, 28, 0.14);
+
+  transform: rotate(1.2deg);
+
+  transition:
+    transform 0.8s ease;
+}
+
+
+.menu-hero:hover::after {
+  transform:
+    rotate(0deg)
+    scale(1.012);
+}
+
+
+/* =========================================================
+   HERO INNER
+   ========================================================= */
+
+.menu-hero-inner {
+  position: relative;
+  z-index: 2;
+
+  width: min(1180px, calc(100% - 48px));
+
+  min-height: 650px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  padding:
+    90px
+    510px
+    90px
+    0;
+}
+
+
+/* =========================================================
+   HERO COPY
+   ========================================================= */
+
+.menu-hero-copy {
+  position: relative;
+
+  width: 100%;
+  max-width: 650px;
+}
+
+
+.menu-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 24px;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  color: var(--green);
+}
+
+
+.menu-kicker::before {
+  content: "";
+
+  width: 28px;
+  height: 1px;
+
+  flex: 0 0 auto;
+
+  background: var(--green);
+}
+
+
+/* =========================================================
+   TITOLO HERO
+   ========================================================= */
+
+.menu-hero h1 {
+  position: relative;
+
+  width: max-content;
+  max-width: 100%;
+
+  margin: 0;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(5rem, 8vw, 8.2rem);
+  font-weight: 400;
+
+  line-height: 0.78;
+  letter-spacing: -0.055em;
+
+  color: var(--black);
+
+  white-space: nowrap;
+}
+
+
+.menu-hero h1::after {
+  content: "";
+
+  display: block;
+
+  width: 72px;
+  height: 1px;
+
+  margin-top: 28px;
+
+  background: var(--green);
+
+  opacity: 0.75;
+}
+
+
+/* =========================================================
+   DESCRIZIONE
+   ========================================================= */
+
+.menu-hero p {
+  max-width: 390px;
+
+  margin:
+    28px
+    0
+    0;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.86rem;
+  line-height: 1.85;
+
+  color: rgba(17, 21, 28, 0.64);
+}
+
+
+/* =========================================================
+   FIRMA
+   ========================================================= */
+
+.menu-hero-copy::after {
+  content: "hecho para compartir";
+
+  display: block;
+
+  margin-top: 54px;
+
+  font-family: "Caveat", cursive;
+  font-size: 1.45rem;
+
+  color: var(--green);
+
+  transform: rotate(-4deg);
+
+  transform-origin: left center;
+}
+
+
+/* =========================================================
+   CATEGORY NAV
+   ========================================================= */
+
+.menu-categories {
+  position: sticky;
+  top: 90px;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-start;
+  gap: 34px;
+  min-height: 68px;
+  padding: 19px max(24px, calc((100vw - 1180px) / 2));
+  background: rgba(17, 21, 28, 0.97);
+  border-top: 1px solid rgba(245, 241, 234, 0.08);
+  border-bottom: 1px solid rgba(245, 241, 234, 0.12);
+  box-shadow: 0 8px 25px rgba(17, 21, 28, 0.10);
+  backdrop-filter: blur(14px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* ---------------------------------------------------------
+   CATEGORY BUTTON
+   --------------------------------------------------------- */
+
+.menu-category-link {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  border: 0;
+  padding: 0;
+
+  background: transparent;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.63rem;
+  font-weight: 600;
+
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  color: rgba(245, 241, 234, 0.52);
+
+  cursor: pointer;
+
+  transition:
+    color 0.25s ease;
+}
+
+
+.menu-category-link::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -8px;
+
+  width: 0;
+  height: 1px;
+
+  background: var(--cream);
+
+  transform: translateX(-50%);
+
+  transition:
+    width 0.3s ease;
+}
+
+
+.menu-category-link:hover,
+.menu-category-link.is-active {
+  color: var(--cream);
+}
+
+
+.menu-category-link.is-active::after {
+  width: 24px;
+}
+
+
+/* =========================================================
+   MENU CONTENT
+   ========================================================= */
+
+.menu-content {
+  width: min(1180px, calc(100% - 48px));
+
+  margin: 0 auto;
+
+  padding:
+    105px
+    0
+    140px;
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.menu-category {
+  scroll-margin-top: 105px;
+
+  margin-bottom: 125px;
+}
+
+
+.menu-category:last-child {
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   CATEGORY HEADING
+   ========================================================= */
+
+.menu-category-heading {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(250px, 0.7fr);
+
+  gap: 60px;
+
+  align-items: end;
+
+  margin-bottom: 48px;
+
+  padding-bottom: 24px;
+
+  border-bottom:
+    1px solid rgba(17, 21, 28, 0.16);
+}
+
+
+.menu-category-number {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.60rem;
+  font-weight: 600;
+
+  letter-spacing: 0.16em;
+
+  color: var(--green);
+}
+
+
+.menu-category-title {
+  margin: 0;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 400;
+
+  line-height: 0.88;
+
+  text-transform: uppercase;
+}
+
+
+.menu-category-note {
+  max-width: 390px;
+
+  justify-self: end;
+
+  margin: 0;
+
+  font-family: "Caveat", cursive;
+  font-size: 1.5rem;
+  line-height: 1.25;
+
+  color: var(--green);
+}
+
+
+/* =========================================================
+   DISHES
+   ========================================================= */
+
+.menu-dishes {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  column-gap: 70px;
+
+  row-gap: 0;
+}
+
+
+/* =========================================================
+   DISH
+   ========================================================= */
+
+.menu-dish {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  column-gap: 25px;
+
+  padding:
+    26px
+    0;
+
+  border-bottom:
+    1px solid rgba(17, 21, 28, 0.12);
+
+  transition:
+    padding 0.25s ease;
+}
+
+
+.menu-dish:nth-child(-n + 2) {
+  border-top:
+    1px solid rgba(17, 21, 28, 0.12);
+}
+
+
+.menu-dish-main {
+  min-width: 0;
+}
+
+
+.menu-dish-name {
+  margin: 0;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.65rem;
+  font-weight: 500;
+
+  line-height: 1.05;
+
+  transition:
+    color 0.25s ease;
+}
+
+
+.menu-dish:hover .menu-dish-name {
+  color: var(--green);
+}
+
+
+.menu-dish-description {
+  max-width: 430px;
+
+  margin:
+    9px
+    0
+    0;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.65;
+
+  color: rgba(17, 21, 28, 0.62);
+}
+
+
+.menu-dish-allergens {
+  margin:
+    10px
+    0
+    0;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.57rem;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  color: rgba(17, 21, 28, 0.38);
+}
+
+
+.menu-dish-price {
+  white-space: nowrap;
+
+  padding-top: 2px;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  color: var(--green);
+}
+
+
+/* =========================================================
+   DISH IMAGE
+   ========================================================= */
+
+.menu-dish--image {
+  grid-template-columns:
+    150px
+    minmax(0, 1fr)
+    auto;
+
+  column-gap: 22px;
+}
+
+
+.menu-dish-image {
+  width: 150px;
+  height: 115px;
+
+  overflow: hidden;
+
+  background: #ded8ce;
+
+  border-radius: 0;
+
+  box-shadow:
+    0 10px 25px rgba(17, 21, 28, 0.08);
+}
+
+
+.menu-dish-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.6s ease;
+}
+
+
+.menu-dish:hover .menu-dish-image img {
+  transform: scale(1.045);
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.menu-dish-badges {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-top: 12px;
+}
+
+
+.menu-dish-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding:
+    4px
+    7px;
+
+  border:
+    1px solid rgba(75, 97, 73, 0.25);
+
+  border-radius: 20px;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.52rem;
+  font-weight: 600;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: var(--green);
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.menu-loading {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  padding:
+    100px
+    0;
+}
+
+
+.menu-loading span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: var(--green);
+
+  animation:
+    menuPulse 1.2s infinite ease-in-out;
+}
+
+
+.menu-loading span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+
+.menu-loading span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+
+@keyframes menuPulse {
+
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   EXTRAS Y ALÉRGENOS
+   ========================================================= */
+
+.menu-info {
+  padding: 0 24px 120px;
+  background: var(--cream);
+}
+
+.menu-info-inner {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 70px;
+  align-items: start;
+}
+
+.menu-extras,
+.menu-allergens {
+  min-width: 0;
+  padding-top: 30px;
+  border-top: 1px solid rgba(17, 21, 28, 0.2);
+}
+
+.menu-info-kicker {
+  display: block;
+  margin-bottom: 14px;
+  font-family: "Manrope", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--green);
+}
+
+.menu-info h2 {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--black);
+}
+
+.menu-extras-note,
+.menu-allergens-intro {
+  margin: 14px 0 24px;
+  font-family: "Manrope", sans-serif;
+  font-size: 0.76rem;
+  line-height: 1.8;
+  color: rgba(17, 21, 28, 0.62);
+}
+
+.menu-extras-list,
+.menu-allergens-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-extras-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(17, 21, 28, 0.1);
+  font-family: "Manrope", sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.menu-extras-list li > span:last-child {
+  flex: 0 0 auto;
+  font-weight: 700;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+.menu-extras-list small {
+  display: block;
+  font-size: 0.68rem;
+  color: rgba(17, 21, 28, 0.55);
+}
+
+.menu-allergens-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 28px;
+}
+
+.menu-allergens-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 49px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(17, 21, 28, 0.1);
+  font-family: "Manrope", sans-serif;
+  font-size: 0.76rem;
+  color: rgba(17, 21, 28, 0.8);
+}
+
+.menu-allergens-list li span {
+  display: inline-flex;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(75, 97, 73, 0.3);
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+@media (max-width: 768px) {
+  .menu-info {
+    padding: 0 18px 80px;
+  }
+
+  .menu-info-inner {
+    grid-template-columns: 1fr;
+    gap: 55px;
+  }
+
+  .menu-extras,
+  .menu-allergens {
+    padding-top: 24px;
+  }
+
+  .menu-info h2 {
+    font-size: 2.8rem;
+  }
+
+  .menu-allergens-list {
+    column-gap: 16px;
+  }
+
+  .menu-allergens-list li {
+    gap: 9px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .menu-allergens-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   EMPTY / ERROR
+   ========================================================= */
+
+.menu-empty,
+.menu-error {
+  padding:
+    100px
+    20px;
+
+  text-align: center;
+}
+
+
+.menu-empty p,
+.menu-error p {
+  margin: 0;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+}
+
+
+.menu-error a {
+  display: inline-block;
+
+  margin-top: 25px;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 0.7rem;
+
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  color: var(--green);
+}
+
+
+/* =========================================================
+   HIDDEN
+   ========================================================= */
+
+.hidden {
+  display: none !important;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.menu-footer {
+  position: relative;
+  background: var(--black);
+  color: var(--cream);
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 0.8fr;
+  gap: 80px;
+
+  padding: 110px 5vw 90px;
+
+  border-bottom: 1px solid var(--line-light);
+}
+
+
+/* =========================================================
+   FOOTER BRAND
+   ========================================================= */
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  min-height: 190px;
+}
+
+.footer-brand img {
+  display: block;
+  width: 270px;
+  height: auto;
+}
+
+.footer-brand span {
+  max-width: 310px;
+
+  color: rgba(244, 238, 227, 0.52);
+
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.25;
+}
+
+
+/* =========================================================
+   FOOTER LABEL
+   ========================================================= */
+
+.footer-label {
+  margin-bottom: 24px;
+
+  color: var(--wood-light);
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   FOOTER CONTACT
+   ========================================================= */
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-contact address {
+  margin: 0 0 24px;
+
+  color: rgba(244, 238, 227, 0.7);
+
+  font-size: 13px;
+  font-style: normal;
+  line-height: 1.7;
+}
+
+.footer-contact a {
+  margin-top: 7px;
+
+  color: var(--cream);
+
+  font-size: 12px;
+  line-height: 1.5;
+
+  text-decoration: none;
+
+  transition: opacity 0.25s ease;
+}
+
+.footer-contact a:hover {
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   FOOTER SOCIAL
+   ========================================================= */
+
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.footer-social-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  color: var(--cream);
+
+  font-size: 12px;
+  text-decoration: none;
+
+  transition: opacity 0.25s ease;
+}
+
+.footer-social-links a:hover {
+  opacity: 0.6;
+}
+
+.footer-social-links svg {
+  display: block;
+
+  width: 19px;
+  height: 19px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.footer-social-links a:nth-child(2) svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+.tripadvisor-rating {
+  margin-top: 28px;
+  color: rgba(244, 238, 227, 0.48);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+}
+
+
+/* =========================================================
+   FOOTER BOTTOM
+   ========================================================= */
+
+.footer-bottom {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 30px;
+
+  padding: 22px 5vw 25px;
+
+  color: rgba(244, 238, 227, 0.38);
+
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.footer-bottom span:nth-child(2) {
+  text-align: center;
+}
+
+.footer-bottom a {
+  justify-self: end;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid rgba(244, 238, 227, 0.2);
+
+  color: var(--cream);
+
+  font-size: 15px;
+  text-decoration: none;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.footer-bottom a:hover {
+  background: var(--cream);
+  color: var(--black);
+}
+
+
+/* ACCESSO DISCRETO AL PANNELLO ADMIN */
+
+.footer-admin {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 16px;
+}
+
+.footer-admin a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: rgba(255, 255, 255, 0.45);
+  border: 1px solid transparent;
+  border-radius: 50%;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.footer-admin a:hover,
+.footer-admin a:focus-visible {
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  outline: none;
+}
+
+
+/* =========================================================
+   FOOTER — LINK PRIVACY E FRECCIA
+   ========================================================= */
+
+.footer-bottom-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 22px;
+  flex-shrink: 0;
+}
+
+.footer-legal-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  background: transparent;
+  color: inherit;
+
+  font: inherit;
+  font-size: inherit;
+  line-height: 1.4;
+
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.8;
+
+  transition: opacity 0.2s ease;
+}
+
+.footer-legal-link:hover {
+  opacity: 1;
+}
+
+.footer-legal-link:focus-visible,
+.footer-back-to-top:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+.footer-back-to-top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+
+  margin: 0;
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   PRIVACIDAD Y COOKIES — MODAL
+   ========================================================= */
+
+.legal-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+}
+
+.legal-modal[aria-hidden="true"] {
+  display: none !important;
+}
+
+.legal-backdrop {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(15, 18, 15, 0.76);
+  cursor: pointer;
+}
+
+.legal-dialog {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  width: min(900px, 100%);
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
+
+  min-height: 0;
+  overflow: hidden;
+
+  background: #F9F7F4;
+  color: #22201E;
+
+  border-radius: 4px;
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.28);
+}
+
+.legal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  flex: 0 0 auto;
+
+  padding: 24px 30px;
+  border-bottom: 1px solid #E2DAD0;
+}
+
+.legal-header h2 {
+  margin: 6px 0 0;
+}
+
+.legal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+  border: 1px solid #E2DAD0;
+
+  background: transparent;
+  color: inherit;
+
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.legal-navigation {
+  display: flex;
+  gap: 24px;
+
+  flex: 0 0 auto;
+
+  padding: 14px 30px;
+  border-bottom: 1px solid #E2DAD0;
+}
+
+.legal-navigation a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.legal-navigation a:hover {
+  border-bottom-color: currentColor;
+}
+
+.legal-content {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  padding: 26px 30px 34px;
+  scrollbar-gutter: stable;
+}
+
+.legal-section {
+  scroll-margin-top: 20px;
+}
+
+.legal-section h3 {
+  margin: 0 0 22px;
+}
+
+.legal-section h4 {
+  margin: 24px 0 10px;
+}
+
+.legal-section p,
+.legal-section li {
+  line-height: 1.75;
+}
+
+.legal-section ul {
+  padding-left: 22px;
+}
+
+.legal-divider {
+  height: 1px;
+  margin: 32px 0;
+  background: #E2DAD0;
+}
+
+.legal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+
+  flex: 0 0 auto;
+
+  padding: 18px 30px;
+  border-top: 1px solid #E2DAD0;
+
+  background: #F9F7F4;
+}
+
+.legal-footer button {
+  min-height: 44px;
+  padding: 10px 18px;
+  cursor: pointer;
+}
+
+.legal-pending {
+  color: #A52B24;
+  overflow-wrap: anywhere;
+}
+
+body.legal-modal-open {
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   COOKIE BANNER
+   ========================================================= */
+
+#cookie-banner[hidden] {
+  display: none !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 680px) {
+  .footer-bottom {
+    flex-wrap: wrap;
+    row-gap: 14px;
+  }
+
+  .footer-bottom-actions {
+    margin-left: auto;
+    gap: 16px;
+  }
+
+  .footer-legal-link {
+    font-size: 12px;
+  }
+
+  .legal-modal {
+    padding: 10px;
+  }
+
+  .legal-dialog {
+    width: 100%;
+    max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
+  }
+
+  .legal-header {
+    padding: 18px;
+  }
+
+  .legal-navigation {
+    gap: 18px;
+    padding: 12px 18px;
+  }
+
+  .legal-content {
+    padding: 20px 18px 26px;
+  }
+
+  .legal-footer {
+    padding: 14px 18px;
+    flex-wrap: wrap;
+  }
+
+  .legal-footer button {
+    flex: 1 1 auto;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+
+  /* -------------------------------------------------------
+     HEADER
+     ------------------------------------------------------- */
+
+  .menu-page .site-header .desktop-nav {
+    display: none;
+  }
+
+
+  /* -------------------------------------------------------
+     HERO
+     ------------------------------------------------------- */
+
+  .menu-hero {
+    min-height: auto;
+
+    display: block;
+
+    padding-bottom: 0;
+  }
+
+
+  .menu-hero-inner {
+    width: calc(100% - 36px);
+
+    min-height: auto;
+
+    display: block;
+
+    padding:
+      125px
+      0
+      42px;
+  }
+
+
+  .menu-hero-inner::before {
+    display: none;
+  }
+
+
+  .menu-hero-copy {
+    max-width: none;
+  }
+
+
+  .menu-kicker {
+    margin-bottom: 20px;
+
+    font-size: 0.58rem;
+  }
+
+
+  .menu-hero h1 {
+    width: auto;
+    max-width: none;
+
+    font-size: clamp(4.4rem, 19vw, 6rem);
+
+    line-height: 0.80;
+
+    white-space: normal;
+  }
+
+
+  .menu-hero h1::after {
+    margin-top: 23px;
+  }
+
+
+  .menu-hero p {
+    max-width: 310px;
+
+    margin-top: 22px;
+
+    font-size: 0.80rem;
+    line-height: 1.75;
+  }
+
+
+  .menu-hero-copy::after {
+    margin-top: 25px;
+
+    font-size: 1.25rem;
+  }
+
+
+  .menu-hero::after {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    display: block;
+
+    width: calc(100% - 36px);
+    height: 390px;
+
+    margin:
+      0
+      auto
+      42px;
+
+    transform: rotate(0deg);
+
+    box-shadow:
+      0 20px 45px rgba(17, 21, 28, 0.12);
+  }
+
+
+  .menu-hero:hover::after {
+    transform: none;
+  }
+
+/* -------------------------------------------------------
+   CATEGORY NAV — MOBILE
+   ------------------------------------------------------- */
+
+.menu-page .menu-categories {
+  position: sticky;
+  top: 65px;
+  z-index: 1001;
+
+  justify-content: flex-start;
+  gap: 25px;
+  min-height: 61px;
+  padding: 17px 18px;
+
+  background: var(--black);
+  border-top: none;
+}
+
+.menu-page .menu-category-link {
+  font-size: 0.58rem;
+}
+
+  /* -------------------------------------------------------
+     CONTENT
+     ------------------------------------------------------- */
+
+  .menu-content {
+    width: calc(100% - 36px);
+
+    padding:
+      72px
+      0
+      90px;
+  }
+
+
+  .menu-category {
+    margin-bottom: 82px;
+
+    scroll-margin-top: 75px;
+  }
+
+
+  .menu-category-heading {
+    display: block;
+
+    margin-bottom: 30px;
+
+    padding-bottom: 18px;
+  }
+
+
+  .menu-category-title {
+    font-size: 3.3rem;
+  }
+
+
+  .menu-category-note {
+    margin-top: 18px;
+
+    font-size: 1.3rem;
+  }
+
+
+  /* -------------------------------------------------------
+     DISHES
+     ------------------------------------------------------- */
+
+  .menu-dishes {
+    display: block;
+  }
+
+
+  .menu-dish,
+  .menu-dish--image {
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto;
+
+    column-gap: 15px;
+
+    padding:
+      23px
+      0;
+  }
+
+
+  .menu-dish-image {
+    grid-column: 1 / -1;
+
+    width: 100%;
+    height: 210px;
+
+    margin-bottom: 18px;
+  }
+
+
+  .menu-dish--image .menu-dish-main {
+    grid-column: 1;
+  }
+
+
+  .menu-dish--image .menu-dish-price {
+    grid-column: 2;
+  }
+
+
+  .menu-dish:nth-child(-n + 2) {
+    border-top: 0;
+  }
+
+
+  .menu-dish:first-child {
+    border-top:
+      1px solid rgba(17, 21, 28, 0.12);
+  }
+
+
+  .menu-dish-name {
+    font-size: 1.5rem;
+  }
+
+
+  .menu-dish-description {
+    font-size: 0.75rem;
+  }
+
+
+  /* -------------------------------------------------------
+     FOOTER
+     ------------------------------------------------------- */
+
+  .menu-footer {
+    padding:
+      55px
+      18px
+      25px;
+  }
+
+
+  .menu-footer-main {
+    display: block;
+
+    padding-bottom: 45px;
+  }
+
+
+  .menu-footer-main > div + div {
+    margin-top: 35px;
+  }
+
+}
+
+
+/* =========================================================
+   HERO FULL-BLEED — OVERRIDE DESKTOP + MOBILE
+   ========================================================= */
+
+.menu-page .menu-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: clamp(570px, 69vw, 760px);
+  overflow: hidden;
+  color: var(--cream);
+  background: var(--black);
+}
+
+.menu-page .menu-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg,
+      rgba(10, 13, 15, 0.78) 0%,
+      rgba(10, 13, 15, 0.52) 48%,
+      rgba(10, 13, 15, 0.14) 100%),
+    linear-gradient(0deg, rgba(10, 13, 15, 0.3), transparent 55%),
+    url("../assets/images/location1.jpeg") center 52% / cover no-repeat;
+  pointer-events: none;
+}
+
+.menu-page .menu-hero::after {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  z-index: 0;
+  width: auto;
+  height: auto;
+  margin: 0;
+  border: 1px solid rgba(245, 241, 234, 0.23);
+  background: none;
+  box-shadow: none;
+  transform: none;
+  pointer-events: none;
+}
+
+.menu-page .menu-hero:hover::after {
+  transform: none;
+}
+
+.menu-page .menu-hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, calc(100% - 64px));
+  min-height: inherit;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 76px 0;
+}
+
+.menu-page .menu-hero-copy {
+  width: min(590px, 100%);
+  max-width: 590px;
+  padding: clamp(28px, 4vw, 52px);
+  color: var(--cream);
+  background: rgba(17, 21, 28, 0.76);
+  border: 1px solid rgba(245, 241, 234, 0.34);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+.menu-page .menu-kicker {
+  color: var(--cream);
+  white-space: normal;
+}
+
+.menu-page .menu-kicker::before {
+  background: var(--green-light, #b7c5a8);
+}
+
+.menu-page .menu-hero h1 {
+  margin: 0;
+  color: var(--cream);
+  font-size: clamp(4rem, 8.5vw, 7.6rem);
+  line-height: 0.84;
+  letter-spacing: -0.065em;
+}
+
+.menu-page .menu-hero h1::after {
+  width: 64px;
+  height: 2px;
+  margin-top: 28px;
+  background: var(--green-light, #b7c5a8);
+  opacity: 1;
+}
+
+.menu-page .menu-hero p {
+  color: rgba(245, 241, 234, 0.88);
+}
+
+.menu-page .menu-hero-copy::after {
+  margin-top: 28px;
+  color: var(--green-light, #b7c5a8);
+  font-size: 1.65rem;
+}
+
+@media (max-width: 768px) {
+  .menu-page .menu-hero {
+    min-height: 590px;
+    min-height: min(76svh, 760px);
+    align-items: flex-end;
+  }
+
+  .menu-page .menu-hero::before {
+    background:
+      linear-gradient(0deg,
+        rgba(10, 13, 15, 0.84) 0%,
+        rgba(10, 13, 15, 0.5) 56%,
+        rgba(10, 13, 15, 0.14) 100%),
+      url("../assets/images/location1.jpeg") center / cover no-repeat;
+  }
+
+  .menu-page .menu-hero::after {
+    inset: 12px;
+  }
+
+  .menu-page .menu-hero-inner {
+    width: 100%;
+    min-height: inherit;
+    align-items: flex-end;
+    padding: 110px 24px 30px;
+  }
+
+  .menu-page .menu-hero-copy {
+    width: 100%;
+    max-width: 540px;
+    padding: 25px 23px 22px;
+    background: rgba(17, 21, 28, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+
+  .menu-page .menu-kicker {
+    margin-bottom: 19px;
+    font-size: 0.57rem;
+    letter-spacing: 0.16em;
+  }
+
+  .menu-page .menu-hero h1 {
+    font-size: clamp(3.7rem, 16vw, 5.4rem);
+    line-height: 0.86;
+    letter-spacing: -0.06em;
+  }
+
+  .menu-page .menu-hero h1::after {
+    width: 48px;
+    margin-top: 21px;
+  }
+
+  .menu-page .menu-hero p {
+    max-width: 310px;
+    margin-top: 18px;
+    font-size: 0.78rem;
+    line-height: 1.7;
+  }
+
+  .menu-page .menu-hero-copy::after {
+    margin-top: 17px;
+    font-size: 1.3rem;
+  }
+}
+

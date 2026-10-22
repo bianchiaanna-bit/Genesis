@@ -1,0 +1,100 @@
+(() => {
+  const button = document.getElementById("generate-menu-document");
+  const status = document.getElementById("export-status");
+  if (!button || button.dataset.ready) return;
+  button.dataset.ready = "1";
+
+  const esc = v => String(v ?? "").replace(/[&<>"']/g, c =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+
+  const list = d => Array.isArray(d) ? d : d?.categories || d?.dishes || [];
+  const money = n => (Number(n) / 100).toLocaleString("es-ES",
+    {minimumFractionDigits:2,maximumFractionDigits:2}) + " €";
+
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    status.textContent = "Preparazione della carta…";
+    try {
+      const lang = document.getElementById("export-language").value;
+      const [cd, dd, info] = await Promise.all([
+        api("/api/admin/categories"),
+        api("/api/admin/dishes"),
+        api("/api/admin/menu-info")
+      ]);
+      const categories = list(cd).sort((a,b) =>
+        Number(a.sort_order || 0) - Number(b.sort_order || 0));
+      const dishes = list(dd);
+      const sections = categories.map(c => {
+        const items = dishes.filter(d =>
+          String(d.category_id) === String(c.id));
+        if (!items.length) return "";
+        const category = lang === "en"
+          ? (c.name_en || c.name_es || "") : (c.name_es || "");
+        return `<section><h2>${esc(category)}</h2>${items.map(d => {
+          const name = d["name_" + lang] || d.name_es || "";
+          const desc = d["description_" + lang] ||
+            (lang === "es" ? d.description_es : "") || "";
+          const p1 = d.price_cents == null ? "" : money(d.price_cents);
+          const p2 = Number(d.price_max_cents) > Number(d.price_cents)
+            ? " – " + money(d.price_max_cents) : "";
+          return `<article><div class="dish"><h3>${esc(name)}</h3>
+            <b>${esc(p1 + p2)}</b></div>
+            ${desc ? `<p>${esc(desc)}</p>` : ""}
+            ${d.allergens ? `<small>${lang === "en" ? "Allergens" : "Alérgenos"}: ${esc(d.allergens)}</small>` : ""}
+          </article>`;
+        }).join("")}</section>`;
+      }).join("");
+      const extras = (info?.extras || []).map(x =>
+        `<li>${esc(x["name_" + lang] || x.name_es || x.name || "")}
+        <span>${x.price ? esc(Number(x.price).toFixed(2) + " €") : ""}</span></li>`
+      ).join("");
+
+      const allergens = (info?.allergens || []).map(x =>
+        `<li>${esc(x.code || x.number || "")} ${esc(x["name_" + lang] || x.name_es || x.name || "")}</li>`
+      ).join("");
+      const title = lang === "en" ? "MENU" : "CARTA";
+      const html = `<!doctype html><html lang="${lang}"><head>
+      <meta charset="utf-8"><title>Génesis — ${title}</title><style>
+      @page{size:A4;margin:8mm 10mm}
+      *{box-sizing:border-box}body{color:#282a24;background:white;font:7.5pt Arial,sans-serif;line-height:1.2}
+      header{text-align:center;border-bottom:1px solid #d9d5ca;padding:2mm 0 3mm;margin-bottom:3mm}
+      .brand{letter-spacing:.32em;color:#68705a;font-size:8pt}
+      h1{font:normal 23pt Georgia,serif;letter-spacing:.12em;margin:2mm 0}
+      .ornament{color:#929778;font-size:12pt}
+      h2{font:normal 12pt Georgia,serif;color:#4b5440;border-bottom:1px solid #d9d5ca;padding-bottom:1mm;margin:3mm 0 1.5mm;break-after:avoid}
+      article{break-inside:avoid;margin-bottom:1.5mm}
+      .dish{display:flex;justify-content:space-between;gap:2mm;align-items:baseline}
+      h3{font:normal 9pt Georgia,serif;margin:0}
+      .dish b{white-space:nowrap;font-size:7.5pt}p{margin:.5mm 0;color:#62635c}
+      small{font-size:6.5pt;color:#77786f}
+      .extras{border-top:1px solid #d9d5ca;margin-top:3mm;padding-top:1mm}
+      .extras h2{font-size:10pt;margin:2mm 0}
+      ul{padding:0;list-style:none;columns:2;column-gap:5mm;margin:1mm 0}li{break-inside:avoid;margin:.4mm 0}
+      li span{float:right}footer{text-align:center;border-top:1px solid #d9d5ca;margin-top:3mm;padding-top:1mm;font-size:6.5pt;color:#77786f}
+      .tools{text-align:center;background:#f2efe7;padding:10px}
+      .tools button{padding:10px 16px;margin:3px;background:#343b30;color:white;border:0}
+      @media print{.tools{display:none}}
+      main.menu-columns{column-count:2;column-gap:7mm;column-fill:balance}section{break-inside:auto}section h2{break-after:avoid-column}article{orphans:2;widows:2}@media print{.tools{display:none}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style></head><body>
+      <div class="tools"><button onclick="window.print()">PDF / Imprimir</button></div>
+      <header><div class="brand">GÉNESIS · LA LAGUNA</div>
+      <h1>${title}</h1><div class="ornament">— ✳ —</div></header>
+      <main class="menu-columns">${sections}</main>
+      <div class="extras"><h2>${lang === "en" ? "Extras" : "Extras"}</h2><ul>${extras}</ul>
+      <h2>${lang === "en" ? "Allergens" : "Alérgenos"}</h2><ul>${allergens}</ul></div>
+      <footer>GÉNESIS · LA LAGUNA</footer></body></html>`;
+      const blob = new Blob([html], {type:"text/html;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = `genesis-menu-${lang}.html`;
+      document.body.appendChild(a); a.click(); a.remove();
+      window.open(url, "_blank");
+      status.textContent = "Carta generata. Nel documento scegli PDF / Imprimir.";
+    } catch (e) {
+      console.error(e);
+      status.textContent = "Errore: " + (e.message || "generazione non riuscita");
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();

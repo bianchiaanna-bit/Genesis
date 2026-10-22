@@ -1,0 +1,4453 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Génesis · Admin</title>
+
+
+
+<style>
+  /* =====================================================
+     GÉNESIS — ADMIN DASHBOARD
+     ===================================================== */
+
+  :root {
+    --bg: #354536;
+    --bg-soft: #405441;
+    --surface: #ffffff;
+    --surface-2: #f5f7f2;
+    --surface-3: #e9eee5;
+    --surface-hover: #eef3e9;
+    --border: #dce3d7;
+    --border-strong: #c4d0bd;
+    --text: #282923;
+    --text-soft: #55564e;
+    --muted: #77786f;
+    --accent: #718363;
+    --accent-hover: #5f7152;
+    --accent-light: #eaf0e5;
+    --success: #386b45;
+    --success-bg: #edf6ee;
+    --success-border: #c9e2cc;
+    --danger: #a83e36;
+    --danger-bg: #fdf0ee;
+    --danger-border: #edcfca;
+    --warning: #805d20;
+    --warning-bg: #fbf5e7;
+    --warning-border: #eadbb5;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    min-height: 100%;
+    background: var(--bg);
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    width: min(1320px, calc(100% - 48px));
+    margin: 36px auto 64px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.7rem, 3vw, 2.1rem);
+    font-weight: 650;
+    letter-spacing: -0.045em;
+  }
+
+  main > h1 {
+    color: #fff;
+  }
+
+  h2 {
+    margin: 0 0 18px;
+    font-size: 1.22rem;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 650;
+  }
+
+  h4 {
+    font-size: 0.9rem;
+    font-weight: 650;
+  }
+
+  p {
+    margin-top: 0;
+  }
+
+  .intro {
+    margin: 8px 0 26px;
+    color: #e0e7dc;
+    line-height: 1.7;
+  }
+
+  .section-lead {
+    margin: -6px 0 22px;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .small {
+    color: var(--muted);
+    font-size: 0.83rem;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  /* =====================================================
+     SCHEDE GENERALI
+     ===================================================== */
+
+  .card {
+    margin-bottom: 22px;
+    padding: 26px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(21, 37, 23, 0.10);
+  }
+
+  .card h2 {
+    margin-bottom: 18px;
+  }
+
+  .card .intro {
+    margin-bottom: 20px;
+    color: var(--text-soft);
+  }
+
+  /* =====================================================
+     PULSANTI
+     ===================================================== */
+
+  button {
+    min-height: 40px;
+    padding: 9px 15px;
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 650;
+    transition:
+      background 0.18s ease,
+      border-color 0.18s ease,
+      color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.15s ease;
+  }
+
+  button:hover:not(:disabled) {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    box-shadow: 0 3px 8px rgba(48, 61, 39, 0.12);
+  }
+
+  button:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 3px solid rgba(113, 131, 99, 0.3);
+    outline-offset: 2px;
+  }
+
+  button.secondary {
+    background: #fff;
+    color: #41463e;
+    border-color: var(--border-strong);
+    box-shadow: none;
+  }
+
+  button.secondary:hover:not(:disabled) {
+    background: var(--surface-2);
+    border-color: #a8b0a0;
+    color: var(--text);
+  }
+
+  button.danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border-color: var(--danger-border);
+    box-shadow: none;
+  }
+
+  button.danger:hover:not(:disabled) {
+    background: #f6dcd8;
+    border-color: #dba9a2;
+  }
+
+  button:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  /* =====================================================
+     CAMPI E FORM
+     ===================================================== */
+
+  input,
+  textarea,
+  select {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 10px 12px;
+    background: #fff;
+    color: #292c27;
+    border: 1px solid #d4d9d0;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 0.9rem;
+    color-scheme: light;
+    transition:
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      background 0.18s ease;
+  }
+
+  input:hover,
+  textarea:hover,
+  select:hover {
+    border-color: #a8b2a0;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(113, 131, 99, 0.13);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #858b81;
+    opacity: 1;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: auto;
+    min-height: auto;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  input[type="file"] {
+    min-height: 42px;
+    max-width: 100%;
+    padding: 7px;
+    background: #fff;
+    font-size: 0.84rem;
+  }
+
+  input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 7px 10px;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.55;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    color: #484e45;
+    font-size: 0.83rem;
+    font-weight: 600;
+  }
+
+  .field {
+    min-width: 0;
+    margin-bottom: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  /* =====================================================
+     NAVIGAZIONE PRINCIPALE
+     ===================================================== */
+
+  .tabs {
+    position: sticky;
+    top: 12px;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 24px;
+    padding: 8px;
+    background: #2c3b2d;
+    border: 1px solid #52644f;
+    border-radius: 13px;
+    box-shadow: 0 6px 18px rgba(20, 36, 22, 0.12);
+  }
+
+  .tabs button {
+    min-height: 42px;
+    padding: 10px 17px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+  }
+
+  .tabs button.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: none;
+  }
+
+  .tabs button.active:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .tabs button:not(.active) {
+    background: transparent;
+    color: #e5ebe2;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .tabs button:not(.active):hover {
+    background: #405441;
+    color: #fff;
+  }
+
+  /* =====================================================
+     SOTTOSEZIONI DEL MENU
+     ===================================================== */
+
+  .menu-layout {
+    display: block;
+    min-width: 0;
+  }
+
+  .menu-subtabs {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 22px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .menu-subtab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-height: 40px;
+    padding: 9px 16px;
+    background: transparent;
+    color: #e5ebe2;
+    border: 1px solid #52644f;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: none;
+    white-space: nowrap;
+  }
+
+  .menu-subtab:not(.active) {
+    background: #2c3b2d;
+    color: #e5ebe2;
+    border-color: #52644f;
+  }
+
+  .menu-subtab:not(.active):hover {
+    background: #405441;
+    color: #fff;
+    border-color: #667b62;
+  }
+
+  .menu-subtab.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .menu-subtab.active:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .menu-subtab:focus-visible {
+    outline: 3px solid rgba(218, 231, 208, 0.55);
+    outline-offset: 2px;
+  }
+
+  .menu-panels,
+  .menu-panel {
+    min-width: 0;
+  }
+
+  .menu-panel {
+    display: block;
+  }
+
+  .menu-panel.hidden {
+    display: none !important;
+  }
+
+  .admin-content {
+    display: none;
+  }
+
+  .admin-content.visible {
+    display: block;
+  }
+
+  .tab-content {
+    display: block;
+  }
+
+  .tab-content.hidden {
+    display: none !important;
+  }
+
+  /* =====================================================
+     MENU ADMIN — CARD PIATTI
+     ===================================================== */
+
+  #dishes-list {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .dish-row {
+    min-width: 0;
+    margin-bottom: 14px;
+    padding: 22px;
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(32, 33, 30, 0.045);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .dish-row:hover {
+    border-color: #cbd7c2;
+    box-shadow: 0 8px 24px rgba(32, 45, 29, 0.08);
+  }
+
+  .dish-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    min-width: 0;
+    margin-bottom: 16px;
+  }
+
+  .dish-head strong {
+    min-width: 0;
+    color: #292c27;
+    font-size: 1rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .dish-head .edit-dish {
+    flex-shrink: 0;
+  }
+
+  .dish-editor {
+    min-width: 0;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #e8ece4;
+  }
+
+  .dish-editor.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 16px;
+  }
+
+  .dish-editor .field {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .dish-editor .field label {
+    display: block;
+    margin-bottom: 7px;
+    color: #62695d;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .dish-editor input,
+  .dish-editor select,
+  .dish-editor textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .dish-editor textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    margin-top: 8px;
+  }
+
+  .checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+
+  .checkboxes input {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .checkboxes.dish-editor {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e8ece4;
+  }
+
+  .checkboxes.dish-editor > label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .checkboxes.dish-editor input[type="checkbox"] {
+    width: auto;
+    min-height: auto;
+    accent-color: #627b55;
+  }
+
+  .checkboxes.dish-editor .delete-dish {
+    margin-left: auto;
+  }
+
+  /* =====================================================
+     EXTRA E ALLERGENI
+     ===================================================== */
+
+  .menu-info-layout {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 22px;
+    min-width: 0;
+  }
+
+  .menu-info-card {
+    min-width: 0;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #e0e6da;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(32, 45, 29, 0.055);
+  }
+
+  .menu-info-card h2 {
+    margin: 0 0 8px;
+    color: #252920;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+
+  .menu-info-card .section-lead {
+    min-height: 0;
+    margin: 0 0 22px;
+    color: #72786c;
+    font-size: 0.87rem;
+    line-height: 1.65;
+  }
+
+  #extras-list,
+  #allergens-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    margin: 0 0 16px;
+  }
+
+  .menu-info-row {
+    display: grid;
+    align-items: end;
+    gap: 12px;
+    min-width: 0;
+    margin: 0;
+    padding: 14px;
+    background: #f8faf6;
+    border: 1px solid #e5eae0;
+    border-radius: 12px;
+    transition: background 180ms ease, border-color 180ms ease;
+  }
+
+  .menu-info-row:hover {
+    background: #fff;
+    border-color: #cbd7c2;
+  }
+
+  .extra-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 100px auto;
+  }
+
+  .allergen-row {
+    grid-template-columns: 76px repeat(3, minmax(0, 1fr)) auto;
+  }
+
+  .menu-info-row .field {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .menu-info-row label {
+    display: block;
+    margin-bottom: 7px;
+    color: #62695d;
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
+  .menu-info-row input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 9px 10px;
+    border: 1px solid #dce3d6;
+    border-radius: 8px;
+    background: #fff;
+    color: #252920;
+    font: inherit;
+    font-size: 0.86rem;
+  }
+
+  .menu-info-row input:focus {
+    outline: 2px solid rgba(98, 123, 85, 0.2);
+    border-color: #829775;
+  }
+
+  .allergen-row .allergen-code {
+    min-height: 40px;
+    padding: 8px;
+    text-align: center;
+    font-weight: 750;
+    color: #40553a;
+    background: #edf2e9;
+    border-color: #d5dfce;
+  }
+
+  .allergen-row .allergen-name {
+    font-weight: 550;
+  }
+
+  .menu-info-row .delete-extra,
+  .menu-info-row .delete-allergen {
+    min-height: 42px;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  #add-extra,
+  #add-allergen {
+    width: 100%;
+    min-height: 43px;
+    margin-bottom: 10px;
+    border: 1px dashed #b9c8af;
+    background: #fff;
+    color: var(--accent-hover);
+    box-shadow: none;
+  }
+
+  #add-extra:hover:not(:disabled),
+  #add-allergen:hover:not(:disabled) {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+
+  #save-extras,
+  #save-allergens {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  #extras-status,
+  #allergens-status {
+    margin-top: 12px;
+    overflow-wrap: anywhere;
+    font-size: 0.84rem;
+  }
+
+  /* =====================================================
+     CATEGORIE E ORARI
+     ===================================================== */
+
+  .category-row,
+  .hours-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 120px auto;
+    align-items: end;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding: 15px;
+    background: #f6f7f4;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  /* =====================================================
+     POP-UP
+     ===================================================== */
+
+  .popup-row {
+    margin-bottom: 14px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  /* =====================================================
+     RICERCA PIATTI
+     ===================================================== */
+
+  .dish-search {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .dish-search .field {
+    margin-bottom: 0;
+  }
+
+  .dish-search-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dishes-count {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 0.83rem;
+  }
+
+  /* =====================================================
+     IMPORTAZIONE EXCEL
+     ===================================================== */
+
+  .import-box {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f5f7f3;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .import-box h3 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+  }
+
+  .import-box p {
+    margin: 0;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  .import-file {
+    margin-top: 16px;
+  }
+
+  .import-file input {
+    background: #fff;
+  }
+
+  .import-summary {
+    margin-top: 14px;
+    padding: 14px;
+    background: #fff;
+    color: var(--text-soft);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .import-summary strong,
+  .import-summary-stat span {
+    color: var(--text);
+  }
+
+  .import-summary-title {
+    margin-bottom: 7px;
+    font-weight: 700;
+  }
+
+  .import-summary-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .import-summary-stat {
+    display: flex;
+    gap: 5px;
+  }
+
+  .import-preview {
+    margin-top: 16px;
+    overflow: auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+  }
+
+  .import-preview table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  .import-preview th,
+  .import-preview td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #e8ebe5;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .import-preview th {
+    background: #f2f4f0;
+    color: #4d5349;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .import-preview td {
+    background: #fff;
+    color: #30342e;
+  }
+
+  .import-preview tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .import-error {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border-color: var(--danger-border);
+  }
+
+  .import-warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+    border-color: var(--warning-border);
+  }
+
+  .progress {
+    height: 6px;
+    margin-top: 14px;
+    overflow: hidden;
+    background: #e2e6de;
+    border-radius: 999px;
+  }
+
+  .progress span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--accent);
+    border-radius: inherit;
+    transition: width 0.2s ease;
+  }
+
+  .import-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .import-actions button {
+    min-width: 140px;
+  }
+
+  .import-done {
+    background: var(--success-bg);
+    color: var(--success);
+    border-color: var(--success-border);
+  }
+
+  .import-done strong {
+    color: var(--success);
+  }
+
+  /* =====================================================
+     HOMEPAGE — CARD PIATTI
+     Anteprima a sinistra, editor a destra
+     ===================================================== */
+
+  #home-dishes-list {
+    display: grid;
+    gap: 18px;
+    min-width: 0;
+  }
+
+  .home-dish-row {
+    display: grid;
+    grid-template-columns: minmax(230px, 0.78fr) minmax(0, 1.5fr);
+    align-items: start;
+    gap: 24px;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    padding: 22px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(32, 33, 30, 0.035);
+  }
+
+  .home-dish-row.is-unpublished {
+    background: #f5f6f3;
+    border-style: dashed;
+    border-color: #c8cec2;
+  }
+
+  /* Anteprima sticky su desktop */
+
+  .home-dish-preview {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .home-dish-preview img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--surface-3);
+  }
+
+  .home-dish-preview-copy {
+    padding: 17px 18px 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .home-dish-preview-meta {
+    margin-bottom: 8px;
+    color: var(--accent-hover);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.13em;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .home-dish-preview h3 {
+    margin: 0 0 9px;
+    color: #292c27;
+    font-family: Georgia, serif;
+    font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+    font-weight: 500;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .home-dish-preview p {
+    margin: 0;
+    color: #555b52;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  .home-dish-preview-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 140px;
+    padding: 16px;
+    color: var(--muted);
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  /* Editor */
+
+  .home-dish-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .home-dish-head,
+  .home-dish-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: 0;
+    margin: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e8ebe5;
+  }
+
+  .home-dish-head strong,
+  .home-dish-top strong {
+    min-width: 0;
+    color: var(--text);
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+  }
+
+  .home-dish-badge {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 5px 9px;
+    background: var(--accent-light);
+    color: #4f6742;
+    border: 1px solid #d2dfca;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .home-dish-badge.off {
+    background: #edf0eb;
+    color: #666d62;
+    border-color: #dce1d8;
+  }
+
+  /* Campi */
+
+  .home-dish-editor .field {
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+  }
+
+  .home-dish-editor .field label {
+    display: block;
+    margin-bottom: 6px;
+    color: #62695d;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .home-dish-editor input:not([type="checkbox"]),
+  .home-dish-editor select,
+  .home-dish-editor textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .home-dish-editor input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: auto;
+    min-height: auto;
+  }
+
+  /* Griglie dei campi */
+
+  .home-dish-editor > .grid,
+  .home-dish-editor > .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 12px;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+  }
+
+  .home-dish-editor > .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-dish-editor > .grid > .field:only-child,
+  .home-dish-editor > .grid-3 > .field:only-child {
+    grid-column: 1 / -1;
+  }
+
+  .home-upload-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding-top: 4px;
+  }
+
+  .home-upload-controls input[type="file"] {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    margin: 2px 0 4px;
+  }
+
+  .home-upload-controls button {
+    margin-top: 4px;
+  }
+
+  .home-upload-filename,
+  .dish-image-filename {
+    display: block;
+    margin-top: 4px;
+    overflow-wrap: anywhere;
+  }
+
+  /* Immagine */
+
+  .home-dish-file {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 8px;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+  }
+
+  .home-dish-file input[type="file"] {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 7px;
+    font-size: 0.82rem;
+  }
+
+  .home-dish-file button {
+    justify-self: start;
+    max-width: 100%;
+  }
+
+  .home-dish-status {
+    min-width: 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+  }
+
+  /* Italiano, spagnolo e inglese */
+
+  .home-dish-languages {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 10px;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+  }
+
+  .home-dish-language {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    padding: 15px;
+    background: #f5f6f3;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .home-dish-language h4 {
+    margin: 0;
+    padding-bottom: 8px;
+    color: #555b52;
+    border-bottom: 1px solid #e1e6dc;
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+
+  .home-dish-language .field {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .home-dish-language textarea {
+    min-height: 140px;
+    resize: vertical;
+    background: #fff;
+  }
+
+  /* Opzioni e pubblicazione */
+
+  .home-dish-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    min-width: 0;
+    margin: 0;
+    padding-top: 14px;
+    border-top: 1px solid #e8ebe5;
+  }
+
+  .home-dish-footer label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.84rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .home-dish-footer input {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  /* =====================================================
+     MESSAGGI DI STATO
+     ===================================================== */
+
+  .status {
+    margin-top: 12px;
+    padding: 11px 13px;
+    background: var(--surface-2);
+    color: var(--text-soft);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .status.success {
+    background: var(--success-bg);
+    color: var(--success);
+    border-color: var(--success-border);
+  }
+
+  .status.error {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border-color: var(--danger-border);
+  }
+
+  .status.warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+    border-color: var(--warning-border);
+  }
+
+  /* =====================================================
+     TABELLE
+     ===================================================== */
+
+  .table-wrap {
+    overflow: auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 11px 12px;
+    border-bottom: 1px solid #e8ebe5;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #f2f4f0;
+    color: #4d5349;
+    font-size: 0.79rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  td {
+    background: #fff;
+    color: #30342e;
+  }
+
+  tbody tr:hover td {
+    background: #f7f9f5;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  /* =====================================================
+     LOGIN
+     ===================================================== */
+
+  .login {
+    max-width: 420px;
+    margin: 90px auto;
+    padding: 34px;
+    background: #fff;
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 17px;
+    box-shadow: 0 12px 32px rgba(20, 36, 22, 0.14);
+  }
+
+  .login h1 {
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  /* =====================================================
+     RESPONSIVE — TABLET
+     ===================================================== */
+
+  @media (max-width: 1050px) {
+    .menu-info-layout {
+      gap: 16px;
+    }
+
+    .menu-info-card {
+      padding: 18px;
+    }
+
+    .extra-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) 85px auto;
+    }
+
+    .allergen-row {
+      grid-template-columns: 68px repeat(3, minmax(0, 1fr)) auto;
+    }
+
+    .home-dish-row {
+      grid-template-columns: minmax(190px, 0.68fr) minmax(0, 1.5fr);
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .home-dish-languages {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .home-dish-language {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: 10px;
+    }
+
+    .home-dish-language h4 {
+      grid-column: 1 / -1;
+    }
+
+    .home-dish-language .field:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* =====================================================
+     RESPONSIVE — TABLET PICCOLI
+     ===================================================== */
+
+  @media (max-width: 850px) {
+    .tabs {
+      position: static;
+    }
+
+    .menu-subtabs {
+      position: static;
+      justify-content: flex-start;
+    }
+
+    .home-dish-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .home-dish-preview {
+      position: static;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .home-dish-languages {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-dish-language {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .home-dish-language h4,
+    .home-dish-language .field:last-child {
+      grid-column: auto;
+    }
+  }
+
+  /* =====================================================
+     RESPONSIVE — MOBILE
+     ===================================================== */
+
+  @media (max-width: 720px) {
+    main {
+      width: calc(100% - 24px);
+      margin: 20px auto 40px;
+    }
+
+    h1 {
+      font-size: 1.65rem;
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: 12px;
+    }
+
+    .grid,
+    .grid-3,
+    .hours-row,
+    .category-row,
+    .extra-row,
+    .allergen-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .menu-info-layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .menu-info-card {
+      padding: 18px;
+    }
+
+    .menu-info-card .section-lead {
+      min-height: 0;
+      margin-bottom: 16px;
+    }
+
+    .category-row button,
+    .hours-row button,
+    .menu-info-row .delete-extra,
+    .menu-info-row .delete-allergen {
+      width: 100%;
+    }
+
+    .allergen-row .allergen-code {
+      text-align: left;
+    }
+
+    #save-allergens,
+    #save-extras {
+      width: 100%;
+    }
+
+    .dish-row {
+      padding: 16px;
+    }
+
+    .dish-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .dish-editor.grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .checkboxes.dish-editor .delete-dish {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .dish-search {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dish-search-buttons {
+      width: 100%;
+    }
+
+    .dish-search-buttons button {
+      flex: 1;
+    }
+
+    .import-summary-stats {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .tabs {
+      gap: 6px;
+      padding: 7px;
+    }
+
+    .tabs button {
+      flex: 1 1 auto;
+      padding: 10px 11px;
+      font-size: 0.82rem;
+    }
+
+    .menu-subtabs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .menu-subtab {
+      width: 100%;
+      padding: 9px 8px;
+      font-size: 0.8rem;
+      white-space: normal;
+    }
+
+    .home-dish-row {
+      gap: 16px;
+      padding: 14px;
+    }
+
+    .home-dish-preview {
+      max-width: none;
+    }
+
+    .home-dish-editor > .grid,
+    .home-dish-editor > .grid-3 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .home-dish-languages {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .home-dish-language {
+      display: flex;
+      flex-direction: column;
+      padding: 14px;
+    }
+
+    .home-dish-footer {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .home-dish-file button {
+      width: 100%;
+    }
+
+    .login {
+      margin: 42px auto;
+      padding: 24px;
+    }
+
+    .table-wrap {
+      max-width: 100%;
+    }
+  }
+
+  /* =====================================================
+     ACCESSIBILITÀ — ANIMAZIONI RIDOTTE
+     ===================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+</style>
+
+
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<section id="login-screen" class="login card">
+  <h1>Génesis</h1>
+  <p class="intro">Pannello di amministrazione</p>
+
+  <div class="field">
+    <label for="login-password">Password</label>
+    <input
+      id="login-password"
+      type="password"
+      autocomplete="current-password"
+    >
+  </div>
+
+  <button id="login-button" type="button">Accedi</button>
+  <div id="login-status" class="status hidden" role="status" aria-live="polite"></div>
+</section>
+
+<!-- ADMIN -->
+<main id="admin-screen" class="admin-content">
+  <h1>Génesis</h1>
+  <p class="intro">Pannello di amministrazione</p>
+
+  <!-- NAVIGAZIONE PRINCIPALE -->
+  <nav class="tabs" aria-label="Sezioni principali">
+    <button type="button" class="tab-button active" data-tab="menu" aria-selected="true">
+      Menu
+    </button>
+    <button type="button" class="tab-button" data-tab="homepage" aria-selected="false">
+      Homepage
+    </button>
+    <button type="button" class="tab-button" data-tab="popup" aria-selected="false">
+      Pop-up
+    </button>
+    <button type="button" class="tab-button" data-tab="hours" aria-selected="false">
+      Orari
+    </button>
+    <button type="button" id="logout-button" class="secondary">
+      Esci
+    </button>
+  </nav>
+
+  <!-- MENU -->
+  <section id="tab-menu" class="tab-content">
+
+    <!-- SOTTO-NAVIGAZIONE MENU -->
+    <nav class="menu-subtabs" aria-label="Sottosezioni del menu">
+      <button
+        type="button"
+        class="menu-subtab active"
+        data-menu-panel="categories-panel"
+        aria-selected="true"
+      >
+        Categorie
+      </button>
+
+      <button
+        type="button"
+        class="menu-subtab"
+        data-menu-panel="dishes-panel"
+        aria-selected="false"
+      >
+        Piatti
+      </button>
+
+      <button
+        type="button"
+        class="menu-subtab"
+        data-menu-panel="extras-panel"
+        aria-selected="false"
+      >
+        Extras e allergeni
+      </button>
+
+      <button
+        type="button"
+        class="menu-subtab"
+        data-menu-panel="import-panel"
+        aria-selected="false"
+      >
+        Importa carta da Excel
+      </button>
+    </nav>
+
+    <!-- SOTTOSEZIONE CATEGORIE -->
+    <div id="categories-panel" class="card menu-panel">
+      <h2>Categorie</h2>
+      <div id="categories-list"></div>
+
+      <div class="actions">
+        <button type="button" id="add-category">+ Aggiungi categoria</button>
+        <button type="button" id="save-categories">Salva categorie</button>
+      </div>
+
+      <div id="categories-status" class="status hidden" role="status" aria-live="polite"></div>
+    </div>
+
+  
+<!-- SOTTOSEZIONE PIATTI -->
+<div id="dishes-panel" class="card menu-panel hidden">
+  <h2>Piatti</h2>
+
+  <div class="dish-search">
+    <div class="field">
+      <label for="dish-search">Cerca nei piatti</label>
+      <input
+        id="dish-search"
+        type="search"
+        placeholder="Nome, ingrediente, allergene..."
+        autocomplete="off"
+      >
+    </div>
+
+    <div class="dish-search-buttons">
+      <button type="button" id="dish-search-button">
+        Cerca
+      </button>
+
+      <button
+        type="button"
+        id="dish-search-clear"
+        class="secondary"
+      >
+        Azzera
+      </button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="dish-category-filter">Categoria</label>
+    <select id="dish-category-filter">
+      <option value="">Tutte</option>
+    </select>
+  </div>
+
+  <div
+    id="dishes-count"
+    class="dishes-count"
+    aria-live="polite"
+  ></div>
+
+  <div id="dishes-list"></div>
+
+  <div class="actions">
+    <button type="button" id="add-dish">
+      + Aggiungi piatto
+    </button>
+
+    <button type="button" id="save-dishes">
+      Salva piatti
+    </button>
+  </div>
+
+  <div
+    id="dishes-status"
+    class="status hidden"
+    role="status"
+    aria-live="polite"
+  ></div>
+</div>
+
+    
+    <!-- SOTTOSEZIONE EXTRAS E ALLERGENI -->
+    <div id="extras-panel" class="menu-panel hidden">
+
+      <div class="menu-info-layout">
+
+        <!-- COLONNA 1: EXTRAS -->
+        <section class="card menu-info-card">
+          <h2>Extras del menú</h2>
+
+          <p class="section-lead">
+            Gestisci gli extra e i relativi prezzi mostrati in fondo al menu pubblico.
+          </p>
+
+          <div id="extras-list"></div>
+
+          <div class="actions">
+            <button type="button" id="add-extra">
+              + Aggiungi extra
+            </button>
+
+            <button type="button" id="save-extras">
+              Salva extras
+            </button>
+          </div>
+
+          <div
+            id="extras-status"
+            class="status hidden"
+            role="status"
+            aria-live="polite"
+          ></div>
+        </section>
+
+        <!-- COLONNA 2: LEGGENDA ALLERGENI -->
+        <section class="card menu-info-card">
+          <h2>Legenda allergeni</h2>
+
+          <p class="section-lead">
+            Gestisci i codici e le descrizioni mostrati nella legenda del menu.
+            Le modifiche alla legenda non cambiano i codici allergeni
+            associati ai singoli piatti.
+          </p>
+
+          <div id="allergens-list"></div>
+
+          <div class="actions">
+            <button type="button" id="add-allergen">
+              + Aggiungi allergene
+            </button>
+
+            <button type="button" id="save-allergens">
+              Salva legenda
+            </button>
+          </div>
+
+          <div
+            id="allergens-status"
+            class="status hidden"
+            role="status"
+            aria-live="polite"
+          ></div>
+        </section>
+
+      </div>
+    </div>
+
+
+    <!-- SOTTOSEZIONE IMPORTAZIONE EXCEL -->
+    <div id="import-panel" class="card menu-panel hidden">
+      <h2>Importa carta da Excel</h2>
+
+      <div class="import-box">
+        <h3>Scarica modello Excel</h3>
+        <p>
+          Usa un file Excel con la struttura del modello per caricare rapidamente una nuova carta.
+          Prima dell'importazione verrà mostrata un'anteprima dei dati.
+        </p>
+
+        <div class="import-actions">
+          <button
+            type="button"
+            id="download-import-template"
+            class="secondary"
+          >
+            Scarica modello Excel
+          </button>
+        </div>
+
+        <div class="import-file">
+          <label for="import-file">Seleziona file Excel</label>
+          <input id="import-file" type="file" accept=".xlsx,.xls">
+        </div>
+
+        <div
+          id="import-summary"
+          class="import-summary hidden"
+          aria-live="polite"
+        ></div>
+
+        <div id="import-progress" class="progress hidden" aria-hidden="true">
+          <span id="import-progress-bar"></span>
+        </div>
+
+        <div id="import-preview" class="import-preview hidden"></div>
+
+        <div id="import-actions" class="import-actions hidden">
+          <button type="button" id="import-button" disabled>Importa carta</button>
+          <button type="button" id="import-cancel" class="secondary">Annulla</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOMEPAGE — PIATTI -->
+  <section id="tab-homepage" class="tab-content hidden">
+    <div class="card">
+      <h2>Piatti in homepage</h2>
+      <p class="section-lead">
+        Gestisci le cinque card della sezione “PIATTI” della pagina iniziale.
+        Puoi modificare immagini e testi in italiano, spagnolo e inglese, cambiare
+        l’ordine e nascondere una card senza eliminarla. L’anteprima si aggiorna mentre scrivi.
+      </p>
+
+      <div id="home-dishes-list"></div>
+
+      <div class="actions">
+        <button type="button" id="save-home-dishes">Salva modifiche homepage</button>
+        <button type="button" id="reload-home-dishes" class="secondary">Ricarica dati</button>
+      </div>
+
+      <div
+        id="home-dishes-status"
+        class="status hidden"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </div>
+  </section>
+
+  <!-- POP-UP -->
+  <section id="tab-popup" class="tab-content hidden">
+    <div class="card">
+      <h2>Pop-up</h2>
+      <p class="section-lead">
+        Crea e programma l’avviso mostrato sul sito. Per renderlo visibile,
+        attiva “Pubblicato” e verifica che le date siano corrette; lascia vuote
+        le date per non limitarne il periodo.
+      </p>
+
+      <div id="popups-list"></div>
+
+      <div class="actions">
+        <button type="button" id="add-popup">+ Aggiungi pop-up</button>
+        <button type="button" id="save-popups">Salva pop-up</button>
+      </div>
+
+      <div id="popups-status" class="status hidden" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ORARI -->
+  <section id="tab-hours" class="tab-content hidden">
+    <div class="card">
+      <h2>Orari</h2>
+      <div id="hours-list"></div>
+
+      <div class="actions">
+        <button type="button" id="add-hour">+ Aggiungi orario</button>
+        <button type="button" id="save-hours">Salva orari</button>
+      </div>
+
+      <div id="hours-status" class="status hidden" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<script>
+/* =====================================================
+   CONFIGURAZIONE
+   ===================================================== */
+
+const API = "https://genesis-api.cimiteroditarsia.workers.dev";
+let token = localStorage.getItem("genesis_admin_token") || "";
+
+let categories = [];
+let dishes = [];
+let popups = [];
+let homeDishes = [];
+let hours = [];
+
+let importRows = [];
+let importFile = null;
+
+const DEFAULT_EXTRAS = [
+  { name: "AGUACATE (según disponibilidad)", name_es: "AGUACATE (según disponibilidad)", name_en: "AVOCADO (subject to availability)", name_it: "AVOCADO (secondo disponibilità)", price: 1.50 },
+  { name: "BACON", name_es: "BACON", name_en: "BACON", name_it: "BACON", price: 1.50 },
+  { name: "HUEVO", name_es: "HUEVO", name_en: "EGG", name_it: "UOVO", price: 1.00 },
+  { name: "CARNE MECHADA", name_es: "CARNE MECHADA", name_en: "SHREDDED BEEF", name_it: "CARNE SFILACCIATA", price: 1.50 },
+  { name: "SALMÓN", name_es: "SALMÓN", name_en: "SALMON", name_it: "SALMONE", price: 2.00 }
+];
+
+const DEFAULT_ALLERGENS = [
+  { code: "01", name: "Gluten", name_es: "Gluten", name_en: "Gluten", name_it: "Glutine" },
+  { code: "02", name: "Crustáceos", name_es: "Crustáceos", name_en: "Crustaceans", name_it: "Crostacei" },
+  { code: "03", name: "Huevos", name_es: "Huevos", name_en: "Eggs", name_it: "Uova" },
+  { code: "04", name: "Pescado", name_es: "Pescado", name_en: "Fish", name_it: "Pesce" },
+  { code: "05", name: "Cacahuetes", name_es: "Cacahuetes", name_en: "Peanuts", name_it: "Arachidi" },
+  { code: "06", name: "Soja", name_es: "Soja", name_en: "Soy", name_it: "Soia" },
+  { code: "07", name: "Leche", name_es: "Leche", name_en: "Milk", name_it: "Latte" },
+  { code: "08", name: "Frutos de cáscara", name_es: "Frutos de cáscara", name_en: "Tree nuts", name_it: "Frutta a guscio" },
+  { code: "11", name: "Sésamo", name_es: "Sésamo", name_en: "Sesame", name_it: "Sesamo" }
+];
+
+let menuInfo = {
+  extras: DEFAULT_EXTRAS.map(item => ({ ...item })),
+  allergens: DEFAULT_ALLERGENS.map(item => ({ ...item }))
+};
+
+let menuInfoLoaded = false;
+
+/* =====================================================
+   ELEMENTI
+   ===================================================== */
+
+const loginScreen = document.getElementById("login-screen");
+const adminScreen = document.getElementById("admin-screen");
+const loginPassword = document.getElementById("login-password");
+const loginButton = document.getElementById("login-button");
+const loginStatus = document.getElementById("login-status");
+
+const importFileInput = document.getElementById("import-file");
+const importSummary = document.getElementById("import-summary");
+const importPreview = document.getElementById("import-preview");
+const importActions = document.getElementById("import-actions");
+const importButton = document.getElementById("import-button");
+const importCancel = document.getElementById("import-cancel");
+const importProgress = document.getElementById("import-progress");
+const importProgressBar = document.getElementById("import-progress-bar");
+
+const dishSearch = document.getElementById("dish-search");
+const dishSearchButton = document.getElementById("dish-search-button");
+const dishSearchClear = document.getElementById("dish-search-clear");
+const dishCategoryFilter = document.getElementById("dish-category-filter");
+const dishesCount = document.getElementById("dishes-count");
+
+const extrasList = document.getElementById("extras-list");
+const addExtraButton = document.getElementById("add-extra");
+const saveExtrasButton = document.getElementById("save-extras");
+const extrasStatus = document.getElementById("extras-status");
+
+const allergensList = document.getElementById("allergens-list");
+const addAllergenButton = document.getElementById("add-allergen");
+const saveAllergensButton = document.getElementById("save-allergens");
+const allergensStatus = document.getElementById("allergens-status");
+
+/* =====================================================
+   UTILITY
+   ===================================================== */
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function showStatus(element, message, type = "") {
+  if (!element) return;
+
+  element.className = "status";
+  if (type) element.classList.add(type);
+
+  element.textContent = message;
+  element.classList.remove("hidden");
+}
+
+function hideStatus(element) {
+  if (!element) return;
+  element.classList.add("hidden");
+  element.textContent = "";
+}
+
+function normalizeSearch(value) {
+  return String(value ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function parseBoolean(value) {
+  if (typeof value === "boolean") return value;
+
+  const normalized = String(value ?? "").trim().toUpperCase();
+  return ["SI", "SÌ", "OK", "YES", "TRUE", "1"].includes(normalized);
+}
+
+function normalizeHeader(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function numberFromExcel(value) {
+  if (value === null || value === undefined || value === "") return null;
+  if (typeof value === "number") return value;
+
+  const number = Number(String(value).trim().replace(",", "."));
+  return Number.isFinite(number) ? number : null;
+}
+
+function priceToCents(value) {
+  const number = numberFromExcel(value);
+  return number === null ? null : Math.round(number * 100);
+}
+
+/* =====================================================
+   API
+   ===================================================== */
+
+async function api(path, options = {}) {
+  const headers = {
+    ...(options.headers || {}),
+    Authorization: `Bearer ${token}`
+  };
+
+  const response = await fetch(API + path, {
+    ...options,
+    headers,
+    credentials: "include"
+  });
+
+  let data = null;
+
+  try {
+    data = await response.json();
+  } catch {
+    data = null;
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      data?.error ||
+      data?.message ||
+      `Errore HTTP ${response.status}`
+    );
+  }
+
+  return data;
+}
+
+/* =====================================================
+   LOGIN
+   ===================================================== */
+
+async function login() {
+  hideStatus(loginStatus);
+
+  if (loginButton) {
+    loginButton.disabled = true;
+    loginButton.textContent = "Accesso...";
+  }
+
+  try {
+    const response = await fetch(API + "/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: loginPassword?.value || "" }),
+      credentials: "include"
+    });
+
+    let data = null;
+
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+
+    if (!response.ok) {
+      throw new Error(data?.error || data?.message || "Password non valida");
+    }
+
+    token = data?.session || data?.token || "";
+
+    if (!token) {
+      throw new Error("Il server non ha restituito il token di sessione.");
+    }
+
+    localStorage.setItem("genesis_admin_token", token);
+
+    loginScreen?.classList.add("hidden");
+    adminScreen?.classList.add("visible");
+
+    await loadEverything();
+  } catch (error) {
+    showStatus(loginStatus, error.message, "error");
+  } finally {
+    if (loginButton) {
+      loginButton.disabled = false;
+      loginButton.textContent = "Accedi";
+    }
+  }
+}
+
+loginButton?.addEventListener("click", login);
+
+loginPassword?.addEventListener("keydown", event => {
+  if (event.key === "Enter") login();
+});
+
+/* =====================================================
+   CARICAMENTO GENERALE
+   Una sezione non deve impedire il caricamento delle altre.
+   ===================================================== */
+
+async function loadEverything() {
+  const tasks = [
+    { run: loadMenu, status: "dishes-status", label: "Menu" },
+    { run: loadMenuInfo, status: "extras-status", label: "Extras e allergeni" },
+    { run: loadHomeDishes, status: "home-dishes-status", label: "Piatti in homepage" },
+    { run: loadPopups, status: "popups-status", label: "Pop-up" },
+    { run: loadHours, status: "hours-status", label: "Orari" }
+  ];
+
+  const results = await Promise.allSettled(
+    tasks.map(task => task.run())
+  );
+
+  const failures = [];
+
+  results.forEach((result, index) => {
+    if (result.status !== "rejected") return;
+
+    const task = tasks[index];
+    const message = result.reason?.message || "Errore di caricamento.";
+
+    failures.push(`${task.label}: ${message}`);
+
+    const status = document.getElementById(task.status);
+    if (status) showStatus(status, message, "error");
+  });
+
+  if (failures.length) {
+    console.error("Caricamento dashboard incompleto:", failures);
+  }
+}
+
+/* =====================================================
+   MENU
+   ===================================================== */
+
+async function loadMenu() {
+  const [categoriesData, dishesData] = await Promise.all([
+    api("/api/admin/categories"),
+    api("/api/admin/dishes")
+  ]);
+
+  categories = Array.isArray(categoriesData)
+    ? categoriesData
+    : categoriesData?.categories || [];
+
+  dishes = Array.isArray(dishesData)
+    ? dishesData
+    : dishesData?.dishes || [];
+
+  renderCategories();
+  renderCategoryFilter();
+  renderDishes();
+}
+
+/* =====================================================
+   CATEGORIE
+   ===================================================== */
+
+function renderCategories() {
+  const container = document.getElementById("categories-list");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  categories
+    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
+    .forEach((category, index) => {
+      const row = document.createElement("div");
+      row.className = "category-row";
+      row.dataset.id = category.id || "";
+
+      row.innerHTML = `
+        <input class="category-name"
+          value="${escapeHtml(category.name_es || "")}"
+          placeholder="Nome categoria">
+
+        <input class="category-order" type="number" min="0"
+          value="${Number(category.sort_order ?? index)}">
+
+        <button type="button" class="danger delete-category">Elimina</button>
+      `;
+
+      row.querySelector(".category-name").addEventListener("input", event => {
+        category.name_es = event.target.value;
+      });
+
+      row.querySelector(".category-order").addEventListener("input", event => {
+        category.sort_order = Number(event.target.value || 0);
+      });
+
+      row.querySelector(".delete-category").addEventListener("click", async () => {
+        if (!category.id) {
+          categories = categories.filter(item => item !== category);
+          renderCategories();
+          renderCategoryFilter();
+          return;
+        }
+
+        if (!confirm("Eliminare questa categoria?")) return;
+
+        try {
+          await api(`/api/admin/categories/${category.id}`, { method: "DELETE" });
+          await loadMenu();
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+
+      container.appendChild(row);
+    });
+}
+
+function renderCategoryFilter() {
+  if (!dishCategoryFilter) return;
+
+  const current = dishCategoryFilter.value;
+
+  dishCategoryFilter.innerHTML = '<option value="">Tutte</option>';
+
+  categories.forEach(category => {
+    const option = document.createElement("option");
+    option.value = category.id || "";
+    option.textContent = category.name_es || "Senza nome";
+    dishCategoryFilter.appendChild(option);
+  });
+
+  const exists = Array.from(dishCategoryFilter.options)
+    .some(option => option.value === current);
+
+  dishCategoryFilter.value = exists ? current : "";
+}
+
+/* =====================================================
+   RICERCA E RENDERING PIATTI
+   ===================================================== */
+
+function getFilteredDishes() {
+  const filter = dishCategoryFilter?.value || "";
+  const search = normalizeSearch(dishSearch?.value || "");
+
+  return dishes.filter(dish => {
+    if (filter && String(dish.category_id) !== String(filter)) return false;
+    if (!search) return true;
+
+    const category = categories.find(
+      item => String(item.id) === String(dish.category_id)
+    );
+
+    const text = [
+      dish.name_es,
+      dish.description_es,
+      dish.allergens,
+      category?.name_es
+    ].map(normalizeSearch).join(" ");
+
+    return text.includes(search);
+  });
+}
+
+function renderDishes() {
+  const container = document.getElementById("dishes-list");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const filtered = getFilteredDishes();
+
+  if (dishesCount) {
+    if (!dishes.length) {
+      dishesCount.textContent = "Nessun piatto presente.";
+    } else if ((dishSearch?.value || "").trim() || dishCategoryFilter?.value) {
+      dishesCount.textContent = `${filtered.length} di ${dishes.length} piatti`;
+    } else {
+      dishesCount.textContent = `${dishes.length} piatti`;
+    }
+  }
+
+  if (!filtered.length) {
+    container.innerHTML = '<div class="status">Nessun piatto trovato.</div>';
+    return;
+  }
+
+  filtered.forEach(dish => {
+    const row = document.createElement("div");
+    row.className = "dish-row";
+    row._dishRef = dish;
+
+    if (dish.id != null) row.dataset.dishId = String(dish.id);
+
+    row.innerHTML = `
+      <div class="dish-head">
+        <strong>${escapeHtml(dish.name_es || "Nuovo piatto")}</strong>
+        <button type="button" class="secondary edit-dish">Modifica</button>
+      </div>
+
+      <div class="grid dish-editor hidden">
+        <div class="field">
+          <label>Nome</label>
+          <input class="dish-name" value="${escapeHtml(dish.name_es || "")}">
+        </div>
+
+        <div class="field">
+          <label>Categoria</label>
+          <select class="dish-category">
+            ${categories.map(category => `
+              <option value="${escapeHtml(category.id)}"
+                ${String(category.id) === String(dish.category_id) ? "selected" : ""}>
+                ${escapeHtml(category.name_es || "")}
+              </option>
+            `).join("")}
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Prezzo (€)</label>
+          <input class="dish-price" type="number" step="0.01"
+            value="${dish.price_cents != null ? Number(dish.price_cents) / 100 : ""}">
+        </div>
+
+        <div class="field">
+          <label>Prezzo massimo (€)</label>
+          <input class="dish-price-max" type="number" step="0.01"
+            value="${dish.price_max_cents != null ? Number(dish.price_max_cents) / 100 : ""}">
+        </div>
+
+        <div class="field">
+          <label>Ordine</label>
+          <input class="dish-order" type="number" value="${Number(dish.sort_order || 0)}">
+        </div>
+
+        <div class="field">
+          <label>Allergeni</label>
+          <input class="dish-allergens" value="${escapeHtml(dish.allergens || "")}">
+        </div>
+
+        <div class="field" style="grid-column:1/-1">
+          <label>Descrizione (ES)</label>
+          <textarea class="dish-description-es">${escapeHtml(dish.description_es || "")}</textarea>
+        </div>
+
+        <div class="field" style="grid-column:1/-1">
+          <label>Descrizione (EN)</label>
+          <textarea class="dish-description-en">${escapeHtml(dish.description_en || "")}</textarea>
+        </div>
+
+        <div class="field" style="grid-column:1/-1">
+          <label>Descrizione (IT)</label>
+          <textarea class="dish-description-it">${escapeHtml(dish.description_it || "")}</textarea>
+        </div>
+
+        <div class="field">
+          <label>Immagine</label>
+          <input class="dish-image" value="${escapeHtml(dish.image_key || "")}">
+        </div>
+
+        <div class="field">
+          <label>Immagine del piatto</label>
+          <input type="file" class="dish-image-file" accept="image/jpeg,image/png,image/webp">
+          <div class="home-upload-controls">
+            <button type="button" class="secondary dish-upload-image" disabled>Carica foto</button>
+            <span class="dish-image-filename">Nessun nuovo file selezionato</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="checkboxes dish-editor hidden">
+        <label><input type="checkbox" class="dish-available" ${dish.available ? "checked" : ""}> Disponibile</label>
+        <label><input type="checkbox" class="dish-vegetarian" ${dish.vegetarian ? "checked" : ""}> Vegetariano</label>
+        <label><input type="checkbox" class="dish-vegan" ${dish.vegan ? "checked" : ""}> Vegano</label>
+        <button type="button" class="danger delete-dish">Elimina</button>
+      </div>
+    `;
+
+    const editors = row.querySelectorAll(".dish-editor");
+
+    row.querySelector(".edit-dish").addEventListener("click", () => {
+      editors.forEach(editor => editor.classList.toggle("hidden"));
+    });
+
+    row.querySelector(".delete-dish").addEventListener("click", async () => {
+      if (!dish.id) {
+        dishes = dishes.filter(item => item !== dish);
+        renderDishes();
+        return;
+      }
+
+      if (!confirm("Eliminare questo piatto?")) return;
+
+      try {
+        await api(`/api/admin/dishes/${dish.id}`, { method: "DELETE" });
+        await loadMenu();
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+
+    const dishImageFile = row.querySelector(".dish-image-file");
+    const dishUploadImage = row.querySelector(".dish-upload-image");
+    const dishImageFilename = row.querySelector(".dish-image-filename");
+
+    // La selezione del file non lo carica: abilita soltanto il pulsante dedicato.
+    dishImageFile.addEventListener("change", event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!allowedTypes.includes(file.type)) {
+        alert("Usa un'immagine JPG, PNG o WebP.");
+        dishImageFile.value = "";
+        dishUploadImage.disabled = true;
+        dishImageFilename.textContent = "Nessun nuovo file selezionato";
+        return;
+      }
+      if (file.size > 8 * 1024 * 1024) {
+        alert("L'immagine non può superare 8 MB.");
+        dishImageFile.value = "";
+        dishUploadImage.disabled = true;
+        dishImageFilename.textContent = "Nessun nuovo file selezionato";
+        return;
+      }
+
+      dishImageFilename.textContent = file.name;
+      dishUploadImage.disabled = false;
+    });
+
+    dishUploadImage.addEventListener("click", async () => {
+      const file = dishImageFile.files?.[0];
+      if (!file) {
+        alert("Seleziona prima una foto.");
+        return;
+      }
+
+      const originalText = dishUploadImage.textContent;
+      dishUploadImage.disabled = true;
+      dishUploadImage.textContent = "Caricamento…";
+      try {
+        const result = await api("/api/admin/images", {
+          method: "POST",
+          headers: { "Content-Type": file.type },
+          body: file
+        });
+        const key = result?.image_key || result?.key || "";
+        if (!key) throw new Error("Il server non ha restituito la chiave dell'immagine.");
+        row.querySelector(".dish-image").value = key;
+        dishImageFilename.textContent = `${file.name} — caricata`;
+        dishUploadImage.textContent = "Foto caricata";
+        dishImageFile.value = "";
+      } catch (error) {
+        alert(error.message);
+        dishUploadImage.textContent = originalText;
+        dishUploadImage.disabled = false;
+      }
+    });
+
+    container.appendChild(row);
+  });
+}
+
+dishSearchButton?.addEventListener("click", renderDishes);
+dishSearch?.addEventListener("input", renderDishes);
+
+dishSearch?.addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    renderDishes();
+  }
+});
+
+dishSearchClear?.addEventListener("click", () => {
+  if (dishSearch) dishSearch.value = "";
+  renderDishes();
+  dishSearch?.focus();
+});
+
+dishCategoryFilter?.addEventListener("change", renderDishes);
+
+/* =====================================================
+   AGGIUNGI / SALVA CATEGORIE
+   ===================================================== */
+
+document.getElementById("add-category")?.addEventListener("click", () => {
+  categories.push({
+    id: null,
+    name_es: "",
+    slug: "",
+    sort_order: categories.length
+  });
+
+  renderCategories();
+  renderCategoryFilter();
+});
+
+document.getElementById("save-categories")?.addEventListener("click", async () => {
+  const button = document.getElementById("save-categories");
+  if (button) button.disabled = true;
+
+  try {
+    for (const category of categories) {
+      const payload = {
+        name_es: String(category.name_es || "").trim(),
+        sort_order: Number(category.sort_order || 0)
+      };
+
+      if (!payload.name_es) continue;
+
+      if (category.id) {
+        await api(`/api/admin/categories/${category.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        await api("/api/admin/categories", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      }
+    }
+
+    await loadMenu();
+    showStatus(document.getElementById("categories-status"), "Categorie salvate.", "success");
+  } catch (error) {
+    showStatus(document.getElementById("categories-status"), error.message, "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
+});
+
+/* =====================================================
+   AGGIUNGI / SALVA PIATTI
+   ===================================================== */
+
+document.getElementById("add-dish")?.addEventListener("click", () => {
+  const category = categories[0];
+
+  dishes.unshift({
+    id: null,
+    category_id: category?.id || "",
+    name_es: "",
+    description_es: "",
+    description_en: "",
+    description_it: "",
+    price_cents: null,
+    price_max_cents: null,
+    allergens: "",
+    image_key: "",
+    sort_order: 0,
+    available: true,
+    vegetarian: false,
+    vegan: false
+  });
+
+  if (dishSearch) dishSearch.value = "";
+  if (dishCategoryFilter) dishCategoryFilter.value = "";
+
+  renderDishes();
+});
+
+document.getElementById("save-dishes")?.addEventListener("click", async () => {
+  const button = document.getElementById("save-dishes");
+  if (button) button.disabled = true;
+
+  try {
+    const rows = document.querySelectorAll(".dish-row");
+
+    for (const row of rows) {
+      const dish = row._dishRef;
+      if (!dish) continue;
+
+      const payload = {
+        category_id: Number(row.querySelector(".dish-category")?.value || dish.category_id),
+        name_es: row.querySelector(".dish-name")?.value.trim() || "",
+        description_es: row.querySelector(".dish-description-es")?.value.trim() || "",
+        description_en: row.querySelector(".dish-description-en")?.value.trim() || "",
+        description_it: row.querySelector(".dish-description-it")?.value.trim() || "",
+        price_cents: Math.round(Number(row.querySelector(".dish-price")?.value || 0) * 100),
+        price_max_cents: row.querySelector(".dish-price-max")?.value
+          ? Math.round(Number(row.querySelector(".dish-price-max").value) * 100)
+          : null,
+        allergens: row.querySelector(".dish-allergens")?.value.trim() || "",
+        image_key: row.querySelector(".dish-image")?.value.trim() || "",
+        sort_order: Number(row.querySelector(".dish-order")?.value || 0),
+        available: row.querySelector(".dish-available")?.checked ?? true,
+        vegetarian: row.querySelector(".dish-vegetarian")?.checked ?? false,
+        vegan: row.querySelector(".dish-vegan")?.checked ?? false
+      };
+
+      if (!payload.name_es) continue;
+
+      if (dish.id) {
+        await api(`/api/admin/dishes/${dish.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        await api("/api/admin/dishes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      }
+    }
+
+    await loadMenu();
+    showStatus(document.getElementById("dishes-status"), "Piatti salvati.", "success");
+  } catch (error) {
+    showStatus(document.getElementById("dishes-status"), error.message, "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
+});
+
+/* =====================================================
+   HOMEPAGE — CARICAMENTO
+   ===================================================== */
+
+async function loadHomeDishes() {
+  const data = await api("/api/admin/home-dishes");
+
+  homeDishes = Array.isArray(data)
+    ? data
+    : data?.homeDishes || data?.home_dishes || [];
+
+  homeDishes.sort((a, b) =>
+    Number(a.sort_order || 0) - Number(b.sort_order || 0)
+  );
+
+  renderHomeDishes();
+}
+
+/* =====================================================
+   HOMEPAGE — URL IMMAGINI
+   ===================================================== */
+
+function homeImageUrl(key) {
+  if (!key) return "";
+
+  const value = String(key).trim();
+
+  if (/^https?:\/\//i.test(value)) return value;
+
+  if (value.startsWith("assets/")) return `../${value}`;
+
+  return `${API}/api/images/${encodeURIComponent(value)}`;
+}
+
+/* =====================================================
+   HOMEPAGE — RENDERING
+   ===================================================== */
+
+function renderHomeDishes() {
+  const container = document.getElementById("home-dishes-list");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!homeDishes.length) {
+    container.innerHTML = `
+      <div class="status">
+        Non ci sono piatti configurati per la homepage.
+      </div>
+    `;
+    return;
+  }
+
+  homeDishes.forEach((dish, index) => {
+    const row = document.createElement("div");
+    row.className = "home-dish-row";
+    row.dataset.id = dish.id ?? "";
+
+    const initialImageUrl = homeImageUrl(dish.image_key);
+
+    const initialLabel =
+      dish.label_it || dish.meta_it ||
+      dish.label_es || dish.meta_es ||
+      dish.label_en || dish.meta_en ||
+      "IN EVIDENZA";
+
+    const initialTitle =
+      dish.title_it ||
+      dish.title_es ||
+      dish.title_en ||
+      "Titolo del piatto";
+
+    const initialText =
+      dish.text_it ||
+      dish.text_es ||
+      dish.text_en ||
+      "Il testo descrittivo apparirà qui.";
+
+    row.innerHTML = `
+      <div class="home-dish-preview">
+        <div class="home-image-preview">
+          ${
+            initialImageUrl
+              ? `<img
+                   src="${escapeHtml(initialImageUrl)}"
+                   alt="${escapeHtml(dish.alt_it || "")}"
+                 >`
+              : `<div class="home-image-placeholder">
+                   Nessuna immagine
+                 </div>`
+          }
+        </div>
+
+        <div class="home-dish-preview-copy">
+          <div class="home-dish-preview-meta">
+            <span class="home-preview-label">
+              ${escapeHtml(initialLabel)}
+            </span>
+          </div>
+
+          <h3 class="home-preview-title">
+            ${escapeHtml(initialTitle)}
+          </h3>
+
+          <p class="home-preview-text">
+            ${escapeHtml(initialText)}
+          </p>
+        </div>
+      </div>
+
+      <div class="home-dish-editor">
+        <div class="home-dish-top">
+          <strong>Elemento homepage ${index + 1}</strong>
+
+          <span class="home-dish-badge ${dish.published ? "" : "off"}">
+            ${dish.published ? "Pubblicato" : "Non pubblicato"}
+          </span>
+        </div>
+
+        <div class="home-dish-footer">
+          <label>
+            <input
+              type="checkbox"
+              class="home-published"
+              ${dish.published ? "checked" : ""}
+            >
+            Pubblicato sul sito
+          </label>
+
+          <div class="field home-order-field">
+            <label>Ordine di visualizzazione</label>
+            <input
+              type="number"
+              class="home-sort-order"
+              value="${Number(dish.sort_order || 0)}"
+            >
+          </div>
+        </div>
+
+        <div class="home-dish-file">
+          <div class="field">
+            <label>Chiave immagine</label>
+            <input
+              type="text"
+              class="home-image-key"
+              value="${escapeHtml(dish.image_key || "")}"
+              placeholder="Chiave o URL dell'immagine"
+            >
+          </div>
+
+          <div class="field home-upload-field">
+            <label>Immagine della card</label>
+
+            <div class="home-upload-controls">
+              <input
+                type="file"
+                class="home-image-file"
+                accept="image/jpeg,image/png,image/webp"
+              >
+
+              <button
+                type="button"
+                class="secondary home-upload-trigger"
+                disabled
+              >
+                Carica foto
+              </button>
+
+              <span class="home-upload-filename">
+                Nessun nuovo file selezionato
+              </span>
+            </div>
+
+            <small>
+              Formati consentiti: JPG, PNG o WebP. Massimo 8 MB.
+            </small>
+          </div>
+
+          <div class="field">
+            <label>Testo alternativo dell'immagine</label>
+            <input
+              type="text"
+              class="home-alt"
+              value="${escapeHtml(dish.alt_it || "")}"
+              placeholder="Descrizione dell'immagine"
+            >
+          </div>
+        </div>
+
+        <div class="home-dish-languages">
+          <div class="home-dish-language">
+            <h4>Italiano</h4>
+
+            <div class="field">
+              <label>Etichetta IT</label>
+              <input
+                type="text"
+                class="home-label-it"
+                value="${escapeHtml(dish.label_it || dish.meta_it || "")}"
+                placeholder="Es. DA PROVARE"
+              >
+            </div>
+
+            <div class="field">
+              <label>Titolo IT</label>
+              <input
+                type="text"
+                class="home-title-it"
+                value="${escapeHtml(dish.title_it || "")}"
+                placeholder="Titolo in italiano"
+              >
+            </div>
+
+            <div class="field">
+              <label>Testo IT</label>
+              <textarea
+                class="home-text-it"
+                placeholder="Descrizione in italiano"
+              >${escapeHtml(dish.text_it || "")}</textarea>
+            </div>
+          </div>
+
+          <div class="home-dish-language">
+            <h4>Español</h4>
+
+            <div class="field">
+              <label>Etiqueta ES</label>
+              <input
+                type="text"
+                class="home-label-es"
+                value="${escapeHtml(dish.label_es || dish.meta_es || "")}"
+                placeholder="Ej. RECOMENDADO"
+              >
+            </div>
+
+            <div class="field">
+              <label>Título ES</label>
+              <input
+                type="text"
+                class="home-title-es"
+                value="${escapeHtml(dish.title_es || "")}"
+                placeholder="Título en español"
+              >
+            </div>
+
+            <div class="field">
+              <label>Texto ES</label>
+              <textarea
+                class="home-text-es"
+                placeholder="Descripción en español"
+              >${escapeHtml(dish.text_es || "")}</textarea>
+            </div>
+          </div>
+
+          <div class="home-dish-language">
+            <h4>English</h4>
+
+            <div class="field">
+              <label>Label EN</label>
+              <input
+                type="text"
+                class="home-label-en"
+                value="${escapeHtml(dish.label_en || dish.meta_en || "")}"
+                placeholder="E.g. MUST TRY"
+              >
+            </div>
+
+            <div class="field">
+              <label>Title EN</label>
+              <input
+                type="text"
+                class="home-title-en"
+                value="${escapeHtml(dish.title_en || "")}"
+                placeholder="Title in English"
+              >
+            </div>
+
+            <div class="field">
+              <label>Text EN</label>
+              <textarea
+                class="home-text-en"
+                placeholder="Description in English"
+              >${escapeHtml(dish.text_en || "")}</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const previewImage = row.querySelector(".home-image-preview");
+    const previewLabel = row.querySelector(".home-preview-label");
+    const previewTitle = row.querySelector(".home-preview-title");
+    const previewText = row.querySelector(".home-preview-text");
+
+    const publishedCheckbox = row.querySelector(".home-published");
+    const publishedBadge = row.querySelector(".home-dish-badge");
+
+    const imageKeyInput = row.querySelector(".home-image-key");
+    const imageAltInput = row.querySelector(".home-alt");
+
+    const fileInput = row.querySelector(".home-image-file");
+    const uploadButton = row.querySelector(".home-upload-trigger");
+    const uploadFilename = row.querySelector(".home-upload-filename");
+
+    /*
+     * Aggiorna l'anteprima.
+     * Priorità dei contenuti: italiano, spagnolo, inglese.
+     */
+
+    function updateHomePreview() {
+      const label =
+        row.querySelector(".home-label-it").value.trim() ||
+        row.querySelector(".home-label-es").value.trim() ||
+        row.querySelector(".home-label-en").value.trim() ||
+        "IN EVIDENZA";
+
+      const title =
+        row.querySelector(".home-title-it").value.trim() ||
+        row.querySelector(".home-title-es").value.trim() ||
+        row.querySelector(".home-title-en").value.trim() ||
+        "Titolo del piatto";
+
+      const text =
+        row.querySelector(".home-text-it").value.trim() ||
+        row.querySelector(".home-text-es").value.trim() ||
+        row.querySelector(".home-text-en").value.trim() ||
+        "Il testo descrittivo apparirà qui.";
+
+      previewLabel.textContent = label;
+      previewTitle.textContent = title;
+      previewText.textContent = text;
+
+      const imageUrl = homeImageUrl(imageKeyInput.value.trim());
+
+      if (imageUrl) {
+        let img = previewImage.querySelector("img");
+
+        if (!img) {
+          previewImage.innerHTML = "";
+          img = document.createElement("img");
+          previewImage.appendChild(img);
+        }
+
+        img.src = imageUrl;
+        img.alt = imageAltInput.value.trim();
+      } else {
+        previewImage.innerHTML = `
+          <div class="home-image-placeholder">
+            Nessuna immagine
+          </div>
+        `;
+      }
+
+      const isPublished = publishedCheckbox.checked;
+
+      row.classList.toggle("is-unpublished", !isPublished);
+
+      publishedBadge.textContent = isPublished
+        ? "Pubblicato"
+        : "Non pubblicato";
+
+      publishedBadge.classList.toggle("off", !isPublished);
+    }
+
+    /*
+     * Aggiornamento dell'anteprima durante la digitazione.
+     */
+
+    [
+      ".home-label-it",
+      ".home-label-es",
+      ".home-label-en",
+      ".home-title-it",
+      ".home-title-es",
+      ".home-title-en",
+      ".home-text-it",
+      ".home-text-es",
+      ".home-text-en",
+      ".home-image-key",
+      ".home-alt"
+    ].forEach(selector => {
+      row.querySelector(selector)?.addEventListener(
+        "input",
+        updateHomePreview
+      );
+    });
+
+    publishedCheckbox.addEventListener(
+      "change",
+      updateHomePreview
+    );
+
+    /*
+     * La selezione del file non avvia il caricamento.
+     * L'upload parte soltanto cliccando "Carica foto".
+     */
+
+    fileInput.addEventListener("change", event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!allowedTypes.includes(file.type)) {
+        alert("Seleziona un'immagine JPG, PNG o WebP.");
+        fileInput.value = "";
+        uploadButton.disabled = true;
+        uploadFilename.textContent = "Nessun nuovo file selezionato";
+        return;
+      }
+
+      if (file.size > 8 * 1024 * 1024) {
+        alert("L'immagine non può superare 8 MB.");
+        fileInput.value = "";
+        uploadButton.disabled = true;
+        uploadFilename.textContent = "Nessun nuovo file selezionato";
+        return;
+      }
+
+      uploadFilename.textContent = file.name;
+      uploadButton.disabled = false;
+      uploadButton.textContent = "Carica foto";
+    });
+
+    uploadButton.addEventListener("click", async () => {
+      const file = fileInput.files?.[0];
+      if (!file) {
+        alert("Seleziona prima una foto.");
+        return;
+      }
+
+      const originalButtonText = "Carica foto";
+      uploadButton.disabled = true;
+      uploadButton.textContent = "Caricamento…";
+
+      try {
+        const uploaded = await api("/api/admin/images", {
+          method: "POST",
+          headers: { "Content-Type": file.type },
+          body: file
+        });
+
+        const key = uploaded?.key || uploaded?.image_key || "";
+        if (!key) {
+          throw new Error("Il server non ha restituito la chiave dell'immagine.");
+        }
+
+        imageKeyInput.value = key;
+        updateHomePreview();
+        uploadFilename.textContent = `${file.name} — caricata`;
+        uploadButton.textContent = "Foto caricata";
+        fileInput.value = "";
+      } catch (error) {
+        uploadFilename.textContent = "Caricamento non riuscito";
+        alert(`Errore caricamento immagine: ${error.message}`);
+        uploadButton.textContent = originalButtonText;
+      } finally {
+        uploadButton.disabled = false;
+      }
+    });
+
+    updateHomePreview();
+    container.appendChild(row);
+  });
+}
+
+/* =====================================================
+   HOMEPAGE — SALVATAGGIO
+   ===================================================== */
+
+document.getElementById("save-home-dishes")?.addEventListener(
+  "click",
+  async () => {
+    const button = document.getElementById("save-home-dishes");
+    const status = document.getElementById("home-dishes-status");
+
+    if (button) button.disabled = true;
+    hideStatus(status);
+
+    try {
+      const rows = document.querySelectorAll(".home-dish-row");
+
+      for (const row of rows) {
+        const id = row.dataset.id;
+
+        if (!id) {
+          throw new Error(
+            "Un elemento homepage non ha un ID valido."
+          );
+        }
+
+        const payload = {
+          image_key:
+            row.querySelector(".home-image-key")?.value.trim() || "",
+
+          alt_it:
+            row.querySelector(".home-alt")?.value.trim() || "",
+
+          // Compatibilità con il Worker attuale: il database usa meta_*.
+          meta_it:
+            row.querySelector(".home-label-it")?.value.trim() || "",
+
+          meta_es:
+            row.querySelector(".home-label-es")?.value.trim() || "",
+
+          meta_en:
+            row.querySelector(".home-label-en")?.value.trim() || "",
+
+          title_it:
+            row.querySelector(".home-title-it")?.value.trim() || "",
+
+          title_es:
+            row.querySelector(".home-title-es")?.value.trim() || "",
+
+          title_en:
+            row.querySelector(".home-title-en")?.value.trim() || "",
+
+          text_it:
+            row.querySelector(".home-text-it")?.value.trim() || "",
+
+          text_es:
+            row.querySelector(".home-text-es")?.value.trim() || "",
+
+          text_en:
+            row.querySelector(".home-text-en")?.value.trim() || "",
+
+          published:
+            row.querySelector(".home-published")?.checked ?? false,
+
+          sort_order:
+            Number(
+              row.querySelector(".home-sort-order")?.value || 0
+            )
+        };
+
+        await api(
+          `/api/admin/home-dishes/${encodeURIComponent(id)}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+          }
+        );
+      }
+
+      await loadHomeDishes();
+
+      showStatus(
+        status,
+        "Contenuti della homepage salvati.",
+        "success"
+      );
+    } catch (error) {
+      showStatus(status, error.message, "error");
+    } finally {
+      if (button) button.disabled = false;
+    }
+  }
+);
+
+/* =====================================================
+   HOMEPAGE — RICARICA
+   ===================================================== */
+
+document.getElementById("reload-home-dishes")?.addEventListener(
+  "click",
+  async () => {
+    const button = document.getElementById("reload-home-dishes");
+    const status = document.getElementById("home-dishes-status");
+
+    if (button) button.disabled = true;
+
+    try {
+      await loadHomeDishes();
+
+      showStatus(
+        status,
+        "Contenuti della homepage aggiornati.",
+        "success"
+      );
+    } catch (error) {
+      showStatus(status, error.message, "error");
+    } finally {
+      if (button) button.disabled = false;
+    }
+  }
+);
+/* =====================================================
+   EXTRAS E ALLERGENI — CARICAMENTO
+   ===================================================== */
+
+async function loadMenuInfo() {
+  try {
+    const data = await api("/api/admin/menu-info");
+
+    menuInfo = {
+      extras: Array.isArray(data?.extras)
+        ? data.extras.map(item => {
+            const nameEs = String(item.name_es ?? item.name ?? "");
+            return {
+              name: nameEs,
+              name_es: nameEs,
+              name_en: String(item.name_en ?? ""),
+              name_it: String(item.name_it ?? ""),
+              price: Number(item.price ?? 0)
+            };
+          })
+        : DEFAULT_EXTRAS.map(item => ({ ...item })),
+
+      allergens: Array.isArray(data?.allergens)
+        ? data.allergens.map(item => {
+            const nameEs = String(item.name_es ?? item.name ?? "");
+            return {
+              code: String(item.code ?? item.number ?? ""),
+              name: nameEs,
+              name_es: nameEs,
+              name_en: String(item.name_en ?? ""),
+              name_it: String(item.name_it ?? "")
+            };
+          })
+        : DEFAULT_ALLERGENS.map(item => ({ ...item }))
+    };
+
+    menuInfoLoaded = true;
+    hideStatus(extrasStatus);
+    hideStatus(allergensStatus);
+    renderExtras();
+    renderAllergens();
+  } catch (error) {
+    menuInfoLoaded = false;
+
+    showStatus(
+      extrasStatus,
+      `Impossibile caricare gli extra: ${error.message}`,
+      "error"
+    );
+
+    showStatus(
+      allergensStatus,
+      `Impossibile caricare gli allergeni: ${error.message}`,
+      "error"
+    );
+  }
+}
+
+/* =====================================================
+   EXTRA — VISUALIZZAZIONE
+   ===================================================== */
+
+function renderExtras() {
+  if (!extrasList) return;
+
+  extrasList.innerHTML = "";
+
+  menuInfo.extras.forEach((extra, index) => {
+    const row = document.createElement("div");
+    row.className = "menu-info-row extra-row";
+    row.dataset.index = String(index);
+
+    const nameEs = extra.name_es ?? extra.name ?? "";
+
+    row.innerHTML = `
+      <div class="field">
+        <label>Nome extra (ES)</label>
+        <input class="extra-name-es" type="text" maxlength="150"
+          value="${escapeHtml(nameEs)}" placeholder="Es. AGUACATE">
+      </div>
+      <div class="field">
+        <label>Nome extra (EN)</label>
+        <input class="extra-name-en" type="text" maxlength="150"
+          value="${escapeHtml(extra.name_en ?? "")}" placeholder="Es. AVOCADO">
+      </div>
+      <div class="field">
+        <label>Nome extra (IT)</label>
+        <input class="extra-name-it" type="text" maxlength="150"
+          value="${escapeHtml(extra.name_it ?? "")}" placeholder="Es. AVOCADO">
+      </div>
+      <div class="field">
+        <label>Prezzo (€)</label>
+        <input class="extra-price" type="number" min="0" step="0.01"
+          inputmode="decimal" value="${Number(extra.price || 0).toFixed(2)}">
+      </div>
+      <button type="button" class="danger delete-extra" aria-label="Elimina extra">
+        Elimina
+      </button>
+    `;
+
+    row.querySelector(".delete-extra").addEventListener("click", () => {
+      menuInfo.extras.splice(index, 1);
+      renderExtras();
+      hideStatus(extrasStatus);
+    });
+
+    extrasList.appendChild(row);
+  });
+}
+
+/* =====================================================
+   ALLERGENI — VISUALIZZAZIONE
+   ===================================================== */
+
+function renderAllergens() {
+  if (!allergensList) return;
+
+  allergensList.innerHTML = "";
+
+  menuInfo.allergens.forEach((allergen, index) => {
+    const row = document.createElement("div");
+    row.className = "menu-info-row allergen-row";
+    row.dataset.index = String(index);
+
+    const nameEs = allergen.name_es ?? allergen.name ?? "";
+
+    row.innerHTML = `
+      <div class="field">
+        <label>Codice</label>
+        <input class="allergen-code" type="text" maxlength="10"
+          value="${escapeHtml(allergen.code)}" placeholder="01">
+      </div>
+      <div class="field">
+        <label>Nome allergene (ES)</label>
+        <input class="allergen-name-es allergen-name" type="text" maxlength="100"
+          value="${escapeHtml(nameEs)}" placeholder="Es. Gluten">
+      </div>
+      <div class="field">
+        <label>Nome allergene (EN)</label>
+        <input class="allergen-name-en" type="text" maxlength="100"
+          value="${escapeHtml(allergen.name_en ?? "")}" placeholder="Es. Gluten">
+      </div>
+      <div class="field">
+        <label>Nome allergene (IT)</label>
+        <input class="allergen-name-it" type="text" maxlength="100"
+          value="${escapeHtml(allergen.name_it ?? "")}" placeholder="Es. Glutine">
+      </div>
+      <button type="button" class="danger delete-allergen" aria-label="Elimina allergene">
+        Elimina
+      </button>
+    `;
+
+    row.querySelector(".delete-allergen").addEventListener("click", () => {
+      menuInfo.allergens.splice(index, 1);
+      renderAllergens();
+      hideStatus(allergensStatus);
+    });
+
+    allergensList.appendChild(row);
+  });
+}
+
+/* =====================================================
+   EXTRA — AGGIUNGI
+   ===================================================== */
+
+addExtraButton?.addEventListener("click", () => {
+  menuInfo.extras.push({
+    name: "",
+    name_es: "",
+    name_en: "",
+    name_it: "",
+    price: 0
+  });
+
+  renderExtras();
+  hideStatus(extrasStatus);
+
+  const inputs = extrasList?.querySelectorAll(".extra-name-es");
+  inputs?.[inputs.length - 1]?.focus();
+});
+
+/* =====================================================
+   ALLERGENI — AGGIUNGI
+   ===================================================== */
+
+addAllergenButton?.addEventListener("click", () => {
+  menuInfo.allergens.push({
+    code: "",
+    name: "",
+    name_es: "",
+    name_en: "",
+    name_it: ""
+  });
+
+  renderAllergens();
+  hideStatus(allergensStatus);
+
+  const inputs = allergensList?.querySelectorAll(".allergen-code");
+  inputs?.[inputs.length - 1]?.focus();
+});
+
+/* =====================================================
+   EXTRA — LEGGI I VALORI DAL MODULO
+   ===================================================== */
+
+function readExtrasFromForm() {
+  if (!extrasList) {
+    throw new Error("Sezione Extra non trovata.");
+  }
+
+  const rows = Array.from(extrasList.querySelectorAll(".extra-row"));
+
+  return rows.map((row, index) => {
+    const name_es = row.querySelector(".extra-name-es")?.value.trim() ?? "";
+    const name_en = row.querySelector(".extra-name-en")?.value.trim() ?? "";
+    const name_it = row.querySelector(".extra-name-it")?.value.trim() ?? "";
+
+    const rawPrice = String(
+      row.querySelector(".extra-price")?.value ?? ""
+    ).trim().replace(",", ".");
+
+    const price = Number(rawPrice);
+
+    if (!name_es) {
+      throw new Error(
+        `Inserisci il nome spagnolo dell'extra alla riga ${index + 1}.`
+      );
+    }
+
+    if (rawPrice === "" || !Number.isFinite(price) || price < 0) {
+      throw new Error(
+        `Inserisci un prezzo valido per "${name_es}".`
+      );
+    }
+
+    return {
+      name: name_es,
+      name_es,
+      name_en,
+      name_it,
+      price
+    };
+  });
+}
+
+/* =====================================================
+   ALLERGENI — LEGGI I VALORI DAL MODULO
+   ===================================================== */
+
+function readAllergensFromForm() {
+  if (!allergensList) {
+    throw new Error("Sezione Allergeni non trovata.");
+  }
+
+  const rows = Array.from(allergensList.querySelectorAll(".allergen-row"));
+
+  return rows.map((row, index) => {
+    const code = row.querySelector(".allergen-code")?.value.trim() ?? "";
+    const name_es = row.querySelector(".allergen-name-es")?.value.trim() ?? "";
+    const name_en = row.querySelector(".allergen-name-en")?.value.trim() ?? "";
+    const name_it = row.querySelector(".allergen-name-it")?.value.trim() ?? "";
+
+    if (!code || !name_es) {
+      throw new Error(
+        `Completa codice e nome spagnolo dell'allergene alla riga ${index + 1}.`
+      );
+    }
+
+    return {
+      code,
+      name: name_es,
+      name_es,
+      name_en,
+      name_it
+    };
+  });
+}
+
+/* =====================================================
+   SALVATAGGIO — FUNZIONE COMUNE
+   ===================================================== */
+
+async function saveMenuInfoSection(section) {
+  const isExtras = section === "extras";
+
+  const button = isExtras
+    ? saveExtrasButton
+    : saveAllergensButton;
+
+  const status = isExtras
+    ? extrasStatus
+    : allergensStatus;
+
+  if (!button || !status) return;
+
+  if (!menuInfoLoaded) {
+    showStatus(
+      status,
+      "Dati non caricati. Ricarica la sezione prima di salvare.",
+      "error"
+    );
+    return;
+  }
+
+  const originalText = button.textContent;
+
+  button.disabled = true;
+  button.textContent = "Salvataggio…";
+
+  try {
+    const extras = isExtras
+      ? readExtrasFromForm()
+      : menuInfo.extras.map(item => ({ ...item }));
+
+    const allergens = isExtras
+      ? menuInfo.allergens.map(item => ({ ...item }))
+      : readAllergensFromForm();
+
+    const response = await api("/api/admin/menu-info", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        extras,
+        allergens
+      })
+    });
+
+    if (response?.success !== true) {
+      throw new Error(
+        response?.error ||
+        response?.message ||
+        "Il server non ha confermato il salvataggio."
+      );
+    }
+
+    menuInfo = {
+      extras,
+      allergens
+    };
+
+    if (isExtras) {
+      renderExtras();
+    } else {
+      renderAllergens();
+    }
+
+    showStatus(
+      status,
+      isExtras
+        ? "Extra salvati correttamente."
+        : "Allergeni salvati correttamente.",
+      "success"
+    );
+  } catch (error) {
+    showStatus(status, error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+}
+
+
+/* =====================================================
+   PULSANTI DI SALVATAGGIO
+   ===================================================== */
+
+saveExtrasButton?.addEventListener("click", () => {
+  saveMenuInfoSection("extras");
+});
+
+saveAllergensButton?.addEventListener("click", () => {
+  saveMenuInfoSection("allergens");
+});
+/* =====================================================
+   POP-UP
+   ===================================================== */
+
+async function loadPopups() {
+  const data = await api("/api/admin/popups");
+  popups = Array.isArray(data) ? data : data?.popups || [];
+  renderPopups();
+}
+
+function renderPopups() {
+  const container = document.getElementById("popups-list");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  popups.forEach(popup => {
+    const row = document.createElement("div");
+    row.className = "popup-row";
+
+    row.innerHTML = `
+      <div class="grid">
+        <div class="field">
+          <label>Titolo</label>
+          <input class="popup-title" value="${escapeHtml(popup.title_es || "")}">
+        </div>
+
+        <div class="field">
+          <label>Testo</label>
+          <textarea class="popup-text">${escapeHtml(popup.text_es || "")}</textarea>
+        </div>
+
+        <div class="field">
+          <label>Testo pulsante</label>
+          <input class="popup-button-text" value="${escapeHtml(popup.button_text_es || "")}">
+        </div>
+
+        <div class="field">
+          <label>URL pulsante</label>
+          <input class="popup-button-url" value="${escapeHtml(popup.button_url || "")}">
+        </div>
+
+        <div class="field">
+          <label>Testo linguetta</label>
+          <input class="popup-tab-text" value="${escapeHtml(popup.tab_text || "")}">
+        </div>
+
+        <div class="field">
+          <label>Inizio</label>
+          <input class="popup-start" type="datetime-local"
+            value="${popup.starts_at ? String(popup.starts_at).slice(0, 16) : ""}">
+        </div>
+
+        <div class="field">
+          <label>Fine</label>
+          <input class="popup-end" type="datetime-local"
+            value="${popup.ends_at ? String(popup.ends_at).slice(0, 16) : ""}">
+        </div>
+      </div>
+
+      <div class="checkboxes">
+        <label><input type="checkbox" class="popup-published" ${popup.published ? "checked" : ""}> Pubblicato</label>
+        <button type="button" class="danger delete-popup">Elimina</button>
+      </div>
+    `;
+
+    row.querySelector(".delete-popup").addEventListener("click", async () => {
+      if (!popup.id) {
+        popups = popups.filter(item => item !== popup);
+        renderPopups();
+        return;
+      }
+
+      if (!confirm("Eliminare questo pop-up?")) return;
+
+      try {
+        await api(`/api/admin/popups/${popup.id}`, { method: "DELETE" });
+        await loadPopups();
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+
+    container.appendChild(row);
+  });
+}
+
+document.getElementById("add-popup")?.addEventListener("click", () => {
+  popups.unshift({
+    id: null,
+    title_es: "",
+    text_es: "",
+    button_text_es: "",
+    button_url: "",
+    tab_text: "News",
+    starts_at: null,
+    ends_at: null,
+    published: false
+  });
+
+  renderPopups();
+});
+
+document.getElementById("save-popups")?.addEventListener("click", async () => {
+  const button = document.getElementById("save-popups");
+  if (button) button.disabled = true;
+
+  try {
+    const rows = document.querySelectorAll(".popup-row");
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const popup = popups[i];
+
+      const payload = {
+        title_es: row.querySelector(".popup-title").value.trim(),
+        text_es: row.querySelector(".popup-text").value.trim(),
+        button_text_es: row.querySelector(".popup-button-text").value.trim(),
+        button_url: row.querySelector(".popup-button-url").value.trim(),
+        tab_text: row.querySelector(".popup-tab-text").value.trim(),
+        starts_at: row.querySelector(".popup-start").value || null,
+        ends_at: row.querySelector(".popup-end").value || null,
+        published: row.querySelector(".popup-published").checked
+      };
+
+      if (popup.id) {
+        await api(`/api/admin/popups/${popup.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        await api("/api/admin/popups", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      }
+    }
+
+    await loadPopups();
+    showStatus(document.getElementById("popups-status"), "Pop-up salvati.", "success");
+  } catch (error) {
+    showStatus(document.getElementById("popups-status"), error.message, "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
+});
+
+/* =====================================================
+   ORARI
+   ===================================================== */
+
+async function loadHours() {
+  /*
+   * Manteniamo la route pubblica che era presente nel vecchio script.
+   * Il Worker può restituire direttamente l'elenco o un oggetto con hours.
+   */
+  const data = await api("/api/opening-hours");
+
+  hours = Array.isArray(data) ? data : data?.hours || [];
+
+  hours = hours.map(hour => {
+    let timeValue = "";
+
+    if (hour.hours !== undefined && hour.hours !== null) {
+      timeValue = String(hour.hours);
+    } else if (hour.open_time || hour.close_time) {
+      const open = hour.open_time || "";
+      const close = hour.close_time || "";
+      timeValue = open && close ? `${open} - ${close}` : (open || close);
+    }
+
+    return {
+      ...hour,
+      day_name: hour.day_name || hour.day_label || hour.day || "",
+      hours: timeValue
+    };
+  });
+
+  renderHours();
+}
+
+function renderHours() {
+  const container = document.getElementById("hours-list");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  hours.forEach(hour => {
+    const row = document.createElement("div");
+    row.className = "hours-row";
+
+    row.innerHTML = `
+      <input class="hours-day" value="${escapeHtml(hour.day_name || "")}" placeholder="Giorno">
+      <input class="hours-time" value="${escapeHtml(hour.hours || "")}" placeholder="09:00 - 18:00">
+      <button type="button" class="danger delete-hour">Elimina</button>
+    `;
+
+    row.querySelector(".delete-hour").addEventListener("click", async () => {
+      if (!hour.id) {
+        hours = hours.filter(item => item !== hour);
+        renderHours();
+        return;
+      }
+
+      if (!confirm("Eliminare questo orario?")) return;
+
+      try {
+        await api(`/api/admin/opening-hours/${hour.id}`, { method: "DELETE" });
+        await loadHours();
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+
+    container.appendChild(row);
+  });
+}
+
+document.getElementById("add-hour")?.addEventListener("click", () => {
+  hours.push({ id: null, day_name: "", hours: "" });
+  renderHours();
+});
+
+document.getElementById("save-hours")?.addEventListener("click", async () => {
+  const button = document.getElementById("save-hours");
+  if (button) button.disabled = true;
+
+  try {
+    const rows = document.querySelectorAll(".hours-row");
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const hour = hours[i];
+
+      const dayName = row.querySelector(".hours-day").value.trim();
+      const hoursValue = row.querySelector(".hours-time").value.trim();
+
+      if (!dayName) continue;
+
+      const payload = { day_name: dayName, hours: hoursValue };
+
+      if (hour.id) {
+        await api(`/api/admin/opening-hours/${hour.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        await api("/api/admin/opening-hours", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      }
+    }
+
+    await loadHours();
+    showStatus(document.getElementById("hours-status"), "Orari salvati.", "success");
+  } catch (error) {
+    showStatus(document.getElementById("hours-status"), error.message, "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
+});
+
+/* =====================================================
+   IMPORTAZIONE EXCEL
+   ===================================================== */
+
+function resetImportUI() {
+  importRows = [];
+  importFile = null;
+
+  if (importFileInput) importFileInput.value = "";
+
+  if (importSummary) {
+    importSummary.innerHTML = "";
+    importSummary.className = "import-summary hidden";
+  }
+
+  if (importPreview) {
+    importPreview.innerHTML = "";
+    importPreview.classList.add("hidden");
+  }
+
+  importActions?.classList.add("hidden");
+  if (importButton) importButton.disabled = true;
+  importProgress?.classList.add("hidden");
+
+  if (importProgressBar) importProgressBar.style.width = "0%";
+}
+
+function importHeaderMap(headers) {
+  const aliases = {
+    nome: ["nome", "name"],
+    categoria: ["categoria", "category"],
+    prezzo: ["prezzo (€)", "prezzo", "prezzo euro", "price"],
+    prezzo_massimo: ["prezzo massimo (€)", "prezzo massimo", "prezzo max", "price max"],
+    ordine: ["ordine nella categoria", "ordine", "sort order", "sort_order"],
+    descrizione: ["descrizione", "description"],
+    allergeni: ["allergeni", "allergens"],
+    disponibile: ["disponibile", "available"],
+    vegetariano: ["vegetariano", "vegetarian"],
+    vegano: ["vegano", "vegan"]
+  };
+
+  const map = {};
+
+  headers.forEach((header, index) => {
+    const normalized = normalizeHeader(header);
+
+    for (const key in aliases) {
+      if (aliases[key].includes(normalized)) {
+        map[key] = index;
+        break;
+      }
+    }
+  });
+
+  return map;
+}
+
+function renderImportPreview(rows) {
+  if (!importPreview) return;
+
+  if (!rows.length) {
+    importPreview.innerHTML = "";
+    importPreview.classList.add("hidden");
+    return;
+  }
+
+  const headers = [
+    "Nome", "Categoria", "Prezzo (€)", "Prezzo massimo (€)",
+    "Ordine nella categoria", "Descrizione", "Allergeni",
+    "Disponibile", "Vegetariano", "Vegano"
+  ];
+
+  let html = "<table><thead><tr>";
+  headers.forEach(header => html += `<th>${escapeHtml(header)}</th>`);
+  html += "</tr></thead><tbody>";
+
+  rows.slice(0, 100).forEach(row => {
+    html += `
+      <tr>
+        <td>${escapeHtml(row.nome)}</td>
+        <td>${escapeHtml(row.categoria)}</td>
+        <td>${escapeHtml(row.prezzo)}</td>
+        <td>${escapeHtml(row.prezzo_massimo)}</td>
+        <td>${escapeHtml(row.ordine)}</td>
+        <td>${escapeHtml(row.descrizione)}</td>
+        <td>${escapeHtml(row.allergeni)}</td>
+        <td>${row.disponibile ? "SI" : "NO"}</td>
+        <td>${row.vegetariano ? "SI" : "NO"}</td>
+        <td>${row.vegano ? "SI" : "NO"}</td>
+      </tr>
+    `;
+  });
+
+  html += "</tbody></table>";
+  importPreview.innerHTML = html;
+  importPreview.classList.remove("hidden");
+}
+
+async function handleImportFile(file) {
+  resetImportUI();
+  if (!file) return;
+
+  importFile = file;
+
+  try {
+    const buffer = await file.arrayBuffer();
+    const workbook = XLSX.read(buffer, { type: "array" });
+    const sheetName = workbook.SheetNames[0];
+
+    if (!sheetName) throw new Error("Il file non contiene un foglio Excel.");
+
+    const matrix = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
+      header: 1,
+      defval: ""
+    });
+
+    if (matrix.length < 2) throw new Error("Il file non contiene dati da importare.");
+
+    const headerMap = importHeaderMap(matrix[0]);
+    const required = ["nome", "categoria", "prezzo"];
+    const missing = required.filter(key => headerMap[key] === undefined);
+
+    if (missing.length) {
+      throw new Error("Mancano colonne obbligatorie: " + missing.join(", "));
+    }
+
+    importRows = matrix.slice(1)
+      .filter(row => row.some(value => String(value ?? "").trim() !== ""))
+      .map(row => {
+        const get = key => headerMap[key] !== undefined ? row[headerMap[key]] : "";
+
+        return {
+          nome: String(get("nome") ?? "").trim(),
+          categoria: String(get("categoria") ?? "").trim(),
+          prezzo: get("prezzo"),
+          prezzo_massimo: get("prezzo_massimo"),
+          ordine: get("ordine"),
+          descrizione: String(get("descrizione") ?? "").trim(),
+          allergeni: String(get("allergeni") ?? "").trim(),
+          disponibile: parseBoolean(get("disponibile")),
+          vegetariano: parseBoolean(get("vegetariano")),
+          vegano: parseBoolean(get("vegano"))
+        };
+      });
+
+    if (!importRows.length) throw new Error("Non sono presenti righe valide nel file.");
+
+    renderImportPreview(importRows);
+    importActions?.classList.remove("hidden");
+    if (importButton) importButton.disabled = false;
+  } catch (error) {
+    if (importSummary) {
+      importSummary.innerHTML = `
+        <strong>Errore nella lettura del file</strong><br>
+        ${escapeHtml(error.message)}
+      `;
+      importSummary.className = "import-summary import-error";
+    }
+  }
+}
+
+importFileInput?.addEventListener("change", event => {
+  handleImportFile(event.target.files?.[0]);
+});
+
+function verifyImportedDishes(rows) {
+  const existingNames = new Set(
+    dishes.map(dish => normalizeSearch(dish.name_es)).filter(Boolean)
+  );
+
+  const importedNames = [...new Set(
+    rows.map(row => normalizeSearch(row.nome)).filter(Boolean)
+  )];
+
+  const missing = importedNames.filter(name => !existingNames.has(name));
+
+  return {
+    total: importedNames.length,
+    verified: importedNames.length - missing.length,
+    missing
+  };
+}
+
+function showImportResult(result, verifiedCount, totalCount) {
+  if (!importSummary) return;
+
+  const safeResult = result && typeof result === "object" ? result : {};
+  const categoriesCreated = Number(safeResult.categories_created ?? safeResult.categoriesCreated ?? 0);
+  const dishesCreated = Number(safeResult.dishes_created ?? safeResult.dishesCreated ?? 0);
+  const dishesUpdated = Number(safeResult.dishes_updated ?? safeResult.dishesUpdated ?? 0);
+  const errors = Array.isArray(safeResult.errors) ? safeResult.errors : [];
+
+  let html = '<div class="import-summary-title">✓ Importazione completata</div>';
+
+  if (totalCount > 0 && verifiedCount === totalCount) {
+    html += `<div style="margin-bottom:8px"><strong>${verifiedCount} di ${totalCount}</strong> piatti verificati nell'elenco del database.</div>`;
+  }
+
+  const hasServerSummary = [
+    "categories_created", "categoriesCreated", "dishes_created",
+    "dishesCreated", "dishes_updated", "dishesUpdated"
+  ].some(key => key in safeResult);
+
+  if (hasServerSummary) {
+    html += `
+      <div class="import-summary-stats">
+        <div class="import-summary-stat">Categorie create: <span>${categoriesCreated}</span></div>
+        <div class="import-summary-stat">Piatti creati: <span>${dishesCreated}</span></div>
+        <div class="import-summary-stat">Piatti aggiornati: <span>${dishesUpdated}</span></div>
+      </div>
+    `;
+  } else {
+    html += "<div>Il server non ha restituito il riepilogo numerico, ma i dati sono stati verificati nuovamente nell'elenco del database.</div>";
+  }
+
+  if (errors.length) {
+    html += `
+      <div style="margin-top:10px;color:#a12d25"><strong>${errors.length} errori</strong></div>
+      <ul style="margin:6px 0 0;padding-left:20px">
+        ${errors.slice(0, 20).map(error => `<li>${escapeHtml(typeof error === "string" ? error : JSON.stringify(error))}</li>`).join("")}
+      </ul>
+    `;
+
+    if (errors.length > 20) {
+      html += `<div style="margin-top:6px">... e altri ${errors.length - 20} errori.</div>`;
+    }
+  }
+
+  importSummary.innerHTML = html;
+  importSummary.className = "import-summary import-done";
+}
+
+async function runImport() {
+  if (!importRows.length) return;
+
+  importButton.disabled = true;
+  if (importCancel) importCancel.disabled = true;
+
+  importProgress?.classList.remove("hidden");
+  if (importProgressBar) importProgressBar.style.width = "5%";
+
+  importSummary.className = "import-summary";
+  importSummary.textContent = "Importazione in corso...";
+
+  const rowsToVerify = importRows.map(row => ({ ...row }));
+
+  try {
+    const result = await api("/api/admin/import-menu", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dishes: rowsToVerify })
+    });
+
+    if (importProgressBar) importProgressBar.style.width = "65%";
+
+    await loadMenu();
+
+    if (importProgressBar) importProgressBar.style.width = "85%";
+
+    if (dishSearch) dishSearch.value = "";
+    if (dishCategoryFilter) dishCategoryFilter.value = "";
+    renderDishes();
+
+    const verification = verifyImportedDishes(rowsToVerify);
+
+    if (verification.missing.length) {
+      const missingPreview = verification.missing.slice(0, 10)
+        .map(name => `<li>${escapeHtml(name)}</li>`).join("");
+
+      importSummary.innerHTML = `
+        <div class="import-summary-title">⚠ Importazione non verificata completamente</div>
+        <div>Trovati <strong>${verification.verified}</strong> di <strong>${verification.total}</strong> piatti nell'elenco aggiornato.</div>
+        <div style="margin-top:8px">Questi nomi non risultano nel database:</div>
+        <ul style="margin:6px 0 0;padding-left:20px">${missingPreview}</ul>
+        ${verification.missing.length > 10 ? `<div style="margin-top:6px">... e altri ${verification.missing.length - 10}.</div>` : ""}
+        <div style="margin-top:10px">Controlla la risposta dell'API prima di considerare conclusa l'importazione.</div>
+      `;
+
+      importSummary.className = "import-summary import-warning";
+      importButton.disabled = false;
+      return;
+    }
+
+    if (importProgressBar) importProgressBar.style.width = "100%";
+
+    showImportResult(result, verification.verified, verification.total);
+
+    importPreview?.classList.add("hidden");
+    if (importPreview) importPreview.innerHTML = "";
+    importActions?.classList.add("hidden");
+
+    importRows = [];
+    importFile = null;
+    if (importFileInput) importFileInput.value = "";
+    importButton.disabled = true;
+  } catch (error) {
+    importSummary.innerHTML = `
+      <div class="import-summary-title">✕ Importazione non completata</div>
+      <div>${escapeHtml(error.message)}</div>
+    `;
+    importSummary.className = "import-summary import-error";
+    importButton.disabled = false;
+  } finally {
+    if (importCancel) importCancel.disabled = false;
+  }
+}
+
+importButton?.addEventListener("click", runImport);
+importCancel?.addEventListener("click", resetImportUI);
+
+/* =====================================================
+   MODELLO EXCEL
+   ===================================================== */
+
+document.getElementById("download-import-template")?.addEventListener("click", () => {
+  const headers = [[
+    "Nome", "Categoria", "Prezzo (€)", "Prezzo massimo (€)",
+    "Ordine nella categoria", "Descrizione", "Allergeni",
+    "Disponibile", "Vegetariano", "Vegano"
+  ]];
+
+  const example = [[
+    "Esempio", "TOSTADAS", 7.50, "", 1,
+    "Descrizione del piatto", "1, 3, 7", "SI", "NO", "NO"
+  ]];
+
+  const worksheet = XLSX.utils.aoa_to_sheet([...headers, ...example]);
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Carta");
+  XLSX.writeFile(workbook, "modello-carta-genesis.xlsx");
+});
+
+/* =====================================================
+   SOTTO-SCHEDE MENU
+   ===================================================== */
+
+function activateMenuPanel(panelId) {
+  document.querySelectorAll(".menu-subtab[data-menu-panel]").forEach(button => {
+    button.classList.toggle("active", button.dataset.menuPanel === panelId);
+  });
+
+  document.querySelectorAll(".menu-panel").forEach(panel => {
+    panel.classList.toggle("hidden", panel.id !== panelId);
+  });
+
+  if (panelId !== "import-panel") resetImportUI();
+}
+
+document.querySelectorAll(".menu-subtab[data-menu-panel]").forEach(button => {
+  button.addEventListener("click", () => {
+    activateMenuPanel(button.dataset.menuPanel);
+  });
+});
+
+const initialMenuButton = document.querySelector(
+  '.menu-subtab[data-menu-panel].active'
+);
+
+if (initialMenuButton) {
+  activateMenuPanel(initialMenuButton.dataset.menuPanel);
+} else if (document.getElementById("categories-panel")) {
+  activateMenuPanel("categories-panel");
+}
+
+/* =====================================================
+   SCHEDE PRINCIPALI
+   ===================================================== */
+
+document.querySelectorAll(".tab-button[data-tab]").forEach(button => {
+  button.addEventListener("click", () => {
+    const tab = button.dataset.tab;
+
+    if (tab !== "menu") resetImportUI();
+
+    document.querySelectorAll(".tab-button[data-tab]").forEach(item => {
+      item.classList.toggle("active", item === button);
+    });
+
+    document.querySelectorAll(".tab-content").forEach(content => {
+      content.classList.toggle("hidden", content.id !== `tab-${tab}`);
+    });
+  });
+});
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+document.getElementById("logout-button")?.addEventListener("click", () => {
+  token = "";
+  localStorage.removeItem("genesis_admin_token");
+
+  resetImportUI();
+
+  adminScreen?.classList.remove("visible");
+  loginScreen?.classList.remove("hidden");
+
+  if (loginPassword) loginPassword.value = "";
+});
+
+/* =====================================================
+   AVVIO
+   ===================================================== */
+
+async function init() {
+  if (!token) return;
+
+  loginScreen?.classList.add("hidden");
+  adminScreen?.classList.add("visible");
+
+  /*
+   * Non eliminiamo la sessione se una singola sezione fallisce:
+   * loadEverything gestisce separatamente gli errori di caricamento.
+   */
+  await loadEverything();
+}
+
+init();
+</script>
+
+</body>
+</html>

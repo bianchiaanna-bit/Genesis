@@ -72,6 +72,95 @@ document.addEventListener("keydown", (event) => {
 });
 
   /* =======================================================
+     PIATTI HOMEPAGE — DATI DAL WORKER
+     ======================================================= */
+
+  let homeDishes = null;
+  let homeDishCards = null;
+
+    const homeDishImageUrl = (key) => {
+    if (!key) return "";
+    if (/^https?:\/\//i.test(key)) return key;
+    if (key.startsWith("assets/")) return `../${key}`;
+    return `https://genesis-api.cimiteroditarsia.workers.dev/api/images/${encodeURIComponent(key)}`;
+  };
+
+  function renderHomeDishes(language = "it") {
+    if (!Array.isArray(homeDishes)) return;
+
+    if (!homeDishCards) homeDishCards = [...document.querySelectorAll(".dish-card")];
+    const cards = homeDishCards;
+    if (!cards.length) return;
+
+    const parent = cards[0].parentElement;
+    if (!parent) return;
+
+    const visibleDishes = homeDishes
+      .filter((dish) => Number(dish.published) === 1 || dish.published === true)
+      .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0) || Number(a.id || 0) - Number(b.id || 0));
+
+    visibleDishes.forEach((dish, index) => {
+      const card = cards[index];
+      if (!card) return;
+
+      card.hidden = false;
+      card.style.display = "";
+
+      const image = card.querySelector("img");
+      if (image) {
+        const imageUrl = homeDishImageUrl(dish.image_key);
+        if (imageUrl && image.getAttribute("src") !== imageUrl) image.src = imageUrl;
+        image.alt = dish.alt_it || dish[`title_${language}`] || dish.title_it || "Génesis Restaurante";
+      }
+
+      const meta = card.querySelector(".dish-meta span") || card.querySelector(".dish-meta");
+      const title = card.querySelector("h3");
+      const paragraph = card.querySelector("p");
+      if (meta) {
+  const label =
+    dish[`label_${language}`] ||
+    dish[`meta_${language}`] ||
+    dish.label_es ||
+    dish.meta_es ||
+    dish.label_it ||
+    dish.meta_it ||
+    dish.label_en ||
+    dish.meta_en ||
+    "";
+
+  meta.textContent = label;
+}
+      if (title) title.textContent = dish[`title_${language}`] || dish.title_es || dish.title_it || "";
+      if (paragraph) paragraph.textContent = dish[`text_${language}`] || dish.text_es || dish.text_it || "";
+
+      parent.appendChild(card);
+    });
+
+    cards.slice(visibleDishes.length).forEach((card) => {
+      card.hidden = true;
+      card.style.display = "none";
+    });
+  }
+
+  async function loadHomeDishes() {
+    try {
+        const response = await fetch("https://genesis-api.cimiteroditarsia.workers.dev/api/home-dishes", {
+        headers: { Accept: "application/json" },
+        cache: "no-store"
+      });
+      if (!response.ok) throw new Error("Impossibile caricare le card della homepage");
+      const data = await response.json();
+      if (!Array.isArray(data)) throw new Error("Formato dati non valido");
+      homeDishes = data;
+      let language = "it";
+      try { language = localStorage.getItem("genesis-language") || "it"; } catch (_) {}
+      renderHomeDishes(language);
+    } catch (error) {
+      // Se l'API non è disponibile, restano visibili le card statiche già presenti nell'HTML.
+    }
+  }
+
+  /* =======================================================
      TRANSLATIONS
      ======================================================= */
 
@@ -831,49 +920,39 @@ document.addEventListener("keydown", (event) => {
       translations[language].menu.title,
       true
     );
+const dishes = document.querySelectorAll(".dish-card");
 
-    const dishes = document.querySelectorAll(".dish-card");
+const dishKeys = [
+  "dish1",
+  "dish2",
+  "dish3",
+  "dish4",
+  "dish5"
+];
 
-    const dishKeys = [
-      "dish1",
-      "dish2",
-      "dish3",
-      "dish4",
-      "dish5"
-    ];
+dishes.forEach((dish, index) => {
+  const key = dishKeys[index];
 
-    dishes.forEach((dish, index) => {
+  if (!key || !translations[language].menu[key]) {
+    return;
+  }
 
-      const key = dishKeys[index];
+  // Se le card arrivano dall'API, non sovrascrivere
+  // i contenuti gestiti dall'amministrazione.
+  if (Array.isArray(homeDishes)) {
+    return;
+  }
 
-      if (!key || !translations[language].menu[key]) {
-        return;
-      }
+  const data = translations[language].menu[key];
 
-      const data = translations[language].menu[key];
+  const meta = dish.querySelector(".dish-meta span");
+  const title = dish.querySelector("h3");
+  const paragraph = dish.querySelector("p");
 
-      setText(
-        `.dish-card:nth-child(${index + 1}) .dish-meta span`,
-        data.meta
-      );
-
-      setText(
-        `.dish-card:nth-child(${index + 1}) h3`,
-        data.title
-      );
-
-      setText(
-        `.dish-card:nth-child(${index + 1}) p`,
-        data.text
-      );
-
-    });
-
-    setText(
-      ".menu-section .center .button",
-      translations[language].menu.button
-    );
-
+  if (meta) meta.textContent = data.meta;
+  if (title) title.textContent = data.title;
+  if (paragraph) paragraph.textContent = data.text;
+});
 
     /* -----------------------------------------------------
        DETTAGLI
@@ -975,19 +1054,71 @@ document.addEventListener("keydown", (event) => {
     );
 
 
-    /* -----------------------------------------------------
-       INSTAGRAM
-       ----------------------------------------------------- */
+   
+  /* =======================================================
+     INSTAGRAM — FOTO LOCALI
+     ======================================================= */
 
-    setText(
-      ".social-head .section-kicker",
-      translations[language].instagram.kicker
-    );
+  const instagramFeed = document.getElementById("instagram-feed");
 
-    setText(
-      ".social-head .arrow-link span",
-      translations[language].instagram.follow
-    );
+  const instagramPosts = [
+    {
+      image: "assets/images/insta1.png",
+      url: "https://www.instagram.com/p/Ddi9sltsAeL/"
+    },
+    {
+      image: "assets/images/insta2.png",
+      url: "https://www.instagram.com/p/DdTHJjzMibs/"
+    },
+    {
+      image: "assets/images/insta3.png",
+      url: "https://www.instagram.com/p/DdPGxQksaPF/"
+    },
+    {
+      image: "assets/images/insta4.png",
+      url: "https://www.instagram.com/p/Dct-5gastvy/"
+    },
+    {
+      image: "assets/images/insta5.png",
+      url: "https://www.instagram.com/p/DcrEyDKsYrA/"
+    },
+    {
+      image: "assets/images/insta6.png",
+      url: "https://www.instagram.com/p/Dcltqu1slEf/"
+    }
+  ];
+
+  const renderInstagram = () => {
+    if (!instagramFeed) return;
+
+    instagramFeed.innerHTML = "";
+
+    instagramPosts.forEach((post, index) => {
+      const link = document.createElement("a");
+
+      link.className = "instagram-post";
+      link.href = post.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.setAttribute(
+        "aria-label",
+        `Apri il post ${index + 1} di Génesis su Instagram`
+      );
+
+      const image = document.createElement("img");
+
+      image.src = post.image;
+      image.alt = `Génesis Restaurante — post Instagram ${index + 1}`;
+      image.loading = "lazy";
+      image.decoding = "async";
+
+      link.appendChild(image);
+      instagramFeed.appendChild(link);
+    });
+  };
+
+  renderInstagram();
+
 
 
     /* -----------------------------------------------------
@@ -1109,6 +1240,10 @@ setText(
       /* Nessun problema se localStorage non è disponibile */
     }
 
+    if (Array.isArray(homeDishes)) {
+      renderHomeDishes(language);
+    }
+
   };
 
 
@@ -1159,6 +1294,7 @@ setText(
   }
 
   setLanguage(initialLanguage);
+  loadHomeDishes();
 
 
   /* =======================================================
@@ -1737,6 +1873,70 @@ const loadPopup = async () => {
 
 loadPopup();
 
+
+  /* =======================================================
+     FRECCE CAROSELLO PIATTI
+     ======================================================= */
+
+  const dishCarousel = document.querySelector(".dish-grid");
+  const dishCarouselControls = document.querySelector(".dish-carousel-controls");
+
+  if (dishCarousel && dishCarouselControls) {
+    const dishCarouselButtons = dishCarouselControls.querySelectorAll(
+      ".dish-carousel-arrow"
+    );
+
+    const updateDishCarouselButtons = () => {
+      const maxScroll =
+        dishCarousel.scrollWidth - dishCarousel.clientWidth;
+
+      dishCarouselButtons.forEach((button) => {
+        const direction = Number(button.dataset.carouselDirection);
+
+        if (direction < 0) {
+          button.disabled = dishCarousel.scrollLeft <= 2;
+        } else {
+          button.disabled =
+            maxScroll <= 2 ||
+            dishCarousel.scrollLeft >= maxScroll - 2;
+        }
+      });
+    };
+
+    dishCarouselButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const direction = Number(button.dataset.carouselDirection);
+        const firstCard = dishCarousel.querySelector(
+          ".dish-card:not([hidden])"
+        );
+
+        if (!firstCard || !direction) return;
+
+        const styles = window.getComputedStyle(dishCarousel);
+        const gap = parseFloat(styles.columnGap) || 8;
+        const distance = firstCard.getBoundingClientRect().width + gap;
+
+        dishCarousel.scrollBy({
+          left: direction * distance,
+          behavior: "smooth"
+        });
+      });
+    });
+
+    dishCarousel.addEventListener(
+      "scroll",
+      updateDishCarouselButtons,
+      { passive: true }
+    );
+
+    window.addEventListener("resize", updateDishCarouselButtons);
+
+    updateDishCarouselButtons();
+
+    // Aggiorna lo stato anche dopo il caricamento dei piatti dall'API.
+    window.setTimeout(updateDishCarouselButtons, 500);
+  }
+
   /* =======================================================
      HEADER ON SCROLL
      ======================================================= */
@@ -1769,3 +1969,244 @@ loadPopup();
   }
 
 });
+
+/* =====================================================
+   GÉNESIS — PRIVACIDAD Y CONSENTIMIENTO DE COOKIES
+   ===================================================== */
+
+(() => {
+  const modal = document.getElementById("legal-modal");
+  const banner = document.getElementById("cookie-banner");
+
+  const acceptButton = document.getElementById("cookie-accept");
+  const rejectButton = document.getElementById("cookie-reject");
+
+  const CONSENT_KEY = "genesis_cookie_consent_v1";
+
+  // Evita errori nelle pagine che non contengono questi elementi.
+  if (!modal || !banner) return;
+
+  const dialog = modal.querySelector(".legal-dialog");
+
+  if (!dialog) {
+    console.error(
+      "Privacidad: non è stato trovato l'elemento .legal-dialog."
+    );
+    return;
+  }
+
+  let previousFocus = null;
+
+  /* =====================================================
+     CONSENSO COOKIE
+     ===================================================== */
+
+  function readConsent() {
+    try {
+      const raw = localStorage.getItem(CONSENT_KEY);
+
+      if (!raw) return null;
+
+      const consent = JSON.parse(raw);
+
+      if (
+        consent &&
+        consent.version === 1 &&
+        typeof consent.analytics === "boolean"
+      ) {
+        return consent;
+      }
+    } catch (error) {
+      console.warn(
+        "Impossibile leggere il consenso cookie.",
+        error
+      );
+    }
+
+    return null;
+  }
+
+  function applyConsent(consent) {
+    if (!consent) return;
+
+    document.dispatchEvent(
+      new CustomEvent("genesis:analytics-consent", {
+        detail: {
+          granted: consent.analytics === true
+        }
+      })
+    );
+
+    /*
+      L'evento comunica la scelta alle eventuali integrazioni.
+      NON carica Google Analytics da solo.
+
+      Gli script analitici devono essere configurati separatamente
+      e non devono caricarsi prima del consenso.
+    */
+  }
+
+  function saveConsent(analytics) {
+    const consent = {
+      version: 1,
+      necessary: true,
+      analytics,
+      updatedAt: new Date().toISOString()
+    };
+
+    try {
+      localStorage.setItem(
+        CONSENT_KEY,
+        JSON.stringify(consent)
+      );
+    } catch (error) {
+      console.error(
+        "Impossibile salvare le preferenze cookie.",
+        error
+      );
+    }
+
+    applyConsent(consent);
+    updateBanner();
+  }
+
+  function updateBanner() {
+    banner.hidden = Boolean(readConsent());
+  }
+
+  /* =====================================================
+     APERTURA PANNELLO LEGALE
+     ===================================================== */
+
+  function openLegal(event) {
+    event?.preventDefault();
+
+    // Evita di salvare come focus precedente un elemento interno
+    // al pannello, se la finestra è già aperta.
+    if (modal.getAttribute("aria-hidden") !== "false") {
+      previousFocus = document.activeElement;
+    }
+
+    // Il pannello non deve essere inert quando è aperto.
+    modal.removeAttribute("inert");
+    modal.setAttribute("aria-hidden", "false");
+
+    document.body.classList.add("legal-modal-open");
+
+    // Porta il contenuto legale all'inizio quando si apre.
+    const content = modal.querySelector(".legal-content");
+
+    if (content) {
+      content.scrollTop = 0;
+    }
+
+    // Attende l'aggiornamento del layout prima di spostare il focus.
+    requestAnimationFrame(() => {
+      dialog.focus();
+    });
+  }
+
+  /* =====================================================
+     CHIUSURA PANNELLO LEGALE
+     ===================================================== */
+
+  function closeLegal(event) {
+    event?.preventDefault();
+
+    if (modal.getAttribute("aria-hidden") === "true") return;
+
+    modal.setAttribute("aria-hidden", "true");
+    modal.setAttribute("inert", "");
+
+    document.body.classList.remove("legal-modal-open");
+
+    if (
+      previousFocus &&
+      typeof previousFocus.focus === "function" &&
+      document.contains(previousFocus)
+    ) {
+      previousFocus.focus();
+    }
+
+    previousFocus = null;
+  }
+
+  /* =====================================================
+     PREFERENZE COOKIE
+     ===================================================== */
+
+  function openCookieSettings(event) {
+    event?.preventDefault();
+
+    closeLegal();
+
+    // Permette di modificare la scelta anche dopo averla salvata.
+    banner.hidden = false;
+
+    requestAnimationFrame(() => {
+      acceptButton?.focus();
+    });
+  }
+
+  /* =====================================================
+     EVENTI DI APERTURA E CHIUSURA
+     ===================================================== */
+
+  document
+    .querySelectorAll("[data-open-legal]")
+    .forEach(element => {
+      element.addEventListener("click", openLegal);
+    });
+
+  modal
+    .querySelectorAll("[data-close-legal]")
+    .forEach(element => {
+      element.addEventListener("click", closeLegal);
+    });
+
+  modal
+    .querySelectorAll("[data-open-cookie-settings]")
+    .forEach(element => {
+      element.addEventListener("click", openCookieSettings);
+    });
+
+  /* =====================================================
+     ACCETTA / RIFIUTA COOKIE ANALITICI
+     ===================================================== */
+
+  acceptButton?.addEventListener("click", () => {
+    saveConsent(true);
+  });
+
+  rejectButton?.addEventListener("click", () => {
+    saveConsent(false);
+  });
+
+  /* =====================================================
+     TASTO ESC PER CHIUDERE
+     ===================================================== */
+
+  document.addEventListener("keydown", event => {
+    if (modal.getAttribute("aria-hidden") !== "false") return;
+
+    if (event.key === "Escape") {
+      closeLegal(event);
+    }
+  });
+
+  /* =====================================================
+     INIZIALIZZAZIONE
+     ===================================================== */
+
+  const initialConsent = readConsent();
+
+  if (initialConsent) {
+    applyConsent(initialConsent);
+  }
+
+  // Stato iniziale chiuso: il pannello non deve intercettare click.
+  modal.setAttribute("aria-hidden", "true");
+  modal.setAttribute("inert", "");
+
+  updateBanner();
+})();
