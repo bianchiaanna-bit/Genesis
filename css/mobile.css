@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap');
+
 /* =========================================================
    GÉNESIS RESTAURANTE
    MOBILE
@@ -542,24 +544,6 @@
 /* =======================================================
    MONDO GÉNESIS — MOBILE
    ======================================================= */
-
-.intro-art {
-  position: absolute;
-  top: 5px;
-  right: -15px;
-  z-index: 1;
-  width: 300px;
-  pointer-events: none;
-  opacity: 0.5;
-  transform: rotate(12deg);
-}
-
-.intro-art img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 
   /* =======================================================
      ATMOSFERA
@@ -1112,5 +1096,282 @@
 
     object-fit: cover;
     object-position: center;
+  }
+}
+/* =======================================================
+   MENU — NASCONDI LE FRECCE DEL CAROSELLO SU MOBILE
+   ======================================================= */
+
+@media (max-width: 768px) {
+  .dish-carousel-controls {
+    display: none !important;
+  }
+}
+
+
+/* =========================================================
+   GÉNESIS — HERO MOBILE
+   Titolo editoriale in alto · Foto a tutto schermo · CTA in basso
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  #hero.hero {
+    position: relative !important;
+    isolation: isolate;
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 100svh !important;
+    min-height: 620px !important;
+
+    margin: 0;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    background-color: #11110f;
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(12, 12, 11, 0.28) 0%,
+        rgba(12, 12, 11, 0.08) 30%,
+        rgba(12, 12, 11, 0.16) 52%,
+        rgba(12, 12, 11, 0.48) 78%,
+        rgba(12, 12, 11, 0.76) 100%
+      ),
+      url("../assets/images/Hero_mobile.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+
+/* =====================================================
+   GÉNESIS — MOBILE HERO / ART DIRECTION
+   Desktop invariato
+   ===================================================== */
+@media (max-width: 768px) {
+  #hero.hero {
+    position: relative !important;
+    min-height: 100svh !important;
+    height: 100svh !important;
+    overflow: hidden !important;
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(8, 10, 9, .30) 0%,
+        rgba(8, 10, 9, .12) 24%,
+        rgba(8, 10, 9, .35) 57%,
+        rgba(8, 10, 9, .80) 100%
+      ),
+      url("../assets/images/Hero_mobile.png") !important;
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+
+  #hero .hero-tiles,
+  #hero .hero-noise,
+  #hero .hero-copy > .eyebrow,
+  #hero .hero-bottom {
+    display: none !important;
+  }
+
+  #hero .hero-note {
+    position: absolute !important;
+    z-index: 9 !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: calc(94px + env(safe-area-inset-bottom)) !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin: 0 !important;
+    color: #f5f1ea !important;
+    font-size: 23px !important;
+    line-height: 1.15 !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    transform: translateX(-50%) rotate(-5deg) !important;
+    pointer-events: none;
+}
+
+  #hero .hero-copy {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: calc(92px + env(safe-area-inset-top)) 25px 112px !important;
+    text-align: left !important;
+    box-sizing: border-box !important;
+  }
+
+  #hero .hero-copy h1,
+  #hero h1 {
+    max-width: 360px !important;
+    margin: 0 0 19px !important;
+    color: #f7f1e8 !important;
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-size: clamp(45px, 12vw, 59px) !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    line-height: .91 !important;
+    letter-spacing: -.045em !important;
+    text-transform: none !important;
+    text-wrap: balance !important;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, .16) !important;
+  }
+
+  #hero h1 span {
+    display: block !important;
+    font-family: "Cormorant Garamond", Georgia, serif !important;
+    font-weight: 400 !important;
+    letter-spacing: -.045em !important;
+  }
+
+  #hero h1 .hero-title-main {
+    margin-bottom: 3px !important;
+  }
+
+  #hero h1 .hero-title-accent {
+    color: #f7f1e8 !important;
+    font-weight: 500 !important;
+  }
+
+  #hero .hero-text {
+    max-width: 300px !important;
+    margin: 0 !important;
+    color: rgba(247, 241, 232, .91) !important;
+    font-family: "Manrope", Arial, sans-serif !important;
+    font-size: 12.5px !important;
+    font-weight: 400 !important;
+    line-height: 1.75 !important;
+    letter-spacing: .005em !important;
+    text-wrap: pretty !important;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, .28) !important;
+  }
+
+  #hero .hero-actions {
+    position: absolute !important;
+    left: 25px !important;
+    right: 25px !important;
+    bottom: calc(27px + env(safe-area-inset-bottom)) !important;
+    z-index: 5 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: auto !important;
+    margin: 0 !important;
+  }
+
+  #hero .hero-actions a,
+  #hero .hero-actions button {
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 330px !important;
+    min-height: 54px !important;
+    padding: 0 26px !important;
+    border: 1px solid rgba(247, 241, 232, .75) !important;
+    border-radius: 2px !important;
+    background: #f7f1e8 !important;
+    color: #171b17 !important;
+    font-family: "Manrope", Arial, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    letter-spacing: .13em !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .16) !important;
+    transition: background-color .25s ease, color .25s ease !important;
+  }
+
+  #hero .hero-actions a:active,
+  #hero .hero-actions button:active {
+    background: #dce4d7 !important;
+    color: #171b17 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  #hero .hero-copy {
+    padding-right: 21px !important;
+    padding-left: 21px !important;
+    padding-top: calc(83px + env(safe-area-inset-top)) !important;
+  }
+
+  #hero .hero-copy h1,
+  #hero h1 {
+    font-size: clamp(42px, 11.8vw, 49px) !important;
+  }
+
+  #hero .hero-text {
+    position: relative !important;
+    max-width: 330px !important;
+    margin: 0 !important;
+    padding: 18px 0 3px 21px !important;
+    border-left: 2px solid #a8b99b !important;
+    color: #f7f1e8 !important;
+    font-family: "Manrope", Arial, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    line-height: 1.8 !important;
+    letter-spacing: -.025em !important;
+    text-wrap: pretty !important;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, .42) !important;
+  }
+
+
+  #hero .hero-text::before {
+    content: "A TAVOLA, SENZA FRETTA";
+    display: block;
+    margin: 0 0 10px;
+    color: #c1cfb5;
+    font-family: "Manrope", Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: .19em;
+  }
+
+  #hero .hero-actions {
+    left: 21px !important;
+    right: 21px !important;
+  }
+}
+
+
+@media (max-width: 380px) {
+  #hero .hero-text {
+    max-width: 290px !important;
+    padding-left: 16px !important;
+    font-size: 13.5px !important;
+    line-height: 1.72 !important;
+  
+    border-left: 2px solid #a8b59a !important;
+    padding-left: 14px !important;
+    box-sizing: border-box;}
+
+  #hero .hero-text::before {
+    font-size: 8px;
+    letter-spacing: .15em;
+  }
+}
+
+/* RIPRISTINO LINEA SALVIA DEL PARAGRAFO HERO MOBILE */
+@media (max-width: 767px) {
+  #hero .hero-copy .hero-text {
+    border-left: 2px solid #a8b59a !important;
+    padding-left: 14px !important;
+    box-sizing: border-box !important;
   }
 }
