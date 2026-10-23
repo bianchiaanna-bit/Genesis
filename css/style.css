@@ -3076,3 +3076,157 @@ body.menu-open {
     pointer-events: none;
   }
 }
+
+
+/* GENESIS — ACCENTI EDITORIALI */
+
+/* Sezioni e card sempre visibili: niente comparsa durante lo scroll */
+.reveal,
+.reveal.is-visible {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Hero: accento cromatico sulla seconda frase, senza animazioni */
+.hero h1 .hero-title-accent {
+  color: var(--green-light);
+}
+
+/* Card: filetto verde discreto al passaggio del mouse */
+@media (hover: hover) and (pointer: fine) {
+  .dish-grid > .dish-card:hover {
+    box-shadow:
+      inset 0 2px 0 var(--green),
+      0 3px 8px rgba(28, 30, 25, 0.035),
+      0 10px 24px rgba(28, 30, 25, 0.065);
+  }
+}
+
+/* Rispetta le preferenze di movimento ridotto */
+@media (prefers-reduced-motion: reduce) {
+  .dish-grid > .dish-card,
+  .dish-grid > .dish-card .dish-image img {
+    transition: none !important;
+  }
+}
+
+
+/* GENESIS — MICRO-INTERAZIONI TESTO E CARD */
+
+/* Hero: transizione cromatica discreta, senza ingresso animato */
+.hero h1 .hero-title-accent {
+  transition: color 0.35s ease, text-shadow 0.35s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-copy:hover .hero-title-accent {
+    text-shadow: 0 0 18px rgba(168, 181, 154, 0.12);
+  }
+
+  /* Card: il titolo accompagna appena il movimento della foto */
+  .dish-grid > .dish-card h3 {
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .dish-grid > .dish-card:hover h3 {
+    color: var(--green);
+    transform: translateX(2px);
+  }
+}
+
+/* Nessun movimento aggiuntivo per chi lo disattiva */
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 .hero-title-accent,
+  .dish-grid > .dish-card h3 {
+    transition: none !important;
+    transform: none !important;
+    text-shadow: none !important;
+  }
+}
+
+
+/* GENESIS — TEXT REVEAL STYLES */
+.text-reveal-pending {
+  opacity: 0;
+  transform: translateY(26px);
+  filter: blur(4px);
+  transition:
+    opacity 0.8s cubic-bezier(.22, 1, .36, 1),
+    transform 0.8s cubic-bezier(.22, 1, .36, 1),
+    filter 0.8s ease;
+  will-change: opacity, transform, filter;
+}
+
+.text-reveal-pending.text-reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Hero: ingresso tipografico più deciso, solo sul testo */
+#hero .eyebrow.text-reveal-pending {
+  transform: translateY(12px);
+  transition-delay: 0.05s;
+}
+
+#hero h1 .hero-title-main.text-reveal-pending {
+  transform: translateY(32px);
+  transition-delay: 0.12s;
+}
+
+#hero h1 .hero-title-accent.text-reveal-pending {
+  transform: translateY(32px);
+  transition-delay: 0.28s;
+}
+
+#hero .hero-text.text-reveal-pending {
+  transition-delay: 0.4s;
+}
+
+#hero .hero-note.text-reveal-pending {
+  transition-delay: 0.46s;
+}
+
+#hero .hero-actions.text-reveal-pending {
+  transition-delay: 0.5s;
+}
+
+#hero h1 .hero-title-main.text-reveal-pending.text-reveal-visible,
+#hero h1 .hero-title-accent.text-reveal-pending.text-reveal-visible {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-reveal-pending,
+  .text-reveal-pending.text-reveal-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+}
+
+/* GENESIS — ATMOSFERA ZOOM OUT */
+.atmosfera-image img {
+  transform: scale(1);
+  transform-origin: center center;
+}
+
+.atmosfera-image.atmosfera-zoom-visible img {
+  animation: atmosfera-zoom-out 3.2s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes atmosfera-zoom-out {
+  from { transform: scale(1.12); }
+  to   { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atmosfera-image.atmosfera-zoom-visible img {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+

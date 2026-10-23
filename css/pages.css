@@ -468,3 +468,47 @@
     font-family: var(--hand) !important;
   }
 }
+
+
+/* GENESIS — ANIMAZIONI EDITORIALI */
+
+/* Testi: movimento delicato, senza animare gli sfondi */
+.editorial-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.75s cubic-bezier(.22, 1, .36, 1),
+    transform 0.75s cubic-bezier(.22, 1, .36, 1);
+}
+
+.editorial-reveal.editorial-reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Immagini secondarie: leggero zoom all'indietro */
+.editorial-image-reveal {
+  transform: scale(1.16);
+  transition: transform 4.5s cubic-bezier(.16, 1, .3, 1);
+  will-change: transform;
+}
+.editorial-image-reveal.editorial-reveal-visible {
+  transform: scale(1);
+}
+
+/* Contenitori delle immagini: nessuna fuoriuscita durante lo zoom */
+.editorial-quote-inner,
+.editorial-page .visit-gallery {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-reveal,
+  .editorial-reveal.editorial-reveal-visible,
+  .editorial-image-reveal,
+  .editorial-image-reveal.editorial-reveal-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

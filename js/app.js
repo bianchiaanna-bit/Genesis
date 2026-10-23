@@ -1383,7 +1383,53 @@ setText(
      IMAGE ERROR HANDLING
      ======================================================= */
 
-  document.querySelectorAll("img").forEach((image) => {
+  /* GENESIS — TEXT REVEAL */
+  const textRevealElements = document.querySelectorAll(
+    "#hero .eyebrow, #hero h1 .hero-title-main, #hero h1 .hero-title-accent, #hero .hero-text, #hero .hero-note, #hero .hero-actions, .section .section-kicker, .section h2, .section h3, .section p, .section .hand-note"
+  );
+
+  if ("IntersectionObserver" in window) {
+    const textRevealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("text-reveal-visible");
+        observer.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: "0px 0px -24px 0px"
+    });
+
+    textRevealElements.forEach((element) => {
+      element.classList.add("text-reveal-pending");
+      textRevealObserver.observe(element);
+    });
+  } else {
+    textRevealElements.forEach((element) => {
+      element.classList.add("text-reveal-visible");
+    });
+  }
+
+  // GENESIS — ATMOSFERA ZOOM OUT
+const atmosferaImage = document.querySelector("#atmosfera .atmosfera-image");
+
+if (atmosferaImage && "IntersectionObserver" in window) {
+  const atmosferaZoomObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        entry.target.classList.add("atmosfera-zoom-visible");
+      }
+
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.2 });
+
+  atmosferaZoomObserver.observe(atmosferaImage);
+}
+
+document.querySelectorAll("img").forEach((image) => {
 
     image.addEventListener("error", () => {
 

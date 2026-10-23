@@ -1435,3 +1435,21 @@
     text-wrap: pretty !important;
   }
 }
+
+
+/* TITOLO ACCENTO SPAGNOLO PIU COMPATTO SU MOBILE */
+@media (max-width: 768px) {
+  html[lang="es"] #hero h1 .hero-title-accent {
+    font-size: 0.82em !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.035em !important;
+  }
+}
+
+
+/* SECONDA FRASE HERO IN VERDE SALVIA SU MOBILE */
+@media (max-width: 768px) {
+  #hero h1 .hero-title-accent {
+    color: #A8B59A !important;
+  }
+}
