@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap");
 
 /* =========================================================
    GÉNESIS RESTAURANTE
@@ -1373,5 +1374,64 @@
     border-left: 2px solid #a8b59a !important;
     padding-left: 14px !important;
     box-sizing: border-box !important;
+  }
+}
+
+/* Carosello piatti: frecce nascoste solo su mobile */
+@media (max-width: 768px) {
+  .dish-carousel-controls {
+    display: none !important;
+  }
+}
+
+
+/* CORREZIONE HERO MOBILE SPAGNOLO */
+@media (max-width: 768px) {
+  html[lang="es"] #hero .hero-copy h1,
+  html[lang="es"] #hero h1 {
+    width: 100% !important;
+    max-width: none !important;
+    font-size: clamp(40px, 10.5vw, 49px) !important;
+    line-height: 0.98 !important;
+    letter-spacing: -0.04em !important;
+    text-wrap: balance !important;
+  }
+
+  html[lang="es"] #hero .hero-text {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+    letter-spacing: -0.015em !important;
+    text-wrap: pretty !important;
+  }
+}
+
+@media (max-width: 380px) {
+  html[lang="es"] #hero .hero-copy h1,
+  html[lang="es"] #hero h1 {
+    font-size: 39px !important;
+    line-height: 1 !important;
+  }
+
+  html[lang="es"] #hero .hero-text {
+    max-width: none !important;
+    padding: 14px 0 3px 14px !important;
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+  }
+}
+
+
+/* CORREZIONE FINALE DESCRIZIONE HERO SPAGNOLO */
+@media (max-width: 768px) {
+  html[lang="es"] #hero .hero-copy .hero-text {
+    width: 100% !important;
+    max-width: 310px !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    letter-spacing: 0 !important;
+    text-wrap: pretty !important;
   }
 }

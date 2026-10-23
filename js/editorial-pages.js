@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const translations = {
     es: {
-      nav: ["Carta", "Génesis", "Instagram", "Visítanos", "Ver carta"],
+      nav: ["Carta", "Génesis", "Instagram", "Visítanos"],
       menuLabel: "Abrir menú",
       footerTagline: "Comida, brunch y buenos momentos en La Laguna.",
       visit: "Visítanos",
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Estamos en el corazón de La Laguna. Será un placer recibirte.",
         "Dónde encontrarnos",
         "Un lugar para encontrarse.",
-        "Abrir Google Maps ↗",
+        "Abrir Google Maps",
         "Antes de venir",
         "Tu próxima visita<br>empieza aquí.",
         "Consulta nuestra propuesta gastronómica y encuentra algo que te apetezca compartir.",
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ]
     },
     en: {
-      nav: ["Menu", "Our story", "Instagram", "Find us", "View menu"],
+      nav: ["Menu", "Génesis", "Instagram", "Visit us"],
       menuLabel: "Open menu",
       footerTagline: "Food, brunch and good moments in La Laguna.",
       visit: "Find us",
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "We're in the heart of La Laguna. It will be a pleasure to welcome you.",
         "Where to find us",
         "A place to come together.",
-        "Open Google Maps ↗",
+        "Open Google Maps",
         "Before you visit",
         "Your next visit<br>starts here.",
         "Explore our food and find something you'd love to share.",
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ]
     },
     it: {
-      nav: ["Carta", "La nostra storia", "Instagram", "Dove siamo", "Vedi il menu"],
+      nav: ["Menu", "Génesis", "Instagram", "Dove siamo"],
       menuLabel: "Apri il menu",
       footerTagline: "Cucina, brunch e bei momenti a La Laguna.",
       visit: "Dove siamo",
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Siamo nel cuore di La Laguna. Saremo felici di accoglierti.",
         "Dove trovarci",
         "Un luogo in cui incontrarsi.",
-        "Apri Google Maps ↗",
+        "Apri Google Maps",
         "Prima di venire",
         "La tua prossima visita<br>comincia qui.",
         "Scopri la nostra proposta gastronomica e trova qualcosa da condividere.",

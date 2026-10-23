@@ -461,3 +461,10 @@
   line-height: 1.25;
   letter-spacing: 0;
 }
+
+/* Menu mobile: font coerente nelle pagine editoriali */
+@media (max-width: 768px) {
+  body.editorial-page .mobile-nav > a {
+    font-family: var(--hand) !important;
+  }
+}
