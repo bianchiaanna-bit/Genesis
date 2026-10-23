@@ -1604,7 +1604,7 @@ body.legal-modal-open {
 .menu-page .menu-categories {
   position: sticky;
   top: 65px;
-  z-index: 1001;
+  z-index: 10;
 
   justify-content: flex-start;
   gap: 25px;

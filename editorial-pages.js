@@ -1,0 +1,295 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (selector) => document.querySelector(selector);
+  const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+  const year = $("#year");
+  if (year) year.textContent = new Date().getFullYear();
+
+  const toggle = $(".menu-toggle");
+  const nav = $("#mobile-nav");
+
+  const closeMenu = () => {
+    if (!toggle || !nav) return;
+    nav.classList.remove("is-open");
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("menu-open");
+  };
+
+  if (toggle && nav) {
+
+    nav.querySelectorAll("a, .lang").forEach((el) => {
+      el.addEventListener("click", closeMenu);
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+
+  const translations = {
+    es: {
+      nav: ["Carta", "Génesis", "Instagram", "Visítanos"],
+      menuLabel: "Abrir menú",
+      footerTagline: "Comida, brunch y buenos momentos en La Laguna.",
+      visit: "Visítanos",
+      social: "Redes sociales",
+      rating: "★ 4,4/5 · 43 reseñas",
+      privacy: "Privacidad y cookies",
+      backTop: "Volver arriba",
+      genesis: [
+        "Génesis · La Laguna",
+        "Esto es<br>Génesis.",
+        "Un proyecto que nace de atreverse a empezar, de trabajar con dedicación y de poner el corazón en lo que uno hace.",
+        "La historia de Génesis",
+        "Hay lugares que te encuentran.<br><span class=\"genesis-heading-subtitle\">Y otros en los que sabes, desde el primer momento, que quieres quedarte.</span>",
+        "Hay proyectos que nacen de un sueño y crecen paso a paso, con voluntad, esfuerzo y muchas ganas de hacer las cosas bien. Génesis es eso: la decisión de empezar desde cero y dar forma a una idea propia.",
+        "Detrás de este lugar está Ciro y una historia personal que continúa escribiéndose cada día. El camino, las experiencias y el encuentro con Tenerife forman parte del origen de un proyecto hecho con dedicación y pasión.",
+        "Hoy, Génesis es un espacio para encontrarse alrededor de una mesa, descubrir sabores, compartir un momento y sentirse a gusto. Un lugar que se construye también gracias a las personas que entran por su puerta.",
+        "“Todo en la vida se puede lograr partiendo de cero.”",
+        "Con sacrificio, voluntad y dedicación. Pero, sobre todo, cuando se hace con amor y pasión.",
+        "Una historia que sigue creciendo",
+        "Hecho con amor.<br>Construido con pasión.",
+        "Génesis también está en los pequeños detalles, en los platos que preparamos y en los momentos que compartimos. Nos gusta pensar que cada visita puede convertirse en un buen recuerdo.",
+        "Descubre nuestra carta"
+      ],
+      visitPage: [
+        "Te esperamos",
+        "Nos vemos<br>en Génesis.",
+        "Estamos en el corazón de La Laguna. Será un placer recibirte.",
+        "Dónde encontrarnos",
+        "Un lugar para encontrarse.",
+        "Abrir Google Maps",
+        "Antes de venir",
+        "Tu próxima visita<br>empieza aquí.",
+        "Consulta nuestra propuesta gastronómica y encuentra algo que te apetezca compartir.",
+        "Ver la carta"
+      ]
+    },
+    en: {
+      nav: ["Menu", "Génesis", "Instagram", "Visit us"],
+      menuLabel: "Open menu",
+      footerTagline: "Food, brunch and good moments in La Laguna.",
+      visit: "Find us",
+      social: "Social",
+      rating: "★ 4.4/5 · 43 reviews",
+      privacy: "Privacy and cookies",
+      backTop: "Back to top",
+      genesis: [
+        "Génesis · La Laguna",
+        "This is<br>Génesis.",
+        "A project born from the courage to start, the dedication to work hard and the desire to put your heart into what you do.",
+        "The beginning",
+        "Everything starts with an idea.",
+        "Some projects begin as a dream and grow step by step, with determination, hard work and a genuine desire to do things well. Génesis is just that: the decision to start from scratch and bring an idea of our own to life.",
+        "Behind this place is Ciro and a personal story that continues to unfold every day. The journey, the experiences and the encounter with Tenerife are all part of the origins of a project built with dedication and passion.",
+        "Today, Génesis is a place to gather around a table, discover new flavours, share a moment and feel at ease. A place that also grows thanks to the people who walk through its doors.",
+        "“Anything in life can be achieved by starting from zero.”",
+        "With sacrifice, determination and dedication. Above all, by doing it with love and passion.",
+        "A story that keeps growing",
+        "Made with love.<br>Built with passion.",
+        "Génesis is also found in the little details, in the dishes we prepare and in the moments we share. We like to think every visit can become a happy memory.",
+        "Discover our menu"
+      ],
+      visitPage: [
+        "We look forward to welcoming you",
+        "See you<br>at Génesis.",
+        "We're in the heart of La Laguna. It will be a pleasure to welcome you.",
+        "Where to find us",
+        "A place to come together.",
+        "Open Google Maps",
+        "Before you visit",
+        "Your next visit<br>starts here.",
+        "Explore our food and find something you'd love to share.",
+        "View the menu"
+      ]
+    },
+    it: {
+      nav: ["Menu", "Génesis", "Instagram", "Dove siamo"],
+      menuLabel: "Apri il menu",
+      footerTagline: "Cucina, brunch e bei momenti a La Laguna.",
+      visit: "Dove siamo",
+      social: "Social",
+      rating: "★ 4,4/5 · 43 recensioni",
+      privacy: "Privacy e cookie",
+      backTop: "Torna all'inizio",
+      genesis: [
+        "Génesis · La Laguna",
+        "Questa è<br>Génesis.",
+        "Un progetto nato dal coraggio di cominciare, dalla voglia di lavorare con dedizione e di mettere il cuore in ciò che si fa.",
+        "L'inizio",
+        "Ci sono luoghi che ti trovano.<br><span class=\"genesis-heading-subtitle\">E altri in cui sai subito di voler restare.</span>",
+        "Ci sono progetti che nascono da un sogno e crescono passo dopo passo, con volontà, impegno e tanta voglia di fare bene. Génesis è questo: la scelta di partire da zero e dare forma a un'idea propria.",
+        "Dietro questo luogo c'è Ciro e una storia personale che continua a scriversi ogni giorno. Il percorso, le esperienze e l'incontro con Tenerife fanno parte delle origini di un progetto costruito con dedizione e passione.",
+        "Oggi Génesis è uno spazio in cui ritrovarsi attorno a un tavolo, scoprire sapori, condividere un momento e sentirsi a proprio agio. Un luogo che cresce anche grazie alle persone che varcano la sua porta.",
+        "“Nella vita tutto si può realizzare partendo da zero.”",
+        "Con sacrificio, volontà e dedizione. Ma soprattutto mettendoci amore e passione.",
+        "Una storia che continua a crescere",
+        "Fatto con amore.<br>Costruito con passione.",
+        "Génesis vive anche nei piccoli dettagli, nei piatti che prepariamo e nei momenti che condividiamo. Ci piace pensare che ogni visita possa diventare un bel ricordo.",
+        "Scopri la nostra carta"
+      ],
+      visitPage: [
+        "Ti aspettiamo",
+        "Ci vediamo<br>da Génesis.",
+        "Siamo nel cuore di La Laguna. Saremo felici di accoglierti.",
+        "Dove trovarci",
+        "Un luogo in cui incontrarsi.",
+        "Apri Google Maps",
+        "Prima di venire",
+        "La tua prossima visita<br>comincia qui.",
+        "Scopri la nostra proposta gastronomica e trova qualcosa da condividere.",
+        "Vedi la carta"
+      ]
+    }
+  };
+
+  const setText = (selector, value, html = false) => {
+    const el = $(selector);
+    if (!el) return;
+    if (html) el.innerHTML = value;
+    else el.textContent = value;
+  };
+
+  const page = location.pathname.split("/").pop() === "como-llegar.html"
+    ? "visitPage"
+    : "genesis";
+
+  const applyLanguage = (language) => {
+    if (!translations[language]) language = "es";
+    const t = translations[language];
+
+    document.documentElement.lang = language;
+
+    $$(".lang[data-lang]").forEach((button) => {
+      const active = button.dataset.lang === language;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+
+    $$(".desktop-nav [data-i18n], .mobile-nav [data-i18n]").forEach((el) => {
+      const key = el.dataset.i18n;
+      const index = { "nav.menu": 0, "nav.story": 1, "nav.instagram": 2, "nav.visit": 3 }[key];
+      if (index !== undefined) el.textContent = t.nav[index];
+    });
+
+    setText(".header-cta", t.nav[4]);
+    if (toggle) toggle.setAttribute("aria-label", t.menuLabel);
+
+    setText(".footer-brand > span", t.footerTagline);
+    $$(".footer-contact .footer-label").forEach((el) => el.textContent = t.visit);
+    $$(".footer-social .footer-label").forEach((el) => el.textContent = t.social);
+    setText(".tripadvisor-rating", t.rating);
+    setText(".footer-legal-link", t.privacy);
+    const back = $(".footer-back-to-top");
+    if (back) back.setAttribute("aria-label", t.backTop);
+
+    const main = t[page];
+    if (page === "genesis") {
+      const section = $(".editorial-two-col");
+      const copy = $$(".editorial-copy p");
+      const quote = $(".editorial-quote");
+      const end = $(".editorial-end");
+
+      setText(".editorial-hero .editorial-kicker", main[0]);
+      setText(".editorial-hero h1", main[1], true);
+      setText(".editorial-hero-content > p", main[2]);
+      setText(".editorial-two-col .editorial-overline", main[3]);
+      setText(".editorial-two-col h2", main[4], true);
+      copy.forEach((el, i) => { if (main[5 + i]) el.textContent = main[5 + i]; });
+      setText(".editorial-quote blockquote", main[8]);
+      setText(".editorial-quote-inner > p", main[9]);
+      setText(".editorial-end .editorial-overline", main[10]);
+      setText(".editorial-end h2", main[11], true);
+      setText(".editorial-end > p:not(.editorial-overline)", main[12]);
+      setText(".editorial-end .editorial-cta", main[13]);
+    } else {
+      setText(".editorial-hero .editorial-kicker", main[0]);
+      setText(".editorial-hero h1", main[1], true);
+      setText(".editorial-hero-content > p", main[2]);
+      setText(".visit-layout .editorial-overline", main[3]);
+      setText(".visit-layout h2", main[4]);
+      setText(".visit-map-link", main[5]);
+      setText(".editorial-end .editorial-overline", main[6]);
+      setText(".editorial-end h2", main[7], true);
+      setText(".editorial-end > p:not(.editorial-overline)", main[8]);
+      setText(".editorial-end .editorial-cta", main[9]);
+    }
+
+    try { localStorage.setItem("genesis-language", language); } catch (_) {}
+  };
+
+  $$(".lang[data-lang]").forEach((button) => {
+    button.addEventListener("click", () => applyLanguage(button.dataset.lang));
+  });
+
+  let initial = "es";
+  try {
+    const saved = localStorage.getItem("genesis-language");
+    if (["es", "en", "it"].includes(saved)) initial = saved;
+  } catch (_) {}
+
+  applyLanguage(initial);
+});
+
+
+// GENESIS — ANIMAZIONI EDITORIALI
+(() => {
+  const initEditorialAnimations = () => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reduceMotion || !("IntersectionObserver" in window)) return;
+
+    const textElements = document.querySelectorAll([
+      ".editorial-section .editorial-overline",
+      ".editorial-section h2",
+      ".editorial-section p",
+      ".editorial-section .editorial-cta",
+      ".editorial-section .visit-address",
+      ".editorial-section .visit-map-link",
+      ".editorial-quote blockquote",
+      ".editorial-quote-inner > p"
+    ].join(", "));
+
+    const imageElements = document.querySelectorAll(
+      ".editorial-quote img, .editorial-page .visit-gallery img"
+    );
+
+    const elements = [...new Set([...textElements, ...imageElements])];
+
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver((entries, instance) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        entry.target.classList.add("editorial-reveal-visible");
+        instance.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: "0px 0px -35px 0px"
+    });
+
+    elements.forEach((element) => {
+      element.classList.add(
+        imageElements.length &&
+        [...imageElements].includes(element)
+          ? "editorial-image-reveal"
+          : "editorial-reveal"
+      );
+      observer.observe(element);
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      initEditorialAnimations,
+      { once: true }
+    );
+  } else {
+    initEditorialAnimations();
+  }
+})();
