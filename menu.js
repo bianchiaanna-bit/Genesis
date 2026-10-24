@@ -255,7 +255,7 @@ const normalizeText = (value) => {
 
 const getCurrentLanguage = () => {
   const saved =
-    localStorage.getItem("genesis-language");
+    sessionStorage.getItem("genesis-language");
 
   if (
     saved === "es" ||

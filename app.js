@@ -85,7 +85,7 @@ document.addEventListener("keydown", (event) => {
     return `https://genesis-api.cimiteroditarsia.workers.dev/api/images/${encodeURIComponent(key)}`;
   };
 
-  function renderHomeDishes(language = "it") {
+  function renderHomeDishes(language = "es") {
     if (!Array.isArray(homeDishes)) return;
 
     if (!homeDishCards) homeDishCards = [...document.querySelectorAll(".dish-card")];
@@ -152,8 +152,8 @@ document.addEventListener("keydown", (event) => {
       const data = await response.json();
       if (!Array.isArray(data)) throw new Error("Formato dati non valido");
       homeDishes = data;
-      let language = "it";
-      try { language = localStorage.getItem("genesis-language") || "it"; } catch (_) {}
+      let language = "es";
+      try { language = sessionStorage.getItem("genesis-language") || "es"; } catch (_) {}
       renderHomeDishes(language);
     } catch (error) {
       // Se l'API non è disponibile, restano visibili le card statiche già presenti nell'HTML.
@@ -660,7 +660,7 @@ document.addEventListener("keydown", (event) => {
   const setLanguage = (language) => {
 
     if (!translations[language]) {
-      language = "it";
+      language = "es";
     }
 
     document.documentElement.lang = language;
@@ -1235,7 +1235,7 @@ setText(
        ----------------------------------------------------- */
 
     try {
-      localStorage.setItem("genesis-language", language);
+      sessionStorage.setItem("genesis-language", language);
     } catch (error) {
       /* Nessun problema se localStorage non è disponibile */
     }
@@ -1272,12 +1272,12 @@ setText(
      INITIAL LANGUAGE
      ======================================================= */
 
-  let initialLanguage = "it";
+  let initialLanguage = "es";
 
   try {
 
     const savedLanguage =
-      localStorage.getItem("genesis-language");
+      sessionStorage.getItem("genesis-language");
 
     if (
       savedLanguage &&
@@ -1290,7 +1290,7 @@ setText(
     }
 
   } catch (error) {
-    initialLanguage = "it";
+    initialLanguage = "es";
   }
 
   setLanguage(initialLanguage);

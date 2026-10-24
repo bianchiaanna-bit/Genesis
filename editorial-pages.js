@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setText(".editorial-end .editorial-cta", main[9]);
     }
 
-    try { localStorage.setItem("genesis-language", language); } catch (_) {}
+    try { sessionStorage.setItem("genesis-language", language); } catch (_) {}
   };
 
   $$(".lang[data-lang]").forEach((button) => {
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let initial = "es";
   try {
-    const saved = localStorage.getItem("genesis-language");
+    const saved = sessionStorage.getItem("genesis-language");
     if (["es", "en", "it"].includes(saved)) initial = saved;
   } catch (_) {}
 
