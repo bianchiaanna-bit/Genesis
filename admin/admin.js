@@ -7,33 +7,8 @@ let S={kv:{texts:{},imgs:{},hero:{mode:"mosaic"},hours:null,popup:null,legal:nul
 let tab="hero";
 
 /* ───── API ───── */
-let DEMO=false;const DK="gen-demo";
-async function mock(path,o){
-  let st=null;try{st=JSON.parse(localStorage.getItem(DK))}catch(_){}
-  st=st||{kv:{},menu:JSON.parse(JSON.stringify(G.MENU)),news:JSON.parse(JSON.stringify(G.NEWS)).map(n=>({...n,published:1})),homeFeaturedCards:[]};
-  st.homeFeaturedCards=st.homeFeaturedCards||[];
-  st.menu.extras=st.menu.extras||[];st.menu.allergens=st.menu.allergens||[];
-  const save=()=>{try{localStorage.setItem(DK,JSON.stringify(st))}catch(_){toast("Memoria demo piena",1)}};
-  const m=o.method||"GET",seg=path.split("/").filter(Boolean),b=o.json,t=seg[0];
-  if(t==="me")return{ok:true};
-  if(t==="settings"){if(m==="PUT"){Object.assign(st.kv,b);save();return{ok:true}}return st.kv}
-  if(t==="menu")return st.menu;
-  if(t==="extras"||t==="allergens"){
-    if(m==="PUT"){st.menu[t]=b[t]||[];save();return{ok:true}}
-    return {[t]:st.menu[t]||[]};
-  }
-  if(t==="upload")return new Promise(r=>{const f=new FileReader();f.onload=()=>r({key:f.result});f.readAsDataURL(o.body)});
-  const arr=n=>n==="news"?st.news:n==="home_featured_cards"?st.homeFeaturedCards:st.menu[n];
-  if(t==="reorder"){const a=arr(b.table);b.ids.forEach((id,i)=>{const x=a.find(y=>y.id==id);if(x)x.sort_order=i});a.sort((x,y)=>x.sort_order-y.sort_order);save();return{ok:true}}
-  if((t==="news"||t==="home_featured_cards")&&m==="GET")return{items:arr(t)};
-  const a=arr(t);if(!a)return{ok:true};const id=+seg[1];
-  if(m==="POST"){const n={...b,id:Math.max(0,...a.map(x=>x.id))+1};a.push(n);save();return{id:n.id}}
-  if(m==="PUT"){Object.assign(a.find(x=>x.id===id),b);save();return{ok:true}}
-  if(m==="DELETE"){const i=a.findIndex(x=>x.id===id);if(i>-1)a.splice(i,1);if(t==="categories")st.menu.dishes=st.menu.dishes.filter(d=>d.category_id!==id);save();return{ok:true}}
-  return{ok:true};
-}
+/* API */
 async function api(path,o={}){
-  if(DEMO)return mock(path,o);
   const r=await fetch("/api/admin"+path,{credentials:"same-origin",...o,headers:{...(o.json?{"content-type":"application/json"}:{}),...(o.headers||{})},body:o.json?JSON.stringify(o.json):o.body});
   if(r.status===401){showLogin();throw new Error("Sessione scaduta")}
   const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||"Errore "+r.status);return d;
@@ -54,16 +29,23 @@ async function upload(file){
 
 /* ───── login ───── */
 function showLogin(){$("#app").hidden=true;$("#login").hidden=false;$("#pw").focus()}
-function enterDemo(){DEMO=true;$("#demo-bar").hidden=false;start()}
-$("#demo-btn").onclick=enterDemo;
-$("#lf").onsubmit=async ev=>{ev.preventDefault();$("#lerr").textContent="";$("#demo-btn").hidden=true;
+$("#lf").onsubmit=async ev=>{
+  ev.preventDefault();
+  $("#lerr").textContent="";
   try{
     const r=await fetch("/api/admin/login",{method:"POST",credentials:"same-origin",headers:{"content-type":"application/json"},body:JSON.stringify({password:$("#pw").value})});
-    const ct=r.headers.get("content-type")||"";
-    if(!ct.includes("json")){$("#lerr").innerHTML="Il server del pannello non risponde (il Worker non è ancora pubblicato). Finché non lo pubblichi puoi provare il pannello in modalità demo.";$("#demo-btn").hidden=false;return}
-    const d=await r.json();if(!r.ok)throw new Error(d.error);$("#pw").value="";start();
-  }catch(x){$("#lerr").textContent=x.message||"Errore di connessione";if(/fetch|network|load/i.test(x.message||""))$("#demo-btn").hidden=false}};
-$("#out").onclick=async()=>{if(!DEMO)await fetch("/api/admin/logout",{method:"POST",credentials:"same-origin"});DEMO=false;$("#demo-bar").hidden=true;showLogin()};
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(d.error||"Password non corretta");
+    $("#pw").value="";
+    start();
+  }catch(x){
+    $("#lerr").textContent=x.message||"Errore di connessione";
+  }
+};
+$("#out").onclick=async()=>{
+  await fetch("/api/admin/logout",{method:"POST",credentials:"same-origin"});
+  showLogin();
+};
 
 /* ───── caricamento ───── */
 async function load(){
@@ -72,7 +54,7 @@ async function load(){
   S.menu=menu;S.news=news.items;S.homeFeaturedCards=featured.items||[];
 }
 async function start(){
-  try{await api("/me");await load()}catch(x){if(!DEMO){showLogin();if(x.message&&!/Sessione|autorizzato/i.test(x.message))$("#lerr").textContent="";}return}
+  try{await api("/me");await load()}catch(x){showLogin();if(x.message&&!/Sessione|autorizzato/i.test(x.message))$("#lerr").textContent="";return}
   $("#login").hidden=true;$("#app").hidden=false;go(tab);
 }
 const TABS=[["hero","Hero e foto"],["menu","Carta"],["news","Novità"],["home","Dalla cucina"],["hours","Orari"],["popup","Pop-up"],["texts","Testi del sito"],["legal","Privacy e cookie"]];
