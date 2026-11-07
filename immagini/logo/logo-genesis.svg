@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="62 272 486 114" role="img" aria-label="Génesis">
+  <g fill="none" stroke="#fff" stroke-width="8.6" stroke-linecap="butt">
+    <!-- G -->
+    <path stroke-linejoin="round" d="M94,319V297.3H72.4V374.7H94V339H83"/>
+    <!-- E con doppia barra superiore -->
+    <path stroke-linejoin="miter" d="M152,282H179M152,296.7H179M152,335H172M156.3,331V374.7M152,374.7H179"/>
+    <!-- N -->
+    <path stroke-linejoin="miter" d="M235.3,379V293L257.6,379V293"/>
+    <!-- E con barra superiore -->
+    <path stroke-linejoin="miter" d="M314,296.7H341M314,335H334M318.3,331V374.7M314,374.7H341"/>
+    <!-- S -->
+    <path stroke-linejoin="round" d="M413.7,319V297.3H393.3V330L413.7,347V374.7H393.3V352"/>
+    <!-- I -->
+    <path stroke-linejoin="miter" d="M464.2,293V379"/>
+    <!-- S -->
+    <path stroke-linejoin="round" d="M537,319V297.3H515.3V330L537,347V374.7H515.3V352"/>
+  </g>
+</svg>
