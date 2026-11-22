@@ -41,7 +41,7 @@ const closeSheet=()=>{sh.classList.remove("open");document.body.style.overflow="
 sh.addEventListener("click",ev=>{if(ev.target===sh||ev.target.closest(".sheet-x"))closeSheet()});
 document.addEventListener("keydown",ev=>{if(ev.key==="Escape")closeSheet()});
 
-fetch("/api/menu").then(r=>r.ok?r.json():Promise.reject()).then(d=>{
+fetch(G.API_BASE+"/api/menu").then(r=>r.ok?r.json():Promise.reject()).then(d=>{
   if(!d.categories||!d.categories.length)throw 0;M=d;render()
 }).catch(()=>{M=G.MENU;demo=true;render()});
 document.addEventListener("gen:lang",render);

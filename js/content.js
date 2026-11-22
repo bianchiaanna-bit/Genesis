@@ -1,5 +1,7 @@
 /* Testi predefiniti (ES / EN / IT) e foto. L'admin può sovrascrivere ogni testo e ogni foto. */
 window.GEN = window.GEN || {};
+/* API pública hospedada no Worker; el sitio estático vive en GitHub Pages. */
+GEN.API_BASE = "https://genesis-api.cimiteroditarsia.workers.dev";
 GEN.LOGO_LIGHT = "immagini/logo/logo-genesis.png";   // scritta bianca, per sfondi scuri
 GEN.LOGO_DARK  = "immagini/logo/logo_black.png";     // scritta nera, per sfondi chiari
 GEN.PH = "immagini/fotos/";
@@ -135,6 +137,6 @@ GEN.lang = (()=>{let l="es";try{l=localStorage.getItem("genesis-language")||"es"
 GEN.li = ()=>GEN.LANGS.indexOf(GEN.lang);
 GEN.O = {texts:{},imgs:{},hero:{mode:"mosaic"},hours:null,popup:null,news:[]}; // sovrascritture dall'API
 GEN.tx = k=>{const o=GEN.O.texts[k],d=GEN.T[k]||[];return ((o&&o[GEN.li()])||d[GEN.li()]||d[0]||"")};
-GEN.img = s=>{const o=GEN.O.imgs[s];if(o)return /^(https?:|data:|blob:|immagini\/)/.test(o)||o.startsWith("/")?o:"/img/"+o;const d=GEN.SLOTS[s];return GEN.PH+(d?d[0]:s)};
+GEN.img = s=>{const o=GEN.O.imgs[s];if(o){if(/^\/img\//.test(o))return GEN.API_BASE+o;return /^(https?:|data:|blob:|immagini\/)/.test(o)||o.startsWith("/")?o:GEN.API_BASE+"/img/"+o}const d=GEN.SLOTS[s];return GEN.PH+(d?d[0]:s)};
 GEN.pick = (o,base)=>o?(o[base+"_"+GEN.lang]||o[base+"_es"]||""):"";
 GEN.esc = s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));

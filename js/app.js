@@ -46,7 +46,7 @@ function build(){
     </div>
     <div class="fbottom"><span>© ${new Date().getFullYear()} Génesis Restaurante · La Laguna · Tenerife</span>
       <a class="legalbtn" href="privacy.html" data-i="ft.legal"></a>
-      <span class="fadmin"><a href="admin/" title="Admin" aria-label="Admin">${LOCK}<span>Admin</span></a></span></div></footer>`;
+      <span class="fadmin"><a href="https://genesis-api.cimiteroditarsia.workers.dev/admin/" title="Admin" aria-label="Admin">${LOCK}<span>Admin</span></a></span></div></footer>`;
   document.body.insertAdjacentHTML("beforeend",f);
   document.body.insertAdjacentHTML("beforeend",`<div class="ck" id="ck" role="dialog" aria-labelledby="ckt"><h4 id="ckt" data-i="ck.t"></h4><p><span data-i="ck.p"></span> <a href="privacy.html#cookies" data-i="ck.more"></a></p><div class="row"><button class="btn sm" id="ckno" data-i="ck.no"></button><button class="btn sm" id="ckyes" data-i="ck.yes"></button></div></div>`);
 }
@@ -130,7 +130,7 @@ function popup(){
   document.addEventListener("keydown",e=>{if(e.key==="Escape")close()},{once:true});
   setTimeout(()=>{el.classList.add("open");$(".pop-x",el).focus()},2200);
 }
-G.img_url=k=>!k?"":(/^(https?:|data:|blob:|immagini\/|assets\/)/.test(k)||k.startsWith("/"))?k:"/img/"+k;
+G.img_url=k=>!k?"":(/^\/img\//.test(k)?G.API_BASE+k:(/^(https?:|data:|blob:|immagini\/|assets\/)/.test(k)||k.startsWith("/"))?k:G.API_BASE+"/img/"+k);
 G.fmtDate=d=>{try{return new Intl.DateTimeFormat(G.lang,{day:"numeric",month:"long",year:"numeric"}).format(new Date(d))}catch(e){return d}};
 G.postCard=n=>{const DEF={dish:"DSC00833.jpg",invite:"DSC00914.jpg",post:"DSC00727.jpg",event:"DSC00917.jpg"};const im=`<img loading="lazy" src="${G.esc(n.image_key?G.img_url(n.image_key):G.PH+(DEF[n.type]||DEF.post))}" alt="">`;
   return `<a class="cc ${n.pinned?"pinned":""}" href="novedades.html#n${n.id}">${im}<div class="nb"><small>${G.esc(G.tx("tag."+(n.type||"post")))}</small><b>${G.esc(G.pick(n,"title"))}</b><time datetime="${G.esc(n.published_at)}">${G.fmtDate(n.published_at)}</time><p>${G.esc(G.pick(n,"body"))}</p></div></a>`};
@@ -147,7 +147,7 @@ G.carousel=function(root){
 G.carHTML=(cards,cls="")=>`<div class="car ${cls}"><div class="car-track">${cards}</div><div class="car-ui"><div class="dots"></div><div class="car-btns"><button class="pv" aria-label="←"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button class="nx" aria-label="→"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div></div></div>`;
 /* init */
 build();bind();apply();
-G.ready=fetch("/api/public",{headers:{accept:"application/json"}}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
+G.ready=fetch(G.API_BASE+"/api/public",{headers:{accept:"application/json"}}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
   G.O.texts=d.texts||{};G.O.imgs=d.imgs||{};G.O.hero=d.hero||G.O.hero;G.O.hours=d.hours||null;G.O.popup=d.popup||null;G.O.legal=d.legal||null;G.O.news=d.news||[];G.O.homeFeaturedEnabled=d.homeFeaturedEnabled!==false;G.O.homeFeaturedCards=d.homeFeaturedCards||[];
 }).catch(()=>{G.O.offline=true}).then(()=>{if(!(G.O.news||[]).length&&G.O.offline)G.O.news=G.NEWS||[];if(!G.O.hours)G.O.hours=G.HOURS_DEFAULT||null;apply();document.dispatchEvent(new Event("gen:ready"));popup();});
 G.observe();parallax();

@@ -45,7 +45,7 @@ function route(){
   $("#news-one").hidden=true;["#nfilters","#news-feat","#news-full"].forEach(s=>$(s).hidden=false);list();
 }
 async function load(){
-  try{const r=await fetch("/api/news");if(!r.ok)throw 0;all=(await r.json()).news||[]}catch(x){all=G.NEWS||[]}
+  try{const r=await fetch(G.API_BASE+"/api/news");if(!r.ok)throw 0;all=(await r.json()).news||[]}catch(x){all=G.NEWS||[]}
   route();
 }
 load();document.addEventListener("gen:lang",route);addEventListener("hashchange",route);
