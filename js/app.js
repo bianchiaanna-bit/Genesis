@@ -30,7 +30,7 @@ function build(){
       <div class="hact">${langBtns()}<a class="btn sm call" href="${TEL}" data-tel>${PH}<span data-i="nav.call"></span></a><a class="btn sm fill" href="menu.html" data-i="nav.cta"></a>
         <button class="burger" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Menu"><svg viewBox="0 0 40 40"><path class="hz" d="M8 20.4C14 19.8 25 20.6 32 19.7"/><path class="v" d="M20.3 8C19.6 14 20.5 26 19.6 32"/></svg></button></div>
     </header>
-    <nav class="mnav" id="mnav" aria-label="Móvil">${NAVM.map(([h,k])=>`<a class="l" href="${h}" data-i="${k}"></a>`).join("")}<div class="row"><a class="btn fill" href="${TEL}" data-tel>${PH} <span data-i="nav.call"></span></a></div>${langBtns()}</nav>
+    <nav class="mnav" id="mnav" aria-label="Móvil">${NAVM.map(([h,k])=>`<a class="l" href="${h}" data-i="${k}"></a>`).join("")}${langBtns()}</nav>
     <nav class="bar" aria-label="Acciones"><a href="menu.html">${BK}<span data-i="bar.menu"></span></a><a class="fill" href="${TEL}" data-tel>${PH}<span data-i="nav.call"></span></a><a href="como-llegar.html">${PIN}<span data-i="bar.map"></span></a></nav>`);
   const f=`<footer class="site-footer"><div class="plank"></div>
     <div class="fmain">

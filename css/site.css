@@ -205,10 +205,10 @@ blockquote{font:italic 400 clamp(2rem,5vw,4rem)/1.1 var(--serif)}
 /* menu */
 .menu-hero{padding:calc(var(--hh) + 70px) 8vw 50px;text-align:center}
 .menu-hero h1{font-size:clamp(3.4rem,9vw,7rem)}.menu-hero p{margin:18px auto 0;max-width:480px;opacity:.85}
-.mcats{position:sticky;top:var(--hh);z-index:20;display:flex;gap:6px;overflow-x:auto;padding:12px 5vw;background:var(--tex-dark) center/cover,#1c120a;scrollbar-width:none}
-.mcats::before{content:"";position:absolute;inset:0;background:#0a0704bf;pointer-events:none}
+.mcats{position:sticky;top:64px;z-index:20;display:flex;gap:6px;overflow-x:auto;padding:12px 5vw;background:var(--tex-light) center/cover,#a8774a;color:#1c120a;scrollbar-width:none}
+.mcats::before{content:"";position:absolute;inset:0;background:#ffffff12;pointer-events:none}
 .mcats a{position:relative;white-space:nowrap;text-decoration:none;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;border:1px solid transparent;opacity:.8}
-.mcats a.on{border-color:var(--g);color:#c9d8b6;opacity:1}
+.mcats a.on{border-color:var(--g-deep);color:var(--g-deep);opacity:1}
 .mcont{max-width:980px;margin:0 auto;padding:30px 6vw 100px}
 .mcat{padding-top:50px;scroll-margin-top:130px}.mcat>h2{font-size:clamp(2.2rem,5vw,3.6rem);margin-bottom:6px}.mcat>p{opacity:.75;margin-bottom:20px}
 .dish{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding:20px 0;border-bottom:1px solid #ffffff17}
@@ -316,10 +316,11 @@ body{padding-bottom:0}
 .bar{display:none}
 @media(max-width:900px){
   :root{--hh:60px}
+  .mcats{top:var(--hh)}
   body{font-size:15.5px;padding-bottom:calc(66px + env(safe-area-inset-bottom,0))}
   .site-header{height:60px;padding:env(safe-area-inset-top,0) 5vw 0}.brand img{height:26px}
   .brand .wm{font-size:1.15rem}
-  .mnav a.l{font-size:2.3rem;line-height:1.35}.mnav .row{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap}
+  .mnav a.l{font-size:2.3rem;line-height:1.35}
   .hero{padding:0 6vw calc(12vh + 10px);min-height:100svh}
   .tiles{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);gap:4px;padding:4px}
   .hero::after{background:linear-gradient(0deg,#090a08 6%,#090a08cc 28%,transparent 62%),linear-gradient(180deg,#090a08b0,transparent 22%)}
@@ -386,7 +387,6 @@ body{padding-bottom:0}
 @media(min-width:700px){.sheet{align-items:center}}
 @media(max-width:760px){.mgrid{grid-template-columns:1fr}.extras-grid{grid-template-columns:1fr}.dish img,.dish.has-img{--s:96px}.dish.has-img{grid-template-columns:96px 1fr}.dish img{width:96px;height:96px}.special{grid-template-columns:1fr}}
 .dt{font:400 1.4rem/1.1 var(--serif)}
-.mnav .row{display:flex}
 .news-full{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px}
 .news-full .cc{flex:none;min-height:0}
 .menu-hero{position:relative;overflow:hidden;isolation:isolate}.menu-hero .mh-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.28);z-index:-1}
@@ -594,7 +594,6 @@ section.s{padding:clamp(48px,7vh,96px) 8vw}
 body:has(#galeria) #cucina,
 body:has(#galeria) #det,
 body:has(#galeria) #esp,
-body:has(#galeria) #instagram,
-body:has(#galeria) .wall{background:#090909;color:var(--fg)}
+body:has(#galeria) #instagram{background:#090909;color:var(--fg)}
 body:has(#galeria) .wall .k,
 body:has(#galeria) .wall h2{color:var(--fg)}
