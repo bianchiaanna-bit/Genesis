@@ -205,10 +205,10 @@ blockquote{font:italic 400 clamp(2rem,5vw,4rem)/1.1 var(--serif)}
 /* menu */
 .menu-hero{padding:calc(var(--hh) + 70px) 8vw 50px;text-align:center}
 .menu-hero h1{font-size:clamp(3.4rem,9vw,7rem)}.menu-hero p{margin:18px auto 0;max-width:480px;opacity:.85}
-.mcats{position:sticky;top:64px;z-index:20;display:flex;gap:6px;overflow-x:auto;padding:12px 5vw;background:var(--tex-light) center/cover,#a8774a;color:#1c120a;scrollbar-width:none}
-.mcats::before{content:"";position:absolute;inset:0;background:#ffffff12;pointer-events:none}
+.mcats{position:sticky;top:var(--hh);z-index:20;display:flex;gap:6px;overflow-x:auto;padding:12px 5vw;background:var(--tex-dark) center/cover,#1c120a;color:var(--fg);scrollbar-width:none}
+.mcats::before{content:"";position:absolute;inset:0;background:#0a0704bf;pointer-events:none}
 .mcats a{position:relative;white-space:nowrap;text-decoration:none;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;border:1px solid transparent;opacity:.8}
-.mcats a.on{border-color:var(--g-deep);color:var(--g-deep);opacity:1}
+.mcats a.on{border-color:var(--fg);color:var(--fg);background:#ffffff18;opacity:1}
 .mcont{max-width:980px;margin:0 auto;padding:30px 6vw 100px}
 .mcat{padding-top:50px;scroll-margin-top:130px}.mcat>h2{font-size:clamp(2.2rem,5vw,3.6rem);margin-bottom:6px}.mcat>p{opacity:.75;margin-bottom:20px}
 .dish{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding:20px 0;border-bottom:1px solid #ffffff17}
@@ -232,6 +232,10 @@ blockquote{font:italic 400 clamp(2rem,5vw,4rem)/1.1 var(--serif)}
   .hero-open{position:relative;right:auto;bottom:auto;text-align:left;margin-top:26px}.hero{flex-direction:column;justify-content:flex-end}
   .intro p{margin-left:0}.special{grid-template-columns:1fr}.dish.has-img{grid-template-columns:76px 1fr auto}.dish img{width:76px;height:76px}
   .hc p{font-size:.95rem}.scrollcue{display:none}
+}
+@media(min-width:901px){
+  .mcats{top:64px;background:#1c120a;color:var(--fg)}
+  .mcats::before{display:none}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.r{opacity:1;transform:none}.mask>span{transform:none}.hero h1 .ch{opacity:1;transform:none}.tiles img{filter:brightness(.6)}}
 
